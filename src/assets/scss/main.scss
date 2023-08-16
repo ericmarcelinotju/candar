@@ -1,0 +1,300 @@
+@import 'tailwind';
+@import 'vue_datepicker';
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap');
+
+/* width */
+::-webkit-scrollbar {
+  @apply w-1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply bg-grey-dark;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-black-soft;
+}
+
+html {
+  overflow: hidden;
+}
+
+hr {
+  @apply border-grey-dark;
+}
+
+.lock-scroll-body {
+  overflow: hidden;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.card {
+  @apply bg-white rounded-lg overflow-hidden shadow-md relative;
+}
+
+.badge {
+  @apply bg-grey-soft text-grey-dark text-xs uppercase font-bold rounded-full p-2 absolute top-0 right-0 mr-2 mt-2;
+}
+
+
+.custom-table-row {
+  &:nth-child(even) {
+    @apply bg-grey-soft;
+  }
+
+  td {
+    @apply px-4 py-2 whitespace-nowrap text-sm text-grey-dark;
+  }
+}
+
+.custom-table-row,
+.custom-table-account {
+  .action {
+    @apply text-center
+  }
+
+  a {
+    @apply inline-flex items-center text-sky-700 hover:text-sky-900 cursor-pointer;
+  }
+
+  a.edit {
+    @apply text-amber-700;
+  }
+
+  a.remove {
+    @apply text-rose-700;
+  }
+}
+
+.pagination-item {
+  @apply border-transparent text-grey hover:text-grey-dark hover:border-grey-soft border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium;
+
+  &__active {
+    @apply border-orange-500 text-orange-600 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium;
+  }
+}
+
+.default-field {
+  @apply flex flex-col justify-center mb-2;
+
+  &.inline {
+    @apply flex-row-reverse items-center justify-end;
+
+    .default-label {
+      @apply mb-0;
+    }
+  }
+
+  .default-label {
+    @apply flex items-center;
+  }
+}
+
+.default-input {
+  @apply focus:ring-info-dark focus:border-info-dark block shadow-sm text-sm leading-5 border-gray-300 rounded-md;
+
+  &[type="checkbox"] {
+    @apply mr-2;
+  }
+  &:not([type="checkbox"]) {
+    @apply w-full;
+  }
+  &[disabled] {
+    @apply bg-grey-soft disabled:bg-gray-50 disabled:text-grey disabled:border-grey-soft disabled:shadow-none;
+  }
+}
+
+.default-input-info {
+  @apply absolute mt-1 inset-y-0 bg-grey-soft px-2 border flex items-center pointer-events-none whitespace-nowrap;
+
+  &-left {
+    @extend .default-input-info;
+    @apply left-0 rounded-tl-md rounded-bl-md px-2;
+  }
+
+  &-right {
+    @extend .default-input-info;
+    @apply right-0 rounded-br-md rounded-tr-md px-2;
+  }
+
+  &.is-button {
+    @apply pointer-events-auto focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+}
+
+.default-input-message {
+  @apply text-xs;
+
+  &.is-danger {
+    @apply text-danger;
+  }
+
+  &.is-warning {
+    @apply text-warning;
+  }
+}
+
+.default-label {
+  @apply block text-sm font-medium text-black-soft mb-2;
+}
+
+.default-tag {
+  @apply inline-flex items-center justify-center py-1 px-2 border shadow-sm text-xs font-medium rounded-xl;
+
+  &.hoverable {
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+}
+
+.success-tag {
+  @extend .default-tag;
+  @apply text-white bg-success;
+
+  &.hoverable {
+    @apply hover:bg-green-600 focus:ring-green-500;
+  }
+}
+
+.info-tag {
+  @extend .default-tag;
+  @apply text-white bg-info;
+
+  &.hoverable {
+    @apply hover:bg-sky-600 focus:ring-sky-500;
+  }
+}
+
+.warning-tag {
+  @extend .default-tag;
+  @apply text-white bg-warning;
+
+  &.hoverable {
+    @apply hover:bg-amber-600 focus:ring-amber-500;
+  }
+}
+
+.danger-tag {
+  @extend .default-tag;
+  @apply text-white bg-danger;
+
+  &.hoverable {
+    @apply hover:bg-rose-600 focus:ring-rose-500;
+  }
+}
+
+.default-button {
+  @apply inline-flex items-center justify-center py-2 px-4 shadow-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 border border-gray-300 hover:bg-gray-300 focus:ring-gray-300;
+}
+
+.secondary-button {
+  @extend .default-button;
+  @apply text-white bg-secondary hover:bg-secondary-dark focus:ring-secondary-soft;
+}
+
+.success-button {
+  @extend .default-button;
+  @apply text-white bg-success hover:bg-success-dark focus:ring-success-soft;
+}
+
+.info-button {
+  @extend .default-button;
+  @apply text-white bg-primary hover:bg-primary-dark focus:ring-primary-soft;
+}
+
+.warning-button {
+  @extend .default-button;
+  @apply text-white bg-warning hover:bg-warning-dark focus:ring-warning-soft;
+}
+
+.danger-button {
+  @extend .default-button;
+  @apply text-white bg-danger hover:bg-danger-dark focus:ring-danger-soft;
+}
+
+.control-button {
+  @apply w-8 h-8 p-1 text-grey-dark border shadow-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2;
+
+  svg {
+    fill: currentColor;
+  }
+
+  &.is-active,
+  &:hover {
+    @apply text-white bg-gray-800;
+  }
+}
+
+.divider {
+  @apply w-px h-8 bg-gray-600 mr-2;
+}
+
+.default-detail {
+  @apply pl-4 py-2 border border-dashed border-green-500 rounded-md;
+}
+
+.default-checkbox {
+  @apply appearance-none checked:bg-primary border-gray-300 rounded-sm h-5 w-5 mr-4 shadow-sm;
+}
+
+.create-edit-submit-container {
+  @apply px-4 py-3 bg-gray-50 text-right sm:px-6 rounded-bl-md rounded-br-md mt-2 -mb-6 -mx-6;
+}
+
+.custom-multiselect {
+  @apply mt-1;
+
+  .multiselect__tags {
+    @apply focus:ring-green-500 focus:border-green-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md;
+
+    .multiselect__tag {
+      @apply bg-info;
+    }
+  }
+
+  .multiselect__content-wrapper {
+    .multiselect__content {
+      .multiselect__element {
+        .multiselect__option {
+          &--highlight {
+            @apply bg-info;
+          }
+        }
+      }
+    }
+  }
+}
+
+input.search-datepicker {
+  @apply pl-12 text-left w-full py-2 sm:text-sm border-transparent rounded-tr-md rounded-br-md bg-gray-100 block
+}
+
+.workspace {
+  @apply p-6 divide-y divide-gray-200 lg:col-span-9;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+.rotate {
+  animation: rotation 2s infinite linear;
+}
