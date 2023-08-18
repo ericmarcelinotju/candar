@@ -30,7 +30,7 @@
         :key="`parent-${item.name}`"
         v-slot="{ open }"
         as="div"
-        class="space-y-1"
+        class="space-y-1 mb-2"
         :class="{ hidden: !hasAnyPermission(item.children) }"
         :default-open="hasActiveChild(item.children)"
       >
@@ -114,6 +114,7 @@ const hasPermission = (module) => {
 
 const hasAnyPermission = (children) => {
   for (const item of children) {
+    console.log(item.module)
     if (store.getters['auth/hasPermission'](item.module, 'GET')) {
       return true
     }

@@ -1,4 +1,4 @@
-import {Navigation} from '@/typings/navigation.type'
+import { Navigation } from '@/typings/navigation.type'
 import {
   CalculatorIcon,
   CogIcon,
@@ -6,8 +6,9 @@ import {
   UserIcon,
   BellIcon,
   CodeIcon,
-  LocationMarkerIcon,
-  DocumentTextIcon
+  PresentationChartLineIcon,
+  ShoppingBagIcon,
+  ShoppingCartIcon
 } from '@heroicons/vue/outline'
 
 export const navigations: Navigation[] = [
@@ -18,63 +19,65 @@ export const navigations: Navigation[] = [
     icon: HomeIcon
   },
   {
-    name: 'Settings',
-    module: 'SETTING',
-    href: '/setting',
-    icon: CogIcon
+    name: 'Product',
+    module: 'PRODUCT',
+    icon: ShoppingBagIcon,
+    children: [{
+      name: 'Product',
+      module: 'PRODUCT',
+      href: '/product'
+    },
+    {
+      name: 'Product Variant',
+      module: 'PRODUCT',
+      href: '/product-variant'
+    },
+    {
+      name: 'Product Category',
+      module: 'PRODUCT',
+      href: '/product-category'
+    }]
   },
   {
-    name: 'Inspection',
-    module: 'INSPECTION',
-    href: '/inspection',
-    icon: CogIcon
+    name: 'Project',
+    module: 'PROJECT',
+    href: '/project',
+    icon: PresentationChartLineIcon
   },
   {
-    name: 'Device',
-    module: 'Device',
-    href: '/device',
-    icon: CogIcon
+    name: 'Sale',
+    module: 'SALE',
+    href: '/sale',
+    icon: ShoppingCartIcon
   },
   {
-    name: 'Device Type',
-    module: 'DEVICE-TYPE',
-    href: '/device/type',
-    icon: CogIcon
-  },
-  {
-    name: 'Location',
-    module: 'LOCATION',
-    href: '/location',
-    icon: LocationMarkerIcon
-  },
-  {
-    name: 'Article',
-    module: 'ARTICLE',
-    href: '/article',
-    icon: DocumentTextIcon
-  },
-  {
-    name: 'User Security',
+    name: 'User Access',
     icon: UserIcon,
     children: [{
       name: 'User',
       module: 'USER',
       href: '/user'
     },
-      {
-        name: 'Role',
-        module: 'ROLE',
-        href: '/role'
-      },
-      {
-        name: 'Permission',
-        module: 'PERMISSION',
-        href: '/permission'
-      }]
+    {
+      name: 'Role',
+      module: 'ROLE',
+      href: '/role'
+    },
+    {
+      name: 'Permission',
+      module: 'PERMISSION',
+      href: '/permission'
+    }]
   }
 ]
 
 export const secondaryNavigations: Navigation[] = [
+  {
+    name: 'Settings',
+    module: 'SETTING',
+    href: '/setting',
+    icon: CogIcon
+  },
   {
     name: 'Maintenance',
     icon: CalculatorIcon,
@@ -84,11 +87,11 @@ export const secondaryNavigations: Navigation[] = [
       href: '/log',
       icon: BellIcon
     },
-      {
-        name: 'Statistic',
-        module: 'STATISTIC',
-        href: '/statistic',
-        icon: CodeIcon
-      }]
+    {
+      name: 'Statistic',
+      module: 'STATISTIC',
+      href: '/statistic',
+      icon: CodeIcon
+    }]
   }
 ]
