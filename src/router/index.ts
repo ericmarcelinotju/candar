@@ -9,9 +9,9 @@ import {
   permissionRoutes,
   logRoutes,
   inspectionRoutes,
-  deviceRoutes,
-  deviceTypeRoutes,
-  articleRoutes,
+  divisionRoutes,
+  clientRoutes,
+  projectRoutes,
   workRoute
 } from './routes'
 
@@ -33,10 +33,10 @@ const router = createRouter({
 
         workRoute,
 
-        ...Object.values(deviceRoutes),
-        ...Object.values(deviceTypeRoutes),
+        ...Object.values(clientRoutes),
+        ...Object.values(divisionRoutes),
         ...Object.values(locationRoutes),
-        ...Object.values(articleRoutes),
+        ...Object.values(projectRoutes),
 
         ...Object.values(userRoutes),
         ...Object.values(roleRoutes),

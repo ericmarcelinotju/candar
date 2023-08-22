@@ -1,5 +1,5 @@
 <template>
-  <DefaultPage :title="$t('app.module.article')">
+  <DefaultPage :title="$t('app.columns.division')">
     <DefaultTable
       :columns="columns"
       :has-delete="hasPermission('DELETE')"
@@ -10,11 +10,7 @@
       @delete="handleDelete"
       @edit="handleEdit"
       @search="handleSearch"
-    >
-      <template #content="{ item }">
-        <p v-html="item.content" />
-      </template>
-    </DefaultTable>
+    />
     <template #action>
       <button
         v-if="hasPermission('POST')"
@@ -50,44 +46,26 @@ import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { PlusIcon } from '@heroicons/vue/solid'
 import DefaultTable from '@/components/default/Table.vue'
-import { get as getArticles, del as deleteArticle } from '@/api/article'
+import { get as getDivisions, del as deleteDivision } from '@/api/division'
 import { useNotify } from '@/composables/use-notify'
-import { Article } from '@/typings/models/article.type'
-import { articleCreate, articleEdit } from '@/router/routes/article'
+import { Division } from '@/typings/models/division.type'
+import { divisionCreate, divisionEdit } from '@/router/routes/division'
 
 const router = useRouter()
 const store = useStore()
-const { notify } = useNotify('article')
-
-const columns = [
-  {
-    label: 'ID',
-    key: 'id',
-    isHidden: true
-  },
-  {
-    label: 'Name',
-    key: 'name',
-    isSearchable: true,
-    isSortable: true
-  },
-  {
-    label: 'Content',
-    key: 'content'
-  }
-]
+const { notify } = useNotify('division')
 
 const loading = ref(false)
 let stateParams = reactive({})
 
-const items: Ref<Article[]> = ref([])
+const items: Ref<Division[]> = ref([])
 const itemsTotal = ref(0)
 const handleSearch = (params) => {
   stateParams = { ...params }
   loading.value = true
-  getArticles(params)
+  getDivisions(params)
     .then(res => {
-      items.value = res.data.articles
+      items.value = res.data.divisions
       itemsTotal.value = res.data.total
     })
     .finally(() => {
@@ -96,17 +74,17 @@ const handleSearch = (params) => {
 }
 
 const handleCreate = () => {
-  router.push(articleCreate)
+  router.push(divisionCreate)
 }
 
 const handleEdit = ({ id }) => {
-  router.push({ ...articleEdit, params: { id } })
+  router.push({ ...divisionEdit, params: { id } })
 }
 
-// Delete article
+// Delete division
 const loadingDelete = ref(false)
 const visibleDeleteConfirmationModal = ref(false)
-const deleteItem: Ref<Article> = ref()
+const deleteItem: Ref<Division> = ref()
 const handleDelete = (data) => {
   visibleDeleteConfirmationModal.value = true
   deleteItem.value = data
@@ -114,7 +92,7 @@ const handleDelete = (data) => {
 const confirmDelete = () => {
   const { id } = deleteItem.value
   loadingDelete.value = true
-  deleteArticle(id)
+  deleteDivision(id)
     .then(() => {
       handleSearch(stateParams)
       notify('deleted')
@@ -128,7 +106,28 @@ const confirmDelete = () => {
     })
 }
 
-const hasPermission = (method, module = 'DEVICE') => {
+// Table columns setting
+const columns = [
+  {
+    label: 'ID',
+    key: 'id',
+    isHidden: true
+  },
+  {
+    label: 'Number',
+    key: 'number',
+    isSortable: true,
+    isSearchable: true
+  },
+  {
+    label: 'Name',
+    key: 'name',
+    isSortable: true,
+    isSearchable: true
+  }
+]
+
+const hasPermission = (method, module = 'DIVISION') => {
   return store.getters['auth/hasPermission'](module, method)
 }
 

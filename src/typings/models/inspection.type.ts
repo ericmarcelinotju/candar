@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { Device } from './device.type'
+import { Device } from './division.type'
 import { DeviceInspection } from './deviceInspection.type'
 import { BaseModel } from './model.type'
 import { User } from './user.type'

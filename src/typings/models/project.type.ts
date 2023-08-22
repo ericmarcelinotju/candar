@@ -27,5 +27,5 @@ export class Project extends BaseModel {
 
 export class ProjectList {
   total: number
-  Projects: Project[]
+  projects: Project[]
 }

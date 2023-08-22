@@ -1,282 +1,165 @@
 <template>
   <div class="col-span-9 p-6">
-    <div class="grid grid-cols-4 gap-6">
-      <!-- <div class="md:col-span-6 col-span-12 bg-white shadow">
+    <div class="grid grid-cols-12 gap-6">
+      <div class="stat-card">
         <div class="stat-label">
           100
         </div>
         <hr>
         <div class="flex justify-between items-center p-4">
           <span class="font-bold">
-            {{ $t("app.columns.branch") }}
+            Active Projects
           </span>
         </div>
       </div>
-      <div class="md:col-span-6 col-span-12 bg-white shadow">
+      <div class="stat-card">
         <div class="stat-label">
           100
         </div>
         <hr>
         <div class="flex justify-between items-center p-4">
           <span class="font-bold">
-            {{ $t("app.columns.extension") }}
+            Almost Due Project
           </span>
         </div>
       </div>
-      <div class="md:col-span-6 col-span-12 bg-white shadow">
+      <div class="stat-card">
         <div class="stat-label">
-          100
+          100 / 10
         </div>
         <hr>
         <div class="flex justify-between items-center p-4">
           <span class="font-bold">
-            {{ $t("app.columns.recording") }}
+            Projects Won / Projects Lost
           </span>
         </div>
       </div>
-      <div class="md:col-span-6 col-span-12 bg-white shadow">
-        <div class="stat-label">
-          100
-        </div>
-        <hr>
-        <div class="flex justify-between items-center p-4">
-          <span class="font-bold"> Logged In Users </span>
-        </div>
-      </div> -->
-
-      <div class="project-list">
-        <h3 class="font-semibold ml-2">
-          Cold Call
-        </h3>
-        <Draggable
-          v-model="projectsColdCall"
-          class="project-group"
-          :component-data="{
-            tag: 'div',
-            type: 'transition-group',
-            name: !drag ? 'flip-list' : null
-          }"
-          group="people"
-          item-key="id"
-          v-bind="dragOptions"
-          @end="drag = false"
-          @start="drag = true"
-        >
-          <template #item="{ element, index }">
-            <div class="project-item">
-              <div class="flex gap-1 mb-2">
-                <div class="info-tag">
-                  tag 1
-                </div>
-                <div class="danger-tag">
-                  tag 2
-                </div>
-              </div>
-              <div>
-                {{ element.name }} {{ index }}
-              </div>
-              <div class="flex justify-end mt-2">
-                <div class="warning-tag !rounded-full">
-                  N
-                </div>
-              </div>
-              <PencilIcon class="edit-icon" />
-            </div>
-          </template>
-        </Draggable>
+    </div>
+    <div class="grid grid-cols-12 gap-6 mt-6">
+      <div class="p-6 col-span-8 rounded-md overflow-hidden bg-white shadow">
+        <h1 class="text-xl font-bold mb-6">
+          Project Status by Industry
+        </h1>
+        <BarChart
+          :data="barData"
+          :data-labels="barDataLabels"
+          :labels="barLabels"
+        />
       </div>
-
-      <div class="project-list">
-        <h3 class="font-semibold ml-2">
-          Qualification
-        </h3>
-        <Draggable
-          v-model="projectsQualification"
-          class="project-group"
-          :component-data="{
-            tag: 'div',
-            type: 'transition-group',
-            name: !drag ? 'flip-list' : null
-          }"
-          group="people"
-          item-key="id"
-          v-bind="dragOptions"
-          @end="drag = false"
-          @start="drag = true"
-        >
-          <template #item="{ element, index }">
-            <div class="project-item">
-              <div class="flex gap-1 mb-2">
-                <div class="info-tag">
-                  tag 1
-                </div>
-                <div class="danger-tag">
-                  tag 2
-                </div>
-              </div>
-              <div>
-                {{ element.name }} {{ index }}
-              </div>
-              <div class="flex justify-end mt-2">
-                <div class="warning-tag !rounded-full">
-                  N
-                </div>
-              </div>
-              <PencilIcon class="edit-icon" />
-            </div>
-          </template>
-        </Draggable>
+      <div class="p-6 col-span-4 rounded-md overflow-hidden bg-white shadow">
+        <h1 class="text-xl font-bold mb-6">
+          Project Status
+        </h1>
+        <PieChart
+          :data="pieData"
+          :labels="pieLabels"
+        />
       </div>
+    </div>
 
-      <div class="project-list">
-        <h3 class="font-semibold ml-2">
-          Lead
-        </h3>
-        <Draggable
-          v-model="projectsLead"
-          class="project-group"
-          :component-data="{
-            tag: 'div',
-            type: 'transition-group',
-            name: !drag ? 'flip-list' : null
-          }"
-          group="people"
-          item-key="id"
-          v-bind="dragOptions"
-          @end="drag = false"
-          @start="drag = true"
-        >
-          <template #item="{ element, index }">
-            <div class="project-item">
-              <div class="flex gap-1 mb-2">
-                <div class="info-tag">
-                  tag 1
-                </div>
-                <div class="danger-tag">
-                  tag 2
-                </div>
-              </div>
-              <div>
-                {{ element.name }} {{ index }}
-              </div>
-              <div class="flex justify-end mt-2">
-                <div class="warning-tag !rounded-full">
-                  N
-                </div>
-              </div>
-              <PencilIcon class="edit-icon" />
-            </div>
-          </template>
-        </Draggable>
-      </div>
-
-      <div class="project-list">
-        <h3 class="font-semibold ml-2">
-          Quotation
-        </h3>
-        <Draggable
-          v-model="projectsQuotation"
-          class="project-group"
-          :component-data="{
-            tag: 'div',
-            type: 'transition-group',
-            name: !drag ? 'flip-list' : null
-          }"
-          group="people"
-          item-key="id"
-          v-bind="dragOptions"
-          @end="drag = false"
-          @start="drag = true"
-        >
-          <template #item="{ element, index }">
-            <div class="project-item">
-              <div class="flex gap-1 mb-2">
-                <div class="info-tag">
-                  tag 1
-                </div>
-                <div class="danger-tag">
-                  tag 2
-                </div>
-              </div>
-              <div>
-                {{ element.name }} {{ index }}
-              </div>
-              <div class="flex justify-end mt-2">
-                <div class="warning-tag !rounded-full">
-                  N
-                </div>
-              </div>
-              <PencilIcon class="edit-icon" />
-            </div>
-          </template>
-        </Draggable>
-      </div>
+    <div class="mt-6 p-6 rounded-md overflow-hidden bg-white shadow">
+      <h1 class="text-xl font-bold mb-2">
+        My Projects
+      </h1>
+      <DefaultTable
+        :columns="projectColumns"
+        :has-delete="hasPermission('DELETE')"
+        :has-edit="hasPermission('PUT')"
+        :items="projectItems"
+        :loading="false"
+        :total="projectItems.length"
+      >
+        <template #status="{ item }">
+          <span :class="getTagClass(item.status)">{{ snakeToTitle(item.status) }}</span>
+        </template>
+      </DefaultTable>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Ref, computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
-import Draggable from 'vuedraggable'
-import { Project } from '@/typings/models/project.type'
-import dayjs from 'dayjs'
-import { inspectionDetail } from '@/router/routes/inspection'
-import { PencilIcon } from '@heroicons/vue/solid'
+import BarChart from '@/components/chart/barChart'
+import PieChart from '@/components/chart/pieChart'
+import DefaultTable from '@/components/default/Table.vue'
+import { snakeToTitle } from '@/utils/string'
 
-const router = useRouter()
 const store = useStore()
 
-const projectsColdCall = ref([
+const barData = ref([[12, 5, 1, 3], [2, 3, 5, 6], [5, 9, 5, 6], [2, 1, 1, 1]])
+const barDataLabels = ref(['Cold Call', 'Qualification', 'Lead', 'Quotation'])
+const barLabels = ref(['Technology', 'Real Estate', 'Government/Military', 'Education'])
+
+const pieData = ref([12, 5, 1, 3])
+const pieLabels = ref(['Cold Call', 'Qualification', 'Lead', 'Quotation'])
+
+const projectColumns = [
   {
-    id: '1',
-    number: '1',
-    name: 'Sales Lead A',
-    status: 'cold_call'
+    label: 'ID',
+    key: 'id',
+    isHidden: true
   },
   {
-    id: '2',
-    number: '2',
-    name: 'Sales Lead B',
-    status: 'cold_call'
-  }
-])
-
-const projectsQualification = ref([
-  {
-    id: '3',
-    number: '3',
-    name: 'Sales Lead C',
-    status: 'qualification'
+    label: 'Number',
+    key: 'number',
+    isSearchable: true,
+    isSortable: true
   },
   {
-    id: '4',
-    number: '4',
-    name: 'Sales Lead D',
-    status: 'qualification'
-  }
-])
-
-const projectsLead = ref([
+    label: 'Name',
+    key: 'name'
+  },
   {
-    id: '5',
-    number: '5',
-    name: 'Sales Lead E',
-    status: 'lead'
+    label: 'Status',
+    key: 'status'
+  },
+  {
+    label: 'User',
+    key: 'user'
+  },
+  {
+    label: 'Client',
+    key: 'client'
   }
-])
+]
 
-const projectsQuotation = ref([])
+const projectItems = [
+  {
+    number: 'PRJ001',
+    name: 'Project 01',
+    status: 'cold_call',
+    user: 'Nicholas',
+    client: 'Nike'
+  },
+  {
+    number: 'PRJ002',
+    name: 'Project 02',
+    status: 'cold_call',
+    user: 'Nicholas',
+    client: 'Adidas'
+  },
+  {
+    number: 'PRJ003',
+    name: 'Project 03',
+    status: 'quotation',
+    user: 'Nicholas',
+    client: 'Puma'
+  }
+]
 
-const dragOptions = ref({
-  animation: 200,
-  group: 'description',
-  disabled: false,
-  ghostClass: 'ghost'
-})
-
-const drag = ref(false)
+const getTagClass = (status: string) => {
+  if (status === 'cold_call') {
+    return 'danger-tag'
+  } else if (status === 'qualification') {
+    return 'warning-tag'
+  } else if (status === 'lead') {
+    return 'info-tag'
+  } else if (status === 'quotation') {
+    return 'success-tag'
+  }
+  return 'default-tag'
+}
 
 const initPage = () => {
   // getInspections()
@@ -295,36 +178,11 @@ const hasPermission = (module) => {
 </script>
 
 <style lang="scss" scoped>
-.project-list {
-  @apply flex flex-col min-h-[164px] h-fit bg-grey rounded-lg p-3;
-  .project-group {
-    @apply flex-1 h-full flex flex-col gap-2 mt-4;
-    .project-item {
-      @apply relative p-2 bg-white rounded-lg text-sm shadow-md;
-
-      .edit-icon {
-        @apply absolute top-2 right-3 w-4 h-4 text-grey-dark hidden;
-      }
-
-      &:hover {
-        @apply bg-grey-soft;
-
-        .edit-icon {
-          @apply block;
-        }
-      }
-    }
+.stat-card {
+  @apply md:col-span-4 col-span-12 rounded-md overflow-hidden bg-white shadow;
+  .stat-label {
+    @apply left-3 bottom-3 w-full py-2 px-3 shadow-xl bg-primary text-lg text-white font-bold;
   }
 }
-.flip-list-move {
-  transition: transform 0.5s;
-}
 
-.no-move {
-  transition: transform 0s;
-}
-
-.ghost {
-  opacity: 0.5;
-}
 </style>

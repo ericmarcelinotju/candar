@@ -1,6 +1,6 @@
 import axios from './index'
 import { BaseResponse } from '@/typings/response.type'
-import { DeviceList } from '@/typings/models/device.type'
+import { DeviceList } from '@/typings/models/division.type'
 
 const login = (data): Promise<BaseResponse<DeviceList>> => {
   return axios.post('/auth/login', data)

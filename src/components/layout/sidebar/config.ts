@@ -8,7 +8,8 @@ import {
   CodeIcon,
   PresentationChartLineIcon,
   ShoppingBagIcon,
-  ShoppingCartIcon
+  ShoppingCartIcon,
+  UsersIcon
 } from '@heroicons/vue/outline'
 
 export const navigations: Navigation[] = [
@@ -49,6 +50,12 @@ export const navigations: Navigation[] = [
     module: 'SALE',
     href: '/sale',
     icon: ShoppingCartIcon
+  },
+  {
+    name: 'Client',
+    module: 'CLIENT',
+    href: '/client',
+    icon: UsersIcon
   },
   {
     name: 'User Access',

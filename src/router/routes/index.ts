@@ -1,14 +1,14 @@
 import { RouteRecordRaw } from 'vue-router'
+import { forgotPassword, login, logout, resetPassword } from './auth'
 import { userCreate, userEdit, userList } from './user'
 import { roleCreate, roleEdit, roleList } from './role'
-import { forgotPassword, login, logout, resetPassword } from './auth'
 import { permissionCreate, permissionEdit, permissionList } from './permission'
-import { logList } from './log'
+import { clientCreate, clientEdit, clientList } from './client'
+import { divisionCreate, divisionEdit, divisionList } from './division'
 import { inspectionCreate, inspectionDetail, inspectionEdit, inspectionList } from './inspection'
-import { deviceCreate, deviceEdit, deviceList } from './device'
-import { deviceTypeCreate, deviceTypeEdit, deviceTypeList } from './deviceType'
 import { locationCreate, locationEdit, locationList } from './location'
-import { articleCreate, articleEdit, articleList } from './article'
+import { projectCreate, projectEdit, projectList } from './project'
+import { logList } from './log'
 
 export const dashboardRoute: RouteRecordRaw = {
   path: '/dashboard',
@@ -100,16 +100,16 @@ export const logRoutes: Record<string, RouteRecordRaw> = {
   list: logList
 }
 
-export const deviceRoutes: Record<string, RouteRecordRaw> = {
-  list: deviceList,
-  create: deviceCreate,
-  edit: deviceEdit
+export const divisionRoutes: Record<string, RouteRecordRaw> = {
+  list: divisionList,
+  create: divisionCreate,
+  edit: divisionEdit
 }
 
-export const deviceTypeRoutes: Record<string, RouteRecordRaw> = {
-  list: deviceTypeList,
-  create: deviceTypeCreate,
-  edit: deviceTypeEdit
+export const clientRoutes: Record<string, RouteRecordRaw> = {
+  list: clientList,
+  create: clientCreate,
+  edit: clientEdit
 }
 
 export const locationRoutes: Record<string, RouteRecordRaw> = {
@@ -118,8 +118,8 @@ export const locationRoutes: Record<string, RouteRecordRaw> = {
   edit: locationEdit
 }
 
-export const articleRoutes: Record<string, RouteRecordRaw> = {
-  list: articleList,
-  create: articleCreate,
-  edit: articleEdit
+export const projectRoutes: Record<string, RouteRecordRaw> = {
+  list: projectList,
+  create: projectCreate,
+  edit: projectEdit
 }

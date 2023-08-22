@@ -1,5 +1,5 @@
 <template>
-  <DefaultPage :title="$t('app.columns.article')">
+  <DefaultPage :title="$t('app.columns.division')">
     <div
       v-if="loading"
       class="w-full h-full flex justify-center items-center"
@@ -21,21 +21,21 @@ import { useRoute, useRouter } from 'vue-router'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
 import {
-  detail as getArticle,
-  insert as insertArticle,
-  update as updateArticle
-} from '@/api/article'
+  detail as getDivision,
+  insert as insertDivision,
+  update as updateDivision
+} from '@/api/division'
 import { required } from '@/utils/validation'
 import { FormSetting } from '@/typings/form.type'
-import { Article } from '@/typings/models/article.type'
-import { articleList } from '@/router/routes/article'
+import { Division } from '@/typings/models/division.type'
+import { divisionList } from '@/router/routes/division'
 
 const route = useRoute()
 const router = useRouter()
 
-const { notify } = useNotify('article')
+const { notify } = useNotify('division')
 
-const initialData: Ref<Article> = ref()
+const initialData: Ref<Division> = ref()
 const loading: Ref<boolean> = ref(false)
 
 let id = ''
@@ -43,10 +43,14 @@ if (typeof route.params.id === 'string') {
   id = route.params.id
 }
 
+const initOptions = async () => {
+  initForm()
+}
+
 const initPage = () => {
   if (!id) return
   loading.value = true
-  getArticle(id)
+  getDivision(id)
     .then(res => {
       initialData.value = res.data
     })
@@ -60,9 +64,9 @@ const initPage = () => {
 
 const onSubmit = (form, onFinish) => {
   if (id) {
-    return updateArticle(id, { ...form.value })
+    return updateDivision(id, { ...form.value })
       .then(() => {
-        router.push(articleList)
+        router.push(divisionList)
         notify('updated')
       })
       .catch(() => {
@@ -70,9 +74,9 @@ const onSubmit = (form, onFinish) => {
       })
       .finally(onFinish)
   } else {
-    return insertArticle({ ...form.value })
+    return insertDivision({ ...form.value })
       .then(() => {
-        router.push(articleList)
+        router.push(divisionList)
         notify('inserted')
       })
       .catch(() => {
@@ -84,27 +88,23 @@ const onSubmit = (form, onFinish) => {
 
 onMounted(() => {
   initPage()
+  initOptions()
 })
 
 const formSettings: Ref<FormSetting[]> = ref([])
 const initForm = () => {
   formSettings.value = [
     {
-      key: 'name',
-      label: 'Name',
+      key: 'number',
+      label: 'Number',
       isRequired: true,
       rules: [required]
     },
     {
-      key: 'content',
-      label: 'Content',
+      key: 'name',
+      label: 'Name',
       isRequired: true,
-      type: 'textarea'
-    },
-    {
-      key: 'test',
-      label: 'Test',
-      type: 'date'
+      rules: [required]
     }
   ]
 }

@@ -7,22 +7,15 @@
         </div>
         <hr class="-mx-6 mb-2">
       </template>
-      <div
-        v-if="$slots.search"
-        class="mt-2"
-      >
-        <slot name="search" />
-      </div>
-      <div
-        v-if="$slots.search && $slots.action"
-        class="mt-4"
-      />
-      <div
-        v-if="$slots.action"
-        class="flex justify-between"
-      >
-        <div class="flex justify-center">
-          <slot name="action" />
+
+      <div class="flex justify-between pt-2">
+        <div v-if="$slots.action">
+          <div class="flex justify-center">
+            <slot name="action" />
+          </div>
+        </div>
+        <div v-if="$slots.search && $slots.action">
+          <slot name="search" />
         </div>
       </div>
       <slot />

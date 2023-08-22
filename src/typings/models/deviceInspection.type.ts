@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { BaseModel } from './model.type'
 import { User } from './user.type'
-import { Device } from './device.type'
+import { Device } from './division.type'
 import { Inspection } from './inspection.type'
 
 export class DeviceInspection extends BaseModel {

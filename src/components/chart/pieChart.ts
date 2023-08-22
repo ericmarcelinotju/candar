@@ -44,7 +44,7 @@ export default defineComponent({
     },
     styles: {
       type: Object,
-      default: () => {}
+      default: () => ({})
     },
     plugins: {
       type: Array,

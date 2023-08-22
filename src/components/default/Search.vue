@@ -1,5 +1,5 @@
 <template>
-  <div class="flex">
+  <div class="flex h-full">
     <div
       v-if="hasSearchableColumns"
       class="inset-y-0 left-0 flex items-center"

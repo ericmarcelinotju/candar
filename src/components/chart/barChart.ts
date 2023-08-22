@@ -28,7 +28,7 @@ export default defineComponent({
     },
     data: {
       type: Array,
-      default: () => [[0, 0], [92, 2]]
+      default: () => [[100, 50], [92, 43]]
     },
     dataLabels: {
       type: Array,
@@ -48,7 +48,7 @@ export default defineComponent({
     },
     styles: {
       type: Object,
-      default: () => {}
+      default: () => ({})
     },
     plugins: {
       type: Array,
@@ -57,7 +57,7 @@ export default defineComponent({
   },
   setup (props) {
     const chartData = computed(() => {
-      const backgroundColors = ['#4766CD', '#CD4766']
+      const backgroundColors = ['#CD5B8A', '#CDC25B', '#B8DFFF', '#5BCD9F']
       const datasets = props.data.map((data, i) => ({
         label: props.dataLabels[i],
         backgroundColor: backgroundColors[i],
@@ -71,7 +71,11 @@ export default defineComponent({
 
     const chartOptions = {
       responsive: true,
-      maintainAspectRatio: false
+      maintainAspectRatio: false,
+      scales: {
+        x: { stacked: true },
+        y: { stacked: true }
+      }
     }
 
     return () =>
