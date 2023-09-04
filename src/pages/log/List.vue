@@ -114,7 +114,7 @@ const handleSearch = (params) => {
     type: route.meta.type
   })
     .then(res => {
-      items.value = res.data.logs
+      items.value = res.data.data
       itemsTotal.value = res.data.total
     })
     .finally(() => {

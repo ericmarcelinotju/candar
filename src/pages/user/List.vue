@@ -122,7 +122,7 @@ const handleSearch = (params) => {
       // TODO :: Filter by level
       // const currUser = store.getters['auth/user']
       // items.value = res.data.users.filter(user => user.role.level >= currUser.level)
-      items.value = res.data.users
+      items.value = res.data.data
       itemsTotal.value = res.data.total
     })
     .finally(() => {
@@ -168,7 +168,7 @@ const initSearchOptions = () => {
     getRoles()
       .then(res => {
         const roleColumn = columns.find(column => column.key === 'role_id')
-        roleColumn.options = res.data.roles.map(role => ({ label: role.name, value: role.id }))
+        roleColumn.options = res.data.data.map(role => ({ label: role.name, value: role.id }))
       })
   }
 }

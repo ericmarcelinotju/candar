@@ -2,11 +2,6 @@
 import { BaseModel } from './model.type'
 
 export class Division extends BaseModel {
-  number: string
+  code: string
   name: string
-}
-
-export class DivisionList {
-  total: number
-  divisions: Division[]
 }

@@ -95,8 +95,8 @@ const formSettings: Ref<FormSetting[]> = ref([])
 const initForm = () => {
   formSettings.value = [
     {
-      key: 'number',
-      label: 'Number',
+      key: 'code',
+      label: 'Code',
       isRequired: true,
       rules: [required]
     },

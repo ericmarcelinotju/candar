@@ -6,11 +6,6 @@ export class Setting extends BaseModel {
   value: string
 }
 
-export class SettingList {
-  total: number
-  settings: Setting[]
-}
-
 export class AppSetting {
   smtp_host: string
   smtp_port: string

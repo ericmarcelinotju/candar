@@ -6,8 +6,3 @@ export class Role extends BaseModel {
   level: number
   permissions: Permission[]
 }
-
-export class RoleList {
-  total: number
-  roles: Role[]
-}

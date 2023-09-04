@@ -91,7 +91,7 @@ const handleSearch = (params) => {
   loading.value = true
   getPermission(params)
     .then(res => {
-      items.value = res.data.permissions
+      items.value = res.data.data
       itemsTotal.value = res.data.total
     })
     .finally(() => {

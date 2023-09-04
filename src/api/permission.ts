@@ -1,9 +1,9 @@
 import { serializeQueryParams } from '@/utils'
 import axios from './index'
-import { BaseResponse } from '@/typings/response.type'
-import { Permission, PermissionList } from '@/typings/models/permission.type'
+import { BaseResponse, ListResponse } from '@/typings/response.type'
+import { Permission } from '@/typings/models/permission.type'
 
-const get = (filter?: Permission): Promise<BaseResponse<PermissionList>> => {
+const get = (filter?: Permission): Promise<BaseResponse<ListResponse<Permission>>> => {
   return axios.get(`/permission${serializeQueryParams(filter)}`)
 }
 

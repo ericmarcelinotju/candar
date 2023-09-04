@@ -95,7 +95,7 @@ const handleSearch = (params) => {
   loading.value = true
   getRoles(params)
     .then(res => {
-      items.value = res.data.roles
+      items.value = res.data.data
       itemsTotal.value = res.data.total
     })
     .finally(() => {

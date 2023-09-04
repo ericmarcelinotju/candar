@@ -12,8 +12,3 @@ export class User extends BaseModel {
   role: Role
   role_name: string
 }
-
-export class UserList {
-  total: number
-  users: User[]
-}

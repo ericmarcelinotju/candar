@@ -60,21 +60,28 @@ export const navigations: Navigation[] = [
   {
     name: 'User Access',
     icon: UserIcon,
-    children: [{
-      name: 'User',
-      module: 'USER',
-      href: '/user'
-    },
-    {
-      name: 'Role',
-      module: 'ROLE',
-      href: '/role'
-    },
-    {
-      name: 'Permission',
-      module: 'PERMISSION',
-      href: '/permission'
-    }]
+    children: [
+      {
+        name: 'Division',
+        module: 'DIVISION',
+        href: '/division'
+      },
+      {
+        name: 'User',
+        module: 'USER',
+        href: '/user'
+      },
+      {
+        name: 'Role',
+        module: 'ROLE',
+        href: '/role'
+      },
+      {
+        name: 'Permission',
+        module: 'PERMISSION',
+        href: '/permission'
+      }
+    ]
   }
 ]
 

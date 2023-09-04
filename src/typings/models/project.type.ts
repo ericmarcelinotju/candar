@@ -24,8 +24,3 @@ export class Project extends BaseModel {
   userId: string
   user: User
 }
-
-export class ProjectList {
-  total: number
-  projects: Project[]
-}

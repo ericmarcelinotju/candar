@@ -2,14 +2,9 @@
 import { BaseModel } from './model.type'
 
 export class Client extends BaseModel {
-  number: string
+  code: string
   name: string
   industry: string
   address: string
   coordinate: number[]
-}
-
-export class ClientList {
-  total: number
-  clients: Client[]
 }

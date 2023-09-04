@@ -65,7 +65,7 @@ const handleSearch = (params) => {
   loading.value = true
   getClients(params)
     .then(res => {
-      items.value = res.data.clients
+      items.value = res.data.data
       itemsTotal.value = res.data.total
     })
     .finally(() => {

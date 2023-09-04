@@ -4,3 +4,8 @@ export class BaseResponse<T> {
   data: T;
   status: string;
 }
+
+export class ListResponse<T> {
+  total: number
+  data: T[]
+}

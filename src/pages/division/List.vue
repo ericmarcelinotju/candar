@@ -65,7 +65,7 @@ const handleSearch = (params) => {
   loading.value = true
   getDivisions(params)
     .then(res => {
-      items.value = res.data.divisions
+      items.value = res.data.data
       itemsTotal.value = res.data.total
     })
     .finally(() => {
@@ -114,8 +114,8 @@ const columns = [
     isHidden: true
   },
   {
-    label: 'Number',
-    key: 'number',
+    label: 'Code',
+    key: 'code',
     isSortable: true,
     isSearchable: true
   },

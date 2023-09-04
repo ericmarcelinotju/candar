@@ -5,8 +5,3 @@ export class Permission extends BaseModel {
   method: string
   description: string
 }
-
-export class PermissionList {
-  total: number
-  permissions: Permission[]
-}

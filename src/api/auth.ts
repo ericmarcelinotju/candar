@@ -1,24 +1,23 @@
 import axios from './index'
 import { BaseResponse } from '@/typings/response.type'
-import { DeviceList } from '@/typings/models/division.type'
 
-const login = (data): Promise<BaseResponse<DeviceList>> => {
+const login = (data): Promise<BaseResponse<null>> => {
   return axios.post('/auth/login', data)
 }
 
-const logout = () => {
+const logout = (): Promise<BaseResponse<null>> => {
   return axios.post('/auth/logout')
 }
 
-const register = (data) => {
+const register = (data): Promise<BaseResponse<null>> => {
   return axios.post('/auth/register', data)
 }
 
-const forgotPassword = (data) => {
+const forgotPassword = (data): Promise<BaseResponse<null>> => {
   return axios.post('/forgot-password', data, { timeout: 30000 })
 }
 
-const resetPassword = (data) => {
+const resetPassword = (data): Promise<BaseResponse<null>> => {
   return axios.post('/reset-password', data)
 }
 

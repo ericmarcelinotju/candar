@@ -1,9 +1,9 @@
 import axios from './index'
 import { serializeQueryParams } from '@/utils'
-import { BaseResponse } from '@/typings/response.type'
-import { Log, LogList } from '@/typings/models/log.type'
+import { BaseResponse, ListResponse } from '@/typings/response.type'
+import { Log } from '@/typings/models/log.type'
 
-const get = (filter?: Log): Promise<BaseResponse<LogList>> => {
+const get = (filter?: Log): Promise<BaseResponse<ListResponse<Log>>> => {
   return axios.get(`/log${serializeQueryParams(filter)}`)
 }
 

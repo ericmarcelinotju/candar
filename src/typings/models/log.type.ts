@@ -7,8 +7,3 @@ export class Log extends BaseModel {
   content: string
   type: string
 }
-
-export class LogList {
-  total: number
-  logs: Log[]
-}
