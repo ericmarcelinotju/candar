@@ -1,7 +1,9 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { config } from '@/config'
 import {
-  dashboardRoute, maintenanceRoute, settingRoute,
+  dashboardRoute,
+  maintenanceRoute,
+  settingRoute,
   authRoutes,
   userRoutes,
   roleRoutes,
@@ -9,7 +11,8 @@ import {
   logRoutes,
   divisionRoutes,
   clientRoutes,
-  projectRoutes
+  projectRoutes,
+  errorRoutes
 } from './routes'
 
 import DefaultContainer from '@/components/layout/Container.vue'
@@ -40,7 +43,8 @@ const router = createRouter({
       ],
       beforeEnter: guardAuth
     },
-    ...authRoutes
+    ...authRoutes,
+    ...Object.values(errorRoutes)
   ]
 })
 

@@ -1,24 +1,24 @@
 import axios from 'axios'
 import router from '@/router'
 import stores from '@/stores'
-import { forbiddenRoute } from '@/router/routes'
-import { config } from '@/config'
+import { errorRoutes } from '@/router/routes'
 
 const axiosInstance = axios.create({
-  baseURL: config.apiAddress,
+  baseURL: '/api',
   timeout: 10000,
-  transformResponse: [data => JSON.parse(data).data],
+  transformResponse: [(data) => JSON.parse(data).data],
   withCredentials: true
 })
 
 axiosInstance.interceptors.response.use(
-  response => response,
-  error => {
+  (response) => response,
+  (error) => {
     if (error.response) {
+      console.log(error.response.status)
       if (error.response.status === 401) {
         stores.commit('auth/setLogout')
       } else if (error.response.status === 403) {
-        router.replace({ name: forbiddenRoute.name })
+        router.replace({ name: errorRoutes.forbidden.name })
       }
     }
 

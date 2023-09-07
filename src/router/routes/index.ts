@@ -7,11 +7,13 @@ import { clientCreate, clientEdit, clientList } from './client'
 import { divisionCreate, divisionEdit, divisionList } from './division'
 import { projectCreate, projectEdit, projectList } from './project'
 import { logList } from './log'
+import { forbiddenRoute, notFoundRoute } from './error'
 
 export const dashboardRoute: RouteRecordRaw = {
   path: '/dashboard',
   name: 'dashboard',
-  component: () => import(/* webpackChunkName: 'p-dashboard */ '@/pages/Dashboard.vue'),
+  component: () =>
+    import(/* webpackChunkName: 'p-dashboard */ '@/pages/Dashboard.vue'),
   meta: {
     auth: true,
     title: 'Dashboard'
@@ -21,7 +23,8 @@ export const dashboardRoute: RouteRecordRaw = {
 export const settingRoute: RouteRecordRaw = {
   path: '/setting',
   name: 'setting',
-  component: () => import(/* webpackChunkName: 'p-setting' */ '@/pages/setting/Setting.vue'),
+  component: () =>
+    import(/* webpackChunkName: 'p-setting' */ '@/pages/setting/Setting.vue'),
   meta: {
     auth: true,
     title: 'Setting'
@@ -31,25 +34,12 @@ export const settingRoute: RouteRecordRaw = {
 export const maintenanceRoute: RouteRecordRaw = {
   path: '/maintenance',
   name: 'maintenance',
-  component: () => import(/* webpackChunkName: 'p-maintenance' */ '@/pages/Maintenance.vue'),
+  component: () =>
+    import(/* webpackChunkName: 'p-maintenance' */ '@/pages/Maintenance.vue'),
   meta: {
     auth: true,
     title: 'Maintenance'
   }
-}
-
-export const forbiddenRoute: RouteRecordRaw = {
-  path: '/forbidden',
-  name: 'forbidden',
-  component: () => import(/* webpackChunkName: 'c-forbidden */ '@/pages/error/Forbidden.vue'),
-  meta: { title: 'Forbidden' }
-}
-
-export const notFoundRoute: RouteRecordRaw = {
-  path: '/404',
-  name: 'not-found',
-  component: () => import(/* webpackChunkName: 'c-not-found */ '@/pages/error/NotFound.vue'),
-  meta: { title: 'Not Found' }
 }
 
 export const authRoutes: RouteRecordRaw[] = [
@@ -97,4 +87,9 @@ export const projectRoutes: Record<string, RouteRecordRaw> = {
   list: projectList,
   create: projectCreate,
   edit: projectEdit
+}
+
+export const errorRoutes: Record<string, RouteRecordRaw> = {
+  forbidden: forbiddenRoute,
+  notFound: notFoundRoute
 }

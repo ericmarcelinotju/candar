@@ -21,10 +21,4 @@ const resetPassword = (data): Promise<BaseResponse<null>> => {
   return axios.post('/reset-password', data)
 }
 
-export {
-  login,
-  logout,
-  register,
-  forgotPassword,
-  resetPassword
-}
+export { login, logout, register, forgotPassword, resetPassword }

@@ -12,4 +12,5 @@ export class FormSetting {
   options?: Option[] | BaseModel[]
   type?: string
   isMultiple?: boolean
+  col?: number
 }

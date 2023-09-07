@@ -1,9 +1,6 @@
 <template>
   <DefaultPage :title="$t('app.columns.client')">
-    <div
-      v-if="loading"
-      class="w-full h-full flex justify-center items-center"
-    >
+    <div v-if="loading" class="w-full h-full flex justify-center items-center">
       <Loading class="h-12 w-12" />
     </div>
     <DefaultCreateEdit
@@ -51,7 +48,7 @@ const initPage = () => {
   if (!id) return
   loading.value = true
   getClient(id)
-    .then(res => {
+    .then((res) => {
       initialData.value = res.data
     })
     .catch(() => {
@@ -63,8 +60,12 @@ const initPage = () => {
 }
 
 const onSubmit = (form, onFinish) => {
+  const payload = {
+    ...form.value,
+    coordinates: [form.coord_x, form.coord_y]
+  }
   if (id) {
-    return updateClient(id, { ...form.value })
+    return updateClient(id, payload)
       .then(() => {
         router.push(clientList)
         notify('updated')
@@ -74,7 +75,7 @@ const onSubmit = (form, onFinish) => {
       })
       .finally(onFinish)
   } else {
-    return insertClient({ ...form.value })
+    return insertClient(payload)
       .then(() => {
         router.push(clientList)
         notify('inserted')
@@ -107,10 +108,11 @@ const initForm = () => {
       rules: [required]
     },
     {
-      key: 'type',
+      key: 'company_type',
       label: 'Company Type',
       isRequired: true,
       type: 'dropdown',
+      col: 6,
       options: [
         {
           label: 'Technology',
@@ -135,6 +137,7 @@ const initForm = () => {
       label: 'Purchase Type',
       isRequired: true,
       type: 'dropdown',
+      col: 6,
       options: [
         {
           label: 'Standard',
@@ -155,30 +158,69 @@ const initForm = () => {
       ]
     },
     {
-      key: 'address',
-      label: 'Address',
-      type: 'textarea'
-    },
-    {
-      key: 'coordinates',
-      label: 'Coordinate'
-    },
-    {
       key: 'credit',
       label: 'Credit',
       type: 'number'
     },
     {
       key: 'phone_number',
-      label: 'Phone Number'
+      label: 'Phone Number',
+      col: 6
     },
     {
       key: 'email',
-      label: 'Email'
+      label: 'Email',
+      col: 6
     },
     {
       key: 'website',
       label: 'Website'
+    },
+    {
+      key: 'address',
+      label: 'Address',
+      type: 'label'
+    },
+    {
+      key: 'address',
+      label: 'Address',
+      type: 'textarea'
+    },
+    {
+      key: 'province',
+      label: 'Province',
+      col: 6
+    },
+    {
+      key: 'city',
+      label: 'City',
+      col: 6
+    },
+    {
+      key: 'district',
+      label: 'District',
+      col: 6
+    },
+    {
+      key: 'sub_district',
+      label: 'Sub District',
+      col: 6
+    },
+    {
+      key: 'postal_code',
+      label: 'Postal Code'
+    },
+    {
+      key: 'coord_x',
+      label: 'Coordinate X',
+      type: 'number',
+      col: 6
+    },
+    {
+      key: 'coord_y',
+      label: 'Coordinate Y',
+      type: 'number',
+      col: 6
     }
   ]
 }

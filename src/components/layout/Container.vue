@@ -1,17 +1,12 @@
 <template>
-  <div
-    id="app-body"
-    class="min-h-full"
-  >
-    <div class="fixed w-full">
-      <DefaultHeader
-        id="header"
-        @about="handleAbout"
-        @logout="handleLogout"
-        @notification="handleNotification"
-        @open-sidebar="handleOpenSidebar"
-      />
-    </div>
+  <div id="app-body" class="min-h-full">
+    <DefaultHeader
+      id="header"
+      @about="handleAbout"
+      @logout="handleLogout"
+      @notification="handleNotification"
+      @open-sidebar="handleOpenSidebar"
+    />
     <DefaultSidebar
       :is-collapse="isSidebarCollapse"
       :is-open="isSidebarOpen"
@@ -19,15 +14,12 @@
       @collapse="toogleCollapseSidebar"
     />
     <div
-      class="lg:pl-72 h-screen bg-grey-soft flex flex-col flex-1 pt-20 transition-all ease-out"
+      class="lg:pl-72 h-screen bg-grey-soft flex flex-col flex-1 pb-20 transition-all ease-out"
       :class="{ 'lg:pl-24': isSidebarCollapse }"
     >
       <main class="flex-1 overflow-y-scroll">
         <router-view v-slot="{ Component }">
-          <transition
-            mode="out-in"
-            name="fade"
-          >
+          <transition mode="out-in" name="fade">
             <component :is="Component" />
           </transition>
         </router-view>
@@ -93,6 +85,6 @@ const handleNotification = (notification) => {
 }
 
 const handleAbout = () => {
-  window.open(config.aboutUrl, '_blank').focus()
+  // window.open(config.aboutUrl, '_blank').focus()
 }
 </script>

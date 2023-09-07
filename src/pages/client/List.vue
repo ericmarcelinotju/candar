@@ -19,7 +19,7 @@
         @click="handleCreate"
       >
         <PlusIcon class="w-4 h-4 mr-1" />
-        {{ $t("app.create") }}
+        {{ $t('app.create') }}
       </button>
     </template>
     <template #search>
@@ -64,7 +64,7 @@ const handleSearch = (params) => {
   stateParams = { ...params }
   loading.value = true
   getClients(params)
-    .then(res => {
+    .then((res) => {
       items.value = res.data.data
       itemsTotal.value = res.data.total
     })
@@ -126,8 +126,8 @@ const columns = [
     isSearchable: true
   },
   {
-    label: 'Industry',
-    key: 'industry',
+    label: 'Company Type',
+    key: 'company_type',
     isSortable: true,
     isSearchable: true
   }
@@ -136,5 +136,4 @@ const columns = [
 const hasPermission = (method, module = 'DIVISION') => {
   return store.getters['auth/hasPermission'](module, method)
 }
-
 </script>

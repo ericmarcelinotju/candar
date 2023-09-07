@@ -1,32 +1,21 @@
 <template>
-  <div
-    class="relative z-10 flex-shrink-0 flex h-20 bg-info shadow-lg border-none"
-  >
+  <div class="flex-shrink-0 flex h-20 bg-info shadow-lg border-none">
     <button
       class="px-6 text-grey-dark focus:outline-none focus:ring-1 focus:ring-inset focus:ring-white lg:hidden hover:bg-secondary-dark focus:bg-secondary-dark hover:text-white"
       type="button"
       @click="openSidebar"
     >
       <span class="sr-only">Open sidebar</span>
-      <MenuAlt1Icon
-        aria-hidden="true"
-        class="h-6 w-6"
-      />
+      <MenuAlt1Icon aria-hidden="true" class="h-6 w-6" />
     </button>
     <!-- Search bar -->
     <div class="flex-1 px-4 flex justify-between sm:px-6 lg:mx-auto lg:px-6">
       <div class="flex-1 flex items-center" />
       <div class="ml-4 flex items-center md:ml-6">
-        <Menu
-          as="div"
-          class="ml-3 relative"
-        >
+        <Menu as="div" class="ml-3 relative">
           <div>
             <MenuButton class="menu-button">
-              <BellIcon
-                aria-hidden="true"
-                class="h-6 w-6"
-              />
+              <BellIcon aria-hidden="true" class="h-6 w-6" />
               <div
                 v-if="notifications.length > 0"
                 class="absolute top-0 right-0 w-2 h-2 rounded-full bg-danger"
@@ -47,7 +36,8 @@
               <MenuItem v-if="notifications.length <= 0">
                 <span
                   class="block px-4 py-2 text-sm text-grey-dark cursor-pointer"
-                >{{ $t("app.components.notification.empty") }}</span>
+                  >{{ $t('app.components.notification.empty') }}</span
+                >
               </MenuItem>
               <MenuItem
                 v-for="notification in notifications"
@@ -58,7 +48,7 @@
                 <a
                   :class="[
                     active ? 'bg-white' : '',
-                    'block px-4 py-2 text-grey cursor-pointer',
+                    'block px-4 py-2 text-grey cursor-pointer'
                   ]"
                   @click="handleNotification(notification)"
                 >
@@ -77,10 +67,7 @@
         </Menu>
 
         <!-- Profile dropdown -->
-        <Menu
-          as="div"
-          class="ml-3 relative"
-        >
+        <Menu as="div" class="ml-3 relative">
           <div>
             <MenuButton class="menu-button">
               <UserIcon class="h-6 w-6" />
@@ -105,7 +92,7 @@
                 <a
                   :class="[
                     active ? 'bg-info-dark' : '',
-                    'block px-4 py-2 text-grey-dark',
+                    'block px-4 py-2 text-grey-dark'
                   ]"
                 >
                   <div class="mb-2">
@@ -114,17 +101,17 @@
                   <div>{{ user.username }}</div>
                 </a>
               </MenuItem>
-              <hr>
+              <hr />
               <MenuItem v-slot="{ active }">
                 <a
                   :class="[
                     active ? 'bg-info-dark' : '',
-                    'block px-4 py-2 text-grey-dark cursor-pointer flex items-center',
+                    'block px-4 py-2 text-grey-dark cursor-pointer flex items-center'
                   ]"
                   @click="handleLogout"
                 >
                   <LogoutIcon class="h-6 w-6 rounded-full mr-4" />
-                  <span>{{ $t("global.logout") }}</span>
+                  <span>{{ $t('global.logout') }}</span>
                 </a>
               </MenuItem>
             </MenuItems>
