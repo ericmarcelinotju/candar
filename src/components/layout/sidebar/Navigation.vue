@@ -114,7 +114,6 @@ const hasPermission = (module) => {
 
 const hasAnyPermission = (children) => {
   for (const item of children) {
-    console.log(item.module)
     if (store.getters['auth/hasPermission'](item.module, 'GET')) {
       return true
     }

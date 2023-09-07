@@ -13,34 +13,28 @@
       @submit="onSubmit"
     />
   </DefaultPage>
-  <AddressList :items="addresses" />
-  <ContactList :items="contacts" />
 </template>
 
 <script setup lang="ts">
-import { Ref, computed, onMounted, ref } from 'vue'
+import { Ref, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
-import AddressList from './address/List.vue'
-import ContactList from './contact/List.vue'
 import {
-  detail as getClient,
-  insert as insertClient,
-  update as updateClient
-} from '@/api/client'
+  detail as getClientContact,
+  insert as insertClientContact,
+  update as updateClientContact
+} from '@/api/client-contact'
 import { required } from '@/utils/validation'
 import { FormSetting } from '@/typings/form.type'
-import { Client } from '@/typings/models/client.type'
-import { clientList } from '@/router/routes/client'
-import { companyTypes, purchaseTypes } from './options'
+import { ClientContact } from '@/typings/models/client.type'
 
 const route = useRoute()
 const router = useRouter()
 
-const { notify } = useNotify('client')
+const { notify } = useNotify('address')
 
-const initialData: Ref<Client> = ref()
+const initialData: Ref<ClientContact> = ref()
 const loading: Ref<boolean> = ref(false)
 
 let id = ''
@@ -55,7 +49,7 @@ const initOptions = async () => {
 const initPage = () => {
   if (!id) return
   loading.value = true
-  getClient(id)
+  getClientContact(id)
     .then((res) => {
       initialData.value = res.data
     })
@@ -73,9 +67,9 @@ const onSubmit = (form, onFinish) => {
     coordinates: [form.coord_x, form.coord_y]
   }
   if (id) {
-    return updateClient(id, payload)
+    return updateClientContact(id, payload)
       .then(() => {
-        router.push(clientList)
+        router.back()
         notify('updated')
       })
       .catch(() => {
@@ -83,9 +77,9 @@ const onSubmit = (form, onFinish) => {
       })
       .finally(onFinish)
   } else {
-    return insertClient(payload)
+    return insertClientContact(payload)
       .then(() => {
-        router.push(clientList)
+        router.back()
         notify('inserted')
       })
       .catch(() => {
@@ -104,37 +98,14 @@ const formSettings: Ref<FormSetting[]> = ref([])
 const initForm = () => {
   formSettings.value = [
     {
-      key: 'code',
-      label: 'Code',
-      isRequired: true,
-      rules: [required]
-    },
-    {
       key: 'name',
       label: 'Name',
       isRequired: true,
       rules: [required]
     },
     {
-      key: 'company_type',
-      label: 'Company Type',
-      isRequired: true,
-      type: 'dropdown',
-      col: 6,
-      options: companyTypes
-    },
-    {
-      key: 'purchase_type',
-      label: 'Purchase Type',
-      isRequired: true,
-      type: 'dropdown',
-      col: 6,
-      options: purchaseTypes
-    },
-    {
-      key: 'credit',
-      label: 'Credit',
-      type: 'number'
+      key: 'division',
+      label: 'Division'
     },
     {
       key: 'phone_number',
@@ -145,15 +116,8 @@ const initForm = () => {
       key: 'email',
       label: 'Email',
       col: 6
-    },
-    {
-      key: 'website',
-      label: 'Website'
     }
   ]
 }
 initForm()
-
-const addresses = computed(() => initialData.value ? initialData.value.addresses : [])
-const contacts = computed(() => initialData.value ? initialData.value.contacts : [])
 </script>
