@@ -5,14 +5,11 @@ import {
   authRoutes,
   userRoutes,
   roleRoutes,
-  locationRoutes,
   permissionRoutes,
   logRoutes,
-  inspectionRoutes,
   divisionRoutes,
   clientRoutes,
-  projectRoutes,
-  workRoute
+  projectRoutes
 } from './routes'
 
 import DefaultContainer from '@/components/layout/Container.vue'
@@ -31,19 +28,14 @@ const router = createRouter({
         maintenanceRoute,
         settingRoute,
 
-        workRoute,
-
         ...Object.values(clientRoutes),
         ...Object.values(divisionRoutes),
-        ...Object.values(locationRoutes),
         ...Object.values(projectRoutes),
 
         ...Object.values(userRoutes),
         ...Object.values(roleRoutes),
         ...Object.values(permissionRoutes),
-        ...Object.values(inspectionRoutes),
         ...Object.values(logRoutes),
-        ...Object.values(locationRoutes),
         ...Object.values(roleRoutes)
       ],
       beforeEnter: guardAuth

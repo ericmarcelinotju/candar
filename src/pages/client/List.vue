@@ -114,8 +114,8 @@ const columns = [
     isHidden: true
   },
   {
-    label: 'Number',
-    key: 'number',
+    label: 'Code',
+    key: 'code',
     isSortable: true,
     isSearchable: true
   },

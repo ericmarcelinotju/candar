@@ -5,8 +5,6 @@ import { roleCreate, roleEdit, roleList } from './role'
 import { permissionCreate, permissionEdit, permissionList } from './permission'
 import { clientCreate, clientEdit, clientList } from './client'
 import { divisionCreate, divisionEdit, divisionList } from './division'
-import { inspectionCreate, inspectionDetail, inspectionEdit, inspectionList } from './inspection'
-import { locationCreate, locationEdit, locationList } from './location'
 import { projectCreate, projectEdit, projectList } from './project'
 import { logList } from './log'
 
@@ -73,23 +71,6 @@ export const roleRoutes: Record<string, RouteRecordRaw> = {
   edit: roleEdit
 }
 
-export const inspectionRoutes: Record<string, RouteRecordRaw> = {
-  list: inspectionList,
-  create: inspectionCreate,
-  edit: inspectionEdit,
-  detail: inspectionDetail
-}
-
-export const workRoute = {
-  path: '/work/:id',
-  name: 'work',
-  component: () => import(/* webpackChunkName: 'p-work' */ '@/pages/work/Work.vue'),
-  meta: {
-    auth: true,
-    title: 'Start Inspection'
-  }
-}
-
 export const permissionRoutes: Record<string, RouteRecordRaw> = {
   list: permissionList,
   create: permissionCreate,
@@ -110,12 +91,6 @@ export const clientRoutes: Record<string, RouteRecordRaw> = {
   list: clientList,
   create: clientCreate,
   edit: clientEdit
-}
-
-export const locationRoutes: Record<string, RouteRecordRaw> = {
-  list: locationList,
-  create: locationCreate,
-  edit: locationEdit
 }
 
 export const projectRoutes: Record<string, RouteRecordRaw> = {

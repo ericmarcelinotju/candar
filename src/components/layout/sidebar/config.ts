@@ -29,12 +29,12 @@ export const navigations: Navigation[] = [
       href: '/product'
     },
     {
-      name: 'Product Variant',
+      name: 'Variant',
       module: 'PRODUCT',
       href: '/product-variant'
     },
     {
-      name: 'Product Category',
+      name: 'Category',
       module: 'PRODUCT',
       href: '/product-category'
     }]

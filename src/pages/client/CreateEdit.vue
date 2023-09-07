@@ -95,8 +95,8 @@ const formSettings: Ref<FormSetting[]> = ref([])
 const initForm = () => {
   formSettings.value = [
     {
-      key: 'number',
-      label: 'Number',
+      key: 'code',
+      label: 'Code',
       isRequired: true,
       rules: [required]
     },
@@ -107,13 +107,13 @@ const initForm = () => {
       rules: [required]
     },
     {
-      key: 'industry',
-      label: 'Industry',
+      key: 'type',
+      label: 'Company Type',
       isRequired: true,
       type: 'dropdown',
       options: [
         {
-          label: 'Teknologi',
+          label: 'Technology',
           value: 'technology'
         },
         {
@@ -131,13 +131,54 @@ const initForm = () => {
       ]
     },
     {
+      key: 'purchase_type',
+      label: 'Purchase Type',
+      isRequired: true,
+      type: 'dropdown',
+      options: [
+        {
+          label: 'Standard',
+          value: 'standard'
+        },
+        {
+          label: 'Planned',
+          value: 'planned'
+        },
+        {
+          label: 'Blanket',
+          value: 'blanket'
+        },
+        {
+          label: 'Contract',
+          value: 'contract'
+        }
+      ]
+    },
+    {
       key: 'address',
       label: 'Address',
       type: 'textarea'
     },
     {
-      key: 'coordinate',
+      key: 'coordinates',
       label: 'Coordinate'
+    },
+    {
+      key: 'credit',
+      label: 'Credit',
+      type: 'number'
+    },
+    {
+      key: 'phone_number',
+      label: 'Phone Number'
+    },
+    {
+      key: 'email',
+      label: 'Email'
+    },
+    {
+      key: 'website',
+      label: 'Website'
     }
   ]
 }
