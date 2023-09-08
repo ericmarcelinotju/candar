@@ -5,7 +5,10 @@
     @submit.prevent="onSubmit"
   >
     <div class="grid grid-cols-12 gap-4">
-      <template v-for="(row, i) in formSettings" :key="`row-${i}`">
+      <template
+        v-for="(row, i) in formSettings"
+        :key="`row-${i}`"
+      >
         <div
           class="default-field"
           :class="[
@@ -16,18 +19,28 @@
           ]"
         >
           <template v-if="$slots[row.key]">
-            <slot :form="form" :form-setting="row" :name="row.key" />
+            <slot
+              :form="form"
+              :form-setting="row"
+              :name="row.key"
+            />
           </template>
           <template v-else>
             <template v-if="row.type === 'label'">
-              <label class="default-label !-mb-1" :for="row.key">
-                <hr class="mr-3 border border-2 w-full" />
+              <label
+                class="default-label !-mb-1"
+                :for="row.key"
+              >
+                <hr class="mr-3 border border-2 w-full">
                 {{ row.label }}
-                <hr class="ml-3 border border-2 w-full" />
+                <hr class="ml-3 border border-2 w-full">
               </label>
             </template>
             <template v-else>
-              <label class="default-label" :for="row.key">
+              <label
+                class="default-label"
+                :for="row.key"
+              >
                 {{ row.label }}<sup v-if="row.isRequired">*</sup>
               </label>
               <Input
@@ -38,7 +51,10 @@
                 :required="row.isRequired"
                 :type="row.type"
               />
-              <span v-show="isDirty" class="default-input-message is-danger">
+              <span
+                v-show="isDirty"
+                class="default-input-message is-danger"
+              >
                 {{ validation[row.key]?.message }}
               </span>
             </template>
@@ -47,10 +63,16 @@
       </template>
     </div>
     <div class="create-edit-submit-container">
-      <button class="default-button mr-4" type="reset">
+      <button
+        class="default-button mr-4"
+        type="reset"
+      >
         {{ $t('app.reset') }}
       </button>
-      <button class="success-button" type="submit">
+      <button
+        class="success-button"
+        type="submit"
+      >
         <Loading v-if="loading" />
         {{ $t('app.save') }}
       </button>

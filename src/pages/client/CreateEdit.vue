@@ -1,20 +1,22 @@
 <template>
-  <DefaultPage :title="$t('app.columns.client')">
-    <div
-      v-if="loading"
-      class="w-full h-full flex justify-center items-center"
-    >
-      <Loading class="h-12 w-12" />
-    </div>
-    <DefaultCreateEdit
-      v-else
-      :form-settings="formSettings"
-      :initial-data="initialData"
-      @submit="onSubmit"
-    />
-  </DefaultPage>
-  <AddressList :items="addresses" />
-  <ContactList :items="contacts" />
+  <div>
+    <DefaultPage :title="$t('app.columns.client')">
+      <div
+        v-if="loading"
+        class="w-full h-full flex justify-center items-center"
+      >
+        <Loading class="h-12 w-12" />
+      </div>
+      <DefaultCreateEdit
+        v-else
+        :form-settings="formSettings"
+        :initial-data="initialData"
+        @submit="onSubmit"
+      />
+    </DefaultPage>
+    <AddressList :items="addresses" />
+    <ContactList :items="contacts" />
+  </div>
 </template>
 
 <script setup lang="ts">

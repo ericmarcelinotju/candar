@@ -1,5 +1,8 @@
 <template>
-  <div id="app-body" class="min-h-full">
+  <div
+    id="app-body"
+    class="min-h-full"
+  >
     <DefaultHeader
       id="header"
       @about="handleAbout"
@@ -19,7 +22,10 @@
     >
       <main class="flex-1 overflow-y-scroll">
         <router-view v-slot="{ Component }">
-          <transition mode="out-in" name="fade">
+          <transition
+            mode="out-in"
+            name="fade"
+          >
             <component :is="Component" />
           </transition>
         </router-view>
