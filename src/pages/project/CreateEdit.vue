@@ -27,16 +27,20 @@ import {
   update as updateProject
 } from '@/api/project'
 import { get as getClient } from '@/api/client'
+import { get as getUser } from '@/api/user'
 import { required } from '@/utils/validation'
 import { FormSetting } from '@/typings/form.type'
 import { Client } from '@/typings/models/client.type'
 import { Project } from '@/typings/models/project.type'
 import { projectList } from '@/router/routes/project'
 import { Option } from '@/typings/option.type'
+import { User } from '@/typings/models/user.type'
 
 const route = useRoute()
 const router = useRouter()
 const store = useStore()
+
+const currUser = store.getters['auth/user']
 
 const { notify } = useNotify('project')
 
@@ -51,7 +55,19 @@ if (typeof route.params.id === 'string') {
 const clients: Ref<Client[]> = ref([])
 const clientOptions: Ref<Option[]> = computed(() => clients.value.map(client => ({ label: client.name, value: client.id })))
 
+const users: Ref<User[]> = ref([])
+const userOptions: Ref<Option[]> = computed(() => users.value.map(user => ({ label: currUser.username === user.username ? 'Me' : user.username, value: user.id })))
+
 const initPage = () => {
+  if (!hasPermission('GET', 'CLIENT')) {
+    // Forbidden
+  }
+  Promise.all([getClient(), getUser()])
+    .then((res) => {
+      clients.value = res[0].data.data
+      users.value = res[1].data.data
+      initForm()
+    })
   if (!id) return
   loading.value = true
   getProject(id)
@@ -64,13 +80,6 @@ const initPage = () => {
     .finally(() => {
       loading.value = false
     })
-  if (hasPermission('GET', 'CLIENT')) {
-    getClient()
-      .then(res => {
-        clients.value = res.data.clients
-        initForm()
-      })
-  }
 }
 
 const onSubmit = (form, onFinish) => {
@@ -123,6 +132,8 @@ const initForm = () => {
     {
       key: 'source',
       label: 'Source',
+      isRequired: true,
+      type: 'dropdown',
       options: [
         {
           label: 'Call',
@@ -160,6 +171,13 @@ const initForm = () => {
       isRequired: true,
       type: 'dropdown',
       options: clientOptions.value
+    },
+    {
+      key: 'user_id',
+      label: 'Assign To',
+      isRequired: true,
+      type: 'dropdown',
+      options: userOptions.value
     }
   ]
 }
