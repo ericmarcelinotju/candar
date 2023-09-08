@@ -1,5 +1,5 @@
 <template>
-  <DefaultPage :title="$t('app.columns.client')">
+  <DefaultPage :title="$t('app.columns.clientContact')">
     <div
       v-if="loading"
       class="w-full h-full flex justify-center items-center"

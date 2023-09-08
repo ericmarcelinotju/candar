@@ -45,7 +45,7 @@ import DefaultTable from '@/components/default/Table.vue'
 import { del as deleteClient } from '@/api/client-address'
 import { useNotify } from '@/composables/use-notify'
 import { ClientContact } from '@/typings/models/client.type'
-import { clientCreate, clientEdit } from '@/router/routes/client'
+import { clientContactCreate, clientContactEdit } from '@/router/routes/client'
 
 interface Props {
   items: ClientContact[]
@@ -62,11 +62,11 @@ const loading = ref(false)
 const itemsTotal = computed(() => props.items.length)
 
 const handleCreate = () => {
-  router.push(clientCreate)
+  router.push(clientContactCreate)
 }
 
 const handleEdit = ({ id }) => {
-  router.push({ ...clientEdit, params: { id } })
+  router.push({ ...clientContactEdit, params: { id } })
 }
 
 // Delete client

@@ -1,5 +1,5 @@
 <template>
-  <DefaultPage :title="$t('app.columns.client')">
+  <DefaultPage :title="$t('app.columns.clientAddress')">
     <div
       v-if="loading"
       class="w-full h-full flex justify-center items-center"
@@ -121,17 +121,17 @@ const initForm = () => {
     {
       key: 'district',
       label: 'District',
-      col: 6
+      col: 4
     },
     {
       key: 'sub_district',
       label: 'Sub District',
-      col: 6
+      col: 4
     },
     {
       key: 'postal_code',
       label: 'Postal Code',
-      col: 6
+      col: 4
     },
     {
       key: 'coordinates',

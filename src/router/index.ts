@@ -12,7 +12,9 @@ import {
   divisionRoutes,
   clientRoutes,
   projectRoutes,
-  errorRoutes
+  errorRoutes,
+  clientAddressRoutes,
+  clientContactRoutes
 } from './routes'
 
 import DefaultContainer from '@/components/layout/Container.vue'
@@ -32,6 +34,9 @@ const router = createRouter({
         settingRoute,
 
         ...Object.values(clientRoutes),
+        ...Object.values(clientAddressRoutes),
+        ...Object.values(clientContactRoutes),
+
         ...Object.values(divisionRoutes),
         ...Object.values(projectRoutes),
 

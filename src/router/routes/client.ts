@@ -29,3 +29,47 @@ export const clientEdit = {
     title: 'Client Edit'
   }
 }
+
+const ClientAddressCreateEdit = () => import(/* webpackChunkName: 'p-client-address-create-edit' */ '@/pages/client/address/CreateEdit.vue')
+
+export const clientAddressCreate = {
+  path: '/client/address/create',
+  name: 'client-address-create',
+  component: ClientAddressCreateEdit,
+  meta: {
+    auth: true,
+    title: 'Client Address Create'
+  }
+}
+
+export const clientAddressEdit = {
+  path: '/client/address/edit/:id',
+  name: 'client-address-edit',
+  component: ClientAddressCreateEdit,
+  meta: {
+    auth: true,
+    title: 'Client Address Edit'
+  }
+}
+
+const ClientContactCreateEdit = () => import(/* webpackChunkName: 'p-client-contact-create-edit' */ '@/pages/client/contact/CreateEdit.vue')
+
+export const clientContactCreate = {
+  path: '/client/contact/create',
+  name: 'client-contact-create',
+  component: ClientContactCreateEdit,
+  meta: {
+    auth: true,
+    title: 'Client Contact Create'
+  }
+}
+
+export const clientContactEdit = {
+  path: '/client/contact/edit/:id',
+  name: 'client-contact-edit',
+  component: ClientContactCreateEdit,
+  meta: {
+    auth: true,
+    title: 'Client Contact Edit'
+  }
+}

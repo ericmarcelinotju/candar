@@ -3,7 +3,7 @@ import { forgotPassword, login, logout, resetPassword } from './auth'
 import { userCreate, userEdit, userList } from './user'
 import { roleCreate, roleEdit, roleList } from './role'
 import { permissionCreate, permissionEdit, permissionList } from './permission'
-import { clientCreate, clientEdit, clientList } from './client'
+import { clientAddressCreate, clientAddressEdit, clientContactCreate, clientContactEdit, clientCreate, clientEdit, clientList } from './client'
 import { divisionCreate, divisionEdit, divisionList } from './division'
 import { projectCreate, projectEdit, projectList } from './project'
 import { logList } from './log'
@@ -81,6 +81,16 @@ export const clientRoutes: Record<string, RouteRecordRaw> = {
   list: clientList,
   create: clientCreate,
   edit: clientEdit
+}
+
+export const clientAddressRoutes: Record<string, RouteRecordRaw> = {
+  create: clientAddressCreate,
+  edit: clientAddressEdit
+}
+
+export const clientContactRoutes: Record<string, RouteRecordRaw> = {
+  create: clientContactCreate,
+  edit: clientContactEdit
 }
 
 export const projectRoutes: Record<string, RouteRecordRaw> = {

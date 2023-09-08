@@ -62,14 +62,14 @@ export const navigations: Navigation[] = [
     icon: UserIcon,
     children: [
       {
-        name: 'Division',
-        module: 'DIVISION',
-        href: '/division'
-      },
-      {
         name: 'User',
         module: 'USER',
         href: '/user'
+      },
+      {
+        name: 'Division',
+        module: 'DIVISION',
+        href: '/division'
       },
       {
         name: 'Role',

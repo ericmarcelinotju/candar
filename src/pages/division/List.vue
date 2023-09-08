@@ -66,7 +66,7 @@ const handleSearch = (params) => {
   getDivisions(params)
     .then(res => {
       items.value = res.data.data
-      itemsTotal.value = res.data.total
+      itemsTotal.value = res.data.total_item
     })
     .finally(() => {
       loading.value = false
