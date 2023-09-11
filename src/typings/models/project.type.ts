@@ -1,26 +1,17 @@
 /* eslint-disable camelcase */
+import { Client } from './client.type'
 import { BaseModel } from './model.type'
 import { User } from './user.type'
-
-export class ProjectForm {
-  id: string
-  number: string
-  name: string
-  status: 'cold_call'
-
-  userId: string
-  user: User
-
-  // customerId: string
-  // customer: Customer
-}
 
 export class Project extends BaseModel {
   id: string
   number: string
   name: string
-  status: 'cold_call'
+  status: 'initiate' | 'qualification' | 'lead' | 'quotation'
 
   userId: string
   user: User
+
+  clientId: string
+  client: Client
 }

@@ -1,9 +1,6 @@
 <template>
   <DefaultPage :title="$t('app.columns.project')">
-    <div
-      v-if="loading"
-      class="w-full h-full flex justify-center items-center"
-    >
+    <div v-if="loading" class="w-full h-full flex justify-center items-center">
       <Loading class="h-12 w-12" />
     </div>
     <DefaultCreateEdit
@@ -35,6 +32,7 @@ import { Project } from '@/typings/models/project.type'
 import { projectList } from '@/router/routes/project'
 import { Option } from '@/typings/option.type'
 import { User } from '@/typings/models/user.type'
+import { projectSources, projectStatuses } from './options'
 
 const route = useRoute()
 const router = useRouter()
@@ -44,7 +42,9 @@ const currUser = store.getters['auth/user']
 
 const { notify } = useNotify('project')
 
-const initialData: Ref<Project> = ref()
+const initialData: Ref<Project> = ref(new Project())
+initialData.value.status = 'initiate'
+
 const loading: Ref<boolean> = ref(false)
 
 let id = ''
@@ -53,25 +53,31 @@ if (typeof route.params.id === 'string') {
 }
 
 const clients: Ref<Client[]> = ref([])
-const clientOptions: Ref<Option[]> = computed(() => clients.value.map(client => ({ label: client.name, value: client.id })))
+const clientOptions: Ref<Option[]> = computed(() =>
+  clients.value.map((client) => ({ label: client.name, value: client.id }))
+)
 
 const users: Ref<User[]> = ref([])
-const userOptions: Ref<Option[]> = computed(() => users.value.map(user => ({ label: currUser.username === user.username ? 'Me' : user.username, value: user.id })))
+const userOptions: Ref<Option[]> = computed(() =>
+  users.value.map((user) => ({
+    label: currUser.username === user.username ? 'Me' : user.username,
+    value: user.id
+  }))
+)
 
 const initPage = () => {
   if (!hasPermission('GET', 'CLIENT')) {
     // Forbidden
   }
-  Promise.all([getClient(), getUser()])
-    .then((res) => {
-      clients.value = res[0].data.data
-      users.value = res[1].data.data
-      initForm()
-    })
+  Promise.all([getClient(), getUser()]).then((res) => {
+    clients.value = res[0].data.data
+    users.value = res[1].data.data
+    initForm()
+  })
   if (!id) return
   loading.value = true
   getProject(id)
-    .then(res => {
+    .then((res) => {
       initialData.value = res.data
     })
     .catch(() => {
@@ -130,40 +136,23 @@ const initForm = () => {
       rules: [required]
     },
     {
+      key: 'description',
+      label: 'Description',
+      type: 'textarea'
+    },
+    {
       key: 'source',
       label: 'Source',
       isRequired: true,
       type: 'dropdown',
-      options: [
-        {
-          label: 'Call',
-          value: 'Call'
-        },
-        {
-          label: 'Advertisement',
-          value: 'Advertisement'
-        },
-        {
-          label: 'Referal',
-          value: 'Referal'
-        },
-        {
-          label: 'Partner',
-          value: 'Partner'
-        },
-        {
-          label: 'Public Relations',
-          value: 'Public Relations'
-        },
-        {
-          label: 'Web',
-          value: 'Web'
-        },
-        {
-          label: 'Other',
-          value: 'Other'
-        }
-      ]
+      options: projectSources
+    },
+    {
+      key: 'status',
+      label: 'Status',
+      isRequired: true,
+      type: 'dropdown',
+      options: projectStatuses
     },
     {
       key: 'client_id',

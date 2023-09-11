@@ -1,14 +1,18 @@
 export const projectList = {
   path: '/project',
   name: 'project',
-  component: () => import(/* webpackChunkName: 'p-project-list' */ '@/pages/project/List.vue'),
+  component: () =>
+    import(/* webpackChunkName: 'p-project-list' */ '@/pages/project/List.vue'),
   meta: {
     auth: true,
-    title: 'project'
+    title: 'Project'
   }
 }
 
-const projectCreateEdit = () => import(/* webpackChunkName: 'p-project-create-edit' */ '@/pages/project/CreateEdit.vue')
+const projectCreateEdit = () =>
+  import(
+    /* webpackChunkName: 'p-project-create-edit' */ '@/pages/project/CreateEdit.vue'
+  )
 
 export const projectCreate = {
   path: '/project/create',
@@ -16,7 +20,7 @@ export const projectCreate = {
   component: projectCreateEdit,
   meta: {
     auth: true,
-    title: 'project Create'
+    title: 'Project Create'
   }
 }
 
@@ -26,6 +30,6 @@ export const projectEdit = {
   component: projectCreateEdit,
   meta: {
     auth: true,
-    title: 'project Edit'
+    title: 'Project Edit'
   }
 }

@@ -18,11 +18,9 @@
 
     <div class="mt-4 grid grid-cols-4 gap-6">
       <div class="project-list">
-        <h3 class="font-semibold ml-2">
-          Cold Call
-        </h3>
+        <h3 class="font-semibold ml-2">Cold Call</h3>
         <Draggable
-          v-model="projectsColdCall"
+          v-model="projectsInitiate"
           class="project-group"
           :component-data="{
             tag: 'div',
@@ -36,33 +34,13 @@
           @start="drag = true"
         >
           <template #item="{ element, index }">
-            <div class="project-item">
-              <div class="flex gap-1 mb-2">
-                <div class="info-tag">
-                  tag 1
-                </div>
-                <div class="danger-tag">
-                  tag 2
-                </div>
-              </div>
-              <div>
-                {{ element.name }} {{ index }}
-              </div>
-              <div class="flex justify-end mt-2">
-                <div class="warning-tag !rounded-full">
-                  N
-                </div>
-              </div>
-              <PencilIcon class="edit-icon" />
-            </div>
+            <ProjectCard :index="index" :data="element" />
           </template>
         </Draggable>
       </div>
 
       <div class="project-list">
-        <h3 class="font-semibold ml-2">
-          Qualification
-        </h3>
+        <h3 class="font-semibold ml-2">Qualification</h3>
         <Draggable
           v-model="projectsQualification"
           class="project-group"
@@ -78,33 +56,13 @@
           @start="drag = true"
         >
           <template #item="{ element, index }">
-            <div class="project-item">
-              <div class="flex gap-1 mb-2">
-                <div class="info-tag">
-                  tag 1
-                </div>
-                <div class="danger-tag">
-                  tag 2
-                </div>
-              </div>
-              <div>
-                {{ element.name }} {{ index }}
-              </div>
-              <div class="flex justify-end mt-2">
-                <div class="warning-tag !rounded-full">
-                  N
-                </div>
-              </div>
-              <PencilIcon class="edit-icon" />
-            </div>
+            <ProjectCard :index="index" :data="element" />
           </template>
         </Draggable>
       </div>
 
       <div class="project-list">
-        <h3 class="font-semibold ml-2">
-          Lead
-        </h3>
+        <h3 class="font-semibold ml-2">Lead</h3>
         <Draggable
           v-model="projectsLead"
           class="project-group"
@@ -120,33 +78,13 @@
           @start="drag = true"
         >
           <template #item="{ element, index }">
-            <div class="project-item">
-              <div class="flex gap-1 mb-2">
-                <div class="info-tag">
-                  tag 1
-                </div>
-                <div class="danger-tag">
-                  tag 2
-                </div>
-              </div>
-              <div>
-                {{ element.name }} {{ index }}
-              </div>
-              <div class="flex justify-end mt-2">
-                <div class="warning-tag !rounded-full">
-                  N
-                </div>
-              </div>
-              <PencilIcon class="edit-icon" />
-            </div>
+            <ProjectCard :index="index" :data="element" />
           </template>
         </Draggable>
       </div>
 
       <div class="project-list">
-        <h3 class="font-semibold ml-2">
-          Quotation
-        </h3>
+        <h3 class="font-semibold ml-2">Quotation</h3>
         <Draggable
           v-model="projectsQuotation"
           class="project-group"
@@ -162,25 +100,7 @@
           @start="drag = true"
         >
           <template #item="{ element, index }">
-            <div class="project-item">
-              <div class="flex gap-1 mb-2">
-                <div class="info-tag">
-                  tag 1
-                </div>
-                <div class="danger-tag">
-                  tag 2
-                </div>
-              </div>
-              <div>
-                {{ element.name }} {{ index }}
-              </div>
-              <div class="flex justify-end mt-2">
-                <div class="warning-tag !rounded-full">
-                  N
-                </div>
-              </div>
-              <PencilIcon class="edit-icon" />
-            </div>
+            <ProjectCard :index="index" :data="element" />
           </template>
         </Draggable>
       </div>
@@ -194,7 +114,7 @@
         @click="handleCreate"
       >
         <PlusIcon class="w-4 h-4 mr-1" />
-        {{ $t("app.create") }}
+        {{ $t('app.create') }}
       </button>
     </template>
     <template #search>
@@ -216,16 +136,21 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, reactive, ref } from 'vue'
+import { Ref, computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { PlusIcon } from '@heroicons/vue/solid'
 import DefaultTable from '@/components/default/Table.vue'
-import { get as getProjects, del as deleteProject } from '@/api/project'
+import {
+  get as getProjects,
+  del as deleteProject,
+  update as updateProject
+} from '@/api/project'
 import { useNotify } from '@/composables/use-notify'
 import { Project } from '@/typings/models/project.type'
 import { projectCreate, projectEdit } from '@/router/routes/project'
 import Draggable from 'vuedraggable'
+import ProjectCard from './Card.vue'
 
 const router = useRouter()
 const store = useStore()
@@ -258,7 +183,7 @@ const handleSearch = (params) => {
   stateParams = { ...params }
   loading.value = true
   getProjects(params)
-    .then(res => {
+    .then((res) => {
       items.value = res.data.data
       itemsTotal.value = res.data.total_item
     })
@@ -266,6 +191,7 @@ const handleSearch = (params) => {
       loading.value = false
     })
 }
+handleSearch({})
 
 const handleCreate = () => {
   router.push(projectCreate)
@@ -300,46 +226,64 @@ const confirmDelete = () => {
     })
 }
 
-const projectsColdCall = ref([
-  {
-    id: '1',
-    number: '1',
-    name: 'Sales Lead A',
-    status: 'cold_call'
-  },
-  {
-    id: '2',
-    number: '2',
-    name: 'Sales Lead B',
-    status: 'cold_call'
-  }
-])
+const projectsInitiate = computed({
+  get: () => items.value.filter((item) => item.status === 'initiate'),
+  set: (val) => {
+    for (let i = 0; i < val.length; i++) {
+      if (val[i].status !== 'initiate') {
+        val[i].status = 'initiate'
 
-const projectsQualification = ref([
-  {
-    id: '3',
-    number: '3',
-    name: 'Sales Lead C',
-    status: 'qualification'
-  },
-  {
-    id: '4',
-    number: '4',
-    name: 'Sales Lead D',
-    status: 'qualification'
+        updateProject(val[i].id, val[i]).catch((err) => {
+          notify('update', 'danger')
+        })
+      }
+    }
   }
-])
+})
+const projectsQualification = computed({
+  get: () => items.value.filter((item) => item.status === 'qualification'),
+  set: (val) => {
+    for (let i = 0; i < val.length; i++) {
+      if (val[i].status !== 'qualification') {
+        val[i].status = 'qualification'
 
-const projectsLead = ref([
-  {
-    id: '5',
-    number: '5',
-    name: 'Sales Lead E',
-    status: 'lead'
+        updateProject(val[i].id, val[i]).catch((err) => {
+          notify('update', 'danger')
+        })
+      }
+    }
   }
-])
+})
 
-const projectsQuotation = ref([])
+const projectsLead = computed({
+  get: () => items.value.filter((item) => item.status === 'lead'),
+  set: (val) => {
+    for (let i = 0; i < val.length; i++) {
+      if (val[i].status !== 'lead') {
+        val[i].status = 'lead'
+
+        updateProject(val[i].id, val[i]).catch((err) => {
+          notify('update', 'danger')
+        })
+      }
+    }
+  }
+})
+
+const projectsQuotation = computed({
+  get: () => items.value.filter((item) => item.status === 'quotation'),
+  set: (val) => {
+    for (let i = 0; i < val.length; i++) {
+      if (val[i].status !== 'quotation') {
+        val[i].status = 'quotation'
+
+        updateProject(val[i].id, val[i]).catch((err) => {
+          notify('update', 'danger')
+        })
+      }
+    }
+  }
+})
 
 const dragOptions = ref({
   animation: 200,
@@ -353,7 +297,6 @@ const drag = ref(false)
 const hasPermission = (method, module = 'DEVICE') => {
   return store.getters['auth/hasPermission'](module, method)
 }
-
 </script>
 
 <style lang="scss" scoped>

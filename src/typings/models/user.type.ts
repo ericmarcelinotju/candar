@@ -7,6 +7,8 @@ export class User extends BaseModel {
   email: string
   password: string
 
+  avatar: string
+
   last_login: Date
 
   role: Role
