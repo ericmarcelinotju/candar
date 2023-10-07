@@ -4,7 +4,7 @@ import stores from '@/stores'
 import { errorRoutes } from '@/router/routes'
 
 const axiosInstance = axios.create({
-  baseURL: '/api',
+  baseURL: 'http://localhost:3000/api',
   timeout: 10000,
   transformResponse: [(data) => JSON.parse(data).data],
   withCredentials: true

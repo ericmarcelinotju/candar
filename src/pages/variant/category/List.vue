@@ -1,5 +1,5 @@
 <template>
-  <DefaultPage :title="$t('app.columns.client')">
+  <DefaultPage :title="$t('app.columns.variantOption')">
     <DefaultTable
       :columns="columns"
       :has-delete="hasPermission('DELETE')"
@@ -43,27 +43,28 @@
 <script setup lang="ts">
 import { Ref, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
 import { PlusIcon } from '@heroicons/vue/solid'
 import DefaultTable from '@/components/default/Table.vue'
-import { get as getClients, del as deleteClient } from '@/api/client'
+import { get as getVariantCategories, del as deleteVariantCategory } from '@/api/variant-category'
 import { useNotify } from '@/composables/use-notify'
-import { Client } from '@/typings/models/client.type'
-import { clientCreate, clientEdit } from '@/router/routes/client'
+import { VariantCategory } from '@/typings/models/variant.type'
+import { variantCategoryCreate, variantCategoryEdit } from '@/router/routes/variant'
+import { useStore } from 'vuex'
 
 const router = useRouter()
 const store = useStore()
-const { notify } = useNotify('client')
+
+const { notify } = useNotify('variant-option')
 
 const loading = ref(false)
 let stateParams = reactive({})
 
-const items: Ref<Client[]> = ref([])
+const items: Ref<VariantCategory[]> = ref([])
 const itemsTotal = ref(0)
 const handleSearch = (params) => {
   stateParams = { ...params }
   loading.value = true
-  getClients(params)
+  getVariantCategories(params)
     .then((res) => {
       items.value = res.data.data
       itemsTotal.value = res.data.total_item
@@ -74,17 +75,17 @@ const handleSearch = (params) => {
 }
 
 const handleCreate = () => {
-  router.push(clientCreate)
+  router.push(variantCategoryCreate)
 }
 
 const handleEdit = ({ id }) => {
-  router.push({ ...clientEdit, params: { id } })
+  router.push({ ...variantCategoryEdit, params: { id } })
 }
 
 // Delete client
 const loadingDelete = ref(false)
 const visibleDeleteConfirmationModal = ref(false)
-const deleteItem: Ref<Client> = ref()
+const deleteItem: Ref<VariantCategory> = ref()
 const handleDelete = (data) => {
   visibleDeleteConfirmationModal.value = true
   deleteItem.value = data
@@ -92,7 +93,7 @@ const handleDelete = (data) => {
 const confirmDelete = () => {
   const { id } = deleteItem.value
   loadingDelete.value = true
-  deleteClient(id)
+  deleteVariantCategory(id)
     .then(() => {
       handleSearch(stateParams)
       notify('deleted')
@@ -118,16 +119,10 @@ const columns = [
     key: 'name',
     isSortable: true,
     isSearchable: true
-  },
-  {
-    label: 'Company Type',
-    key: 'company_type',
-    isSortable: true,
-    isSearchable: true
   }
 ]
-
-const hasPermission = (method, module = 'CLIENT') => {
+const hasPermission = (method, module = 'USER') => {
   return store.getters['auth/hasPermission'](module, method)
 }
+
 </script>

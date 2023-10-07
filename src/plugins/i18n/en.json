@@ -175,7 +175,10 @@
       "setting": "Setting",
       "client": "Client",
       "clientAddress": "Client Address",
-      "clientContact": "Client Contact"
+      "clientContact": "Client Contact",
+      "variant":"Variant",
+      "variantOption":"Variant Option"
+
     }
   }
 }

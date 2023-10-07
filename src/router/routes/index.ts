@@ -8,6 +8,8 @@ import { divisionCreate, divisionEdit, divisionList } from './division'
 import { projectCreate, projectEdit, projectList } from './project'
 import { logList } from './log'
 import { forbiddenRoute, notFoundRoute } from './error'
+import { variantCategoryCreate, variantCategoryEdit, variantCategoryList, variantCreate, variantEdit, variantList } from './variant'
+import { productCategoryCreate, productCategoryEdit, productCategoryList, productCreate, productEdit, productList } from './product'
 
 export const dashboardRoute: RouteRecordRaw = {
   path: '/dashboard',
@@ -81,6 +83,28 @@ export const clientRoutes: Record<string, RouteRecordRaw> = {
   list: clientList,
   create: clientCreate,
   edit: clientEdit
+}
+
+export const variantRoutes: Record<string, RouteRecordRaw> = {
+  list: variantList,
+  create: variantCreate,
+  edit: variantEdit
+}
+
+export const productRoutes: Record<string, RouteRecordRaw> = {
+  list: productList,
+  create: productCreate,
+  edit: productEdit
+}
+export const productCategoryRoutes: Record<string, RouteRecordRaw> = {
+  list: productCategoryList,
+  create: productCategoryCreate,
+  edit: productCategoryEdit
+}
+export const variantCategoryRoutes: Record<string, RouteRecordRaw> = {
+  list: variantCategoryList,
+  create: variantCategoryCreate,
+  edit: variantCategoryEdit
 }
 
 export const clientAddressRoutes: Record<string, RouteRecordRaw> = {

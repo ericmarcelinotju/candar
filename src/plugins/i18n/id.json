@@ -154,7 +154,13 @@
       "error": "Error",
       "first_name": "First Name",
       "last_name": "Last Name",
-      "setting": "Setting"
+      "setting": "Setting",
+      "client": "Client",
+      "clientAddress": "Client Address",
+      "clientContact": "Client Contact",
+      "variant":"Variant",
+      "variantOption":"Variant Option"
+
     }
   }
 }

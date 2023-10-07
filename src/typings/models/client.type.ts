@@ -20,7 +20,6 @@ export class ClientContact extends BaseModel {
 }
 
 export class Client extends BaseModel {
-  code: string
   name: string
   company_type: string
   purchase_type: string

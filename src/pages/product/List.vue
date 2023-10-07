@@ -1,5 +1,5 @@
 <template>
-  <DefaultPage :title="$t('app.columns.client')">
+  <DefaultPage :title="$t('app.columns.product')">
     <DefaultTable
       :columns="columns"
       :has-delete="hasPermission('DELETE')"
@@ -46,24 +46,24 @@ import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { PlusIcon } from '@heroicons/vue/solid'
 import DefaultTable from '@/components/default/Table.vue'
-import { get as getClients, del as deleteClient } from '@/api/client'
+import { get as getProducts, del as deleteProduct } from '@/api/product'
 import { useNotify } from '@/composables/use-notify'
-import { Client } from '@/typings/models/client.type'
-import { clientCreate, clientEdit } from '@/router/routes/client'
+import { Product } from '@/typings/models/product.type'
+import { productCreate, productEdit } from '@/router/routes/product'
 
 const router = useRouter()
 const store = useStore()
-const { notify } = useNotify('client')
+const { notify } = useNotify('variant')
 
 const loading = ref(false)
 let stateParams = reactive({})
 
-const items: Ref<Client[]> = ref([])
+const items: Ref<Product[]> = ref([])
 const itemsTotal = ref(0)
 const handleSearch = (params) => {
   stateParams = { ...params }
   loading.value = true
-  getClients(params)
+  getProducts(params)
     .then((res) => {
       items.value = res.data.data
       itemsTotal.value = res.data.total_item
@@ -74,17 +74,17 @@ const handleSearch = (params) => {
 }
 
 const handleCreate = () => {
-  router.push(clientCreate)
+  router.push(productCreate)
 }
 
 const handleEdit = ({ id }) => {
-  router.push({ ...clientEdit, params: { id } })
+  router.push({ ...productEdit, params: { id } })
 }
 
 // Delete client
 const loadingDelete = ref(false)
 const visibleDeleteConfirmationModal = ref(false)
-const deleteItem: Ref<Client> = ref()
+const deleteItem: Ref<Product> = ref()
 const handleDelete = (data) => {
   visibleDeleteConfirmationModal.value = true
   deleteItem.value = data
@@ -92,7 +92,7 @@ const handleDelete = (data) => {
 const confirmDelete = () => {
   const { id } = deleteItem.value
   loadingDelete.value = true
-  deleteClient(id)
+  deleteProduct(id)
     .then(() => {
       handleSearch(stateParams)
       notify('deleted')
@@ -114,16 +114,34 @@ const columns = [
     isHidden: true
   },
   {
+    label: 'Code',
+    key: 'code',
+    isSortable: true,
+    isSearchable: true
+  },
+  {
     label: 'Name',
     key: 'name',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Company Type',
-    key: 'company_type',
+    label: 'Cost',
+    key: 'cost',
     isSortable: true,
     isSearchable: true
+  },
+  {
+    label: 'Price',
+    key: 'price',
+    isSortable: true,
+    isSearchable: true
+  },
+  {
+    label: 'Category',
+    key: 'category.name',
+    isSortable: false,
+    isSearchable: false
   }
 ]
 
