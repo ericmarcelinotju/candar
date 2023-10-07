@@ -1,12 +1,15 @@
 /* eslint-disable camelcase */
 import { Client } from './client.type'
 import { BaseModel } from './model.type'
+import { ProjectCost } from './project-cost.type'
+import { ProjectUpdate } from './project-update.type'
 import { User } from './user.type'
 
 export class Project extends BaseModel {
   id: string
-  number: string
+  code: string
   name: string
+  description: string
   status: 'initiate' | 'qualification' | 'lead' | 'quotation'
 
   userId: string
@@ -14,4 +17,7 @@ export class Project extends BaseModel {
 
   clientId: string
   client: Client
+
+  updates: ProjectUpdate[]
+  costs: ProjectCost[]
 }

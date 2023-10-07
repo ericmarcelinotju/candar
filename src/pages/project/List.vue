@@ -18,7 +18,9 @@
 
     <div class="mt-4 grid grid-cols-4 gap-6">
       <div class="project-list">
-        <h3 class="font-semibold ml-2">Cold Call</h3>
+        <h3 class="font-semibold ml-2">
+          Cold Call
+        </h3>
         <Draggable
           v-model="projectsInitiate"
           class="project-group"
@@ -34,13 +36,19 @@
           @start="drag = true"
         >
           <template #item="{ element, index }">
-            <ProjectCard :index="index" :data="element" />
+            <ProjectCard
+              :data="element"
+              :index="index"
+              @click="handleDetail"
+            />
           </template>
         </Draggable>
       </div>
 
       <div class="project-list">
-        <h3 class="font-semibold ml-2">Qualification</h3>
+        <h3 class="font-semibold ml-2">
+          Qualification
+        </h3>
         <Draggable
           v-model="projectsQualification"
           class="project-group"
@@ -56,13 +64,19 @@
           @start="drag = true"
         >
           <template #item="{ element, index }">
-            <ProjectCard :index="index" :data="element" />
+            <ProjectCard
+              :data="element"
+              :index="index"
+              @click="handleDetail"
+            />
           </template>
         </Draggable>
       </div>
 
       <div class="project-list">
-        <h3 class="font-semibold ml-2">Lead</h3>
+        <h3 class="font-semibold ml-2">
+          Lead
+        </h3>
         <Draggable
           v-model="projectsLead"
           class="project-group"
@@ -78,13 +92,19 @@
           @start="drag = true"
         >
           <template #item="{ element, index }">
-            <ProjectCard :index="index" :data="element" />
+            <ProjectCard
+              :data="element"
+              :index="index"
+              @click="handleDetail"
+            />
           </template>
         </Draggable>
       </div>
 
       <div class="project-list">
-        <h3 class="font-semibold ml-2">Quotation</h3>
+        <h3 class="font-semibold ml-2">
+          Quotation
+        </h3>
         <Draggable
           v-model="projectsQuotation"
           class="project-group"
@@ -100,7 +120,11 @@
           @start="drag = true"
         >
           <template #item="{ element, index }">
-            <ProjectCard :index="index" :data="element" />
+            <ProjectCard
+              :data="element"
+              :index="index"
+              @click="handleDetail"
+            />
           </template>
         </Draggable>
       </div>
@@ -131,6 +155,18 @@
         type="danger"
         @confirm="confirmDelete"
       />
+      <DefaultModal
+        v-model="visibleDetailModal"
+        description=""
+        :has-cancel="false"
+        :has-confirm="false"
+        :has-icon="false"
+        :loading="loadingDetail"
+        title=""
+        type="info"
+      >
+        <ProjectDetail :data="detailItem" />
+      </DefaultModal>
     </template>
   </DefaultPage>
 </template>
@@ -140,7 +176,6 @@ import { Ref, computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { PlusIcon } from '@heroicons/vue/solid'
-import DefaultTable from '@/components/default/Table.vue'
 import {
   get as getProjects,
   del as deleteProject,
@@ -151,6 +186,7 @@ import { Project } from '@/typings/models/project.type'
 import { projectCreate, projectEdit } from '@/router/routes/project'
 import Draggable from 'vuedraggable'
 import ProjectCard from './Card.vue'
+import ProjectDetail from './Detail.vue'
 
 const router = useRouter()
 const store = useStore()
@@ -201,6 +237,15 @@ const handleEdit = ({ id }) => {
   router.push({ ...projectEdit, params: { id } })
 }
 
+// Detail project
+const loadingDetail = ref(false)
+const visibleDetailModal = ref(false)
+const detailItem: Ref<Project> = ref()
+const handleDetail = (data) => {
+  visibleDetailModal.value = true
+  detailItem.value = data
+}
+
 // Delete project
 const loadingDelete = ref(false)
 const visibleDeleteConfirmationModal = ref(false)
@@ -234,7 +279,7 @@ const projectsInitiate = computed({
         val[i].status = 'initiate'
 
         updateProject(val[i].id, val[i]).catch((err) => {
-          notify('update', 'danger')
+          notify('update', 'danger', err.message)
         })
       }
     }
@@ -248,7 +293,7 @@ const projectsQualification = computed({
         val[i].status = 'qualification'
 
         updateProject(val[i].id, val[i]).catch((err) => {
-          notify('update', 'danger')
+          notify('update', 'danger', err.message)
         })
       }
     }
@@ -263,7 +308,7 @@ const projectsLead = computed({
         val[i].status = 'lead'
 
         updateProject(val[i].id, val[i]).catch((err) => {
-          notify('update', 'danger')
+          notify('update', 'danger', err.message)
         })
       }
     }
@@ -278,7 +323,7 @@ const projectsQuotation = computed({
         val[i].status = 'quotation'
 
         updateProject(val[i].id, val[i]).catch((err) => {
-          notify('update', 'danger')
+          notify('update', 'danger', err.message)
         })
       }
     }
@@ -300,27 +345,6 @@ const hasPermission = (method, module = 'DEVICE') => {
 </script>
 
 <style lang="scss" scoped>
-.project-list {
-  @apply flex flex-col min-h-[164px] h-fit bg-grey rounded-lg p-3;
-  .project-group {
-    @apply flex-1 h-full flex flex-col gap-2 mt-4;
-    .project-item {
-      @apply relative p-2 bg-white rounded-lg text-sm shadow-md;
-
-      .edit-icon {
-        @apply absolute top-2 right-3 w-4 h-4 text-grey-dark hidden;
-      }
-
-      &:hover {
-        @apply bg-grey-soft;
-
-        .edit-icon {
-          @apply block;
-        }
-      }
-    }
-  }
-}
 .flip-list-move {
   transition: transform 0.5s;
 }

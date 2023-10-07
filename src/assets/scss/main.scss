@@ -298,3 +298,25 @@ input.search-datepicker {
 .rotate {
   animation: rotation 2s infinite linear;
 }
+
+.project-list {
+  @apply flex flex-col min-h-[164px] h-fit bg-grey rounded-lg p-3;
+  .project-group {
+    @apply flex-1 h-full flex flex-col gap-2 mt-4;
+    .project-item {
+      @apply relative p-2 bg-white rounded-lg text-sm shadow-md;
+
+      .edit-icon {
+        @apply absolute top-2 right-3 w-4 h-4 text-grey-dark hidden;
+      }
+
+      &:hover {
+        @apply bg-grey-soft;
+
+        .edit-icon {
+          @apply block;
+        }
+      }
+    }
+  }
+}
