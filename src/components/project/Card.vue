@@ -32,12 +32,15 @@
         {{ userInitial }}
       </div>
     </div>
+    <div class="task-status">
+      <!-- TODO : Count task -->
+      4/5
+    </div>
     <PencilIcon class="edit-icon" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { Project } from '@/typings/models/project.type'
 import { useProject } from '@/composables/use-project'
 import { PencilIcon } from '@heroicons/vue/solid'

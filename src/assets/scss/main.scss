@@ -118,6 +118,14 @@ hr {
   }
 }
 
+.hover-input {
+  @apply w-full hover:ring-info-dark hover:border-info-dark focus:ring-info-dark focus:border-info-dark block leading-5 rounded-md border-transparent;
+
+  &[disabled] {
+    @apply bg-grey-soft disabled:bg-gray-50 disabled:text-grey disabled:border-grey-soft disabled:shadow-none;
+  }
+}
+
 .default-input-info {
   @apply absolute mt-1 inset-y-0 bg-grey-soft px-2 border flex items-center pointer-events-none whitespace-nowrap;
 
@@ -171,7 +179,7 @@ hr {
 
 .info-tag {
   @extend .default-tag;
-  @apply text-white bg-info;
+  @apply text-white bg-info-dark;
 
   &.hoverable {
     @apply hover:bg-sky-600 focus:ring-sky-500;
@@ -310,6 +318,10 @@ input.search-datepicker {
         @apply absolute top-2 right-3 w-4 h-4 text-grey-dark hidden;
       }
 
+      .task-status {
+        @apply absolute bottom-2 left-2 w-4 h-4 text-grey-dark text-xs;
+      }
+
       &:hover {
         @apply bg-grey-soft;
 
@@ -319,4 +331,16 @@ input.search-datepicker {
       }
     }
   }
+}
+
+.list-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+.list-enter-active, .list-leave-active {
+  transition: all 0.3s;
+}
+.list-enter, .list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
 }

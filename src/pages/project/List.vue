@@ -157,6 +157,7 @@
       />
       <DefaultModal
         v-model="visibleDetailModal"
+        class-name="!max-w-7xl"
         description=""
         :has-cancel="false"
         :has-confirm="false"
@@ -185,7 +186,7 @@ import { useNotify } from '@/composables/use-notify'
 import { Project } from '@/typings/models/project.type'
 import { projectCreate, projectEdit } from '@/router/routes/project'
 import Draggable from 'vuedraggable'
-import ProjectCard from './Card.vue'
+import ProjectCard from '@/components/project/Card.vue'
 import ProjectDetail from './Detail.vue'
 
 const router = useRouter()
