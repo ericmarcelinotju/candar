@@ -9,7 +9,7 @@
         class="w-4 h-4"
       />
       <input
-        v-else
+        v-else-if="taskPayload.id"
         v-model="taskPayload.isFinish"
         class="default-input"
         type="checkbox"
@@ -18,7 +18,8 @@
 
     <input
       v-model="taskPayload.name"
-      class="w-full px-3 py-2 rounded-md border border-grey-soft focus:ring-info-dark focus:border-info-dark text-sm !pl-9"
+      class="w-full px-3 py-2 rounded-md border border-grey-soft focus:ring-info-dark focus:border-info-dark text-sm"
+      :class="taskPayload.id ? '!pl-9' : ''"
       placeholder="Write something"
       type="text"
     >
@@ -42,7 +43,7 @@
 
       <Popover class="relative">
         <PopoverButton>
-          <InfoButton info="Set Assignee">
+          <InfoButton info="Add Assignee">
             <button
               class="rounded-full border border-dashed border-grey p-1"
               type="button"
@@ -133,7 +134,7 @@
       <InfoButton info="Set Attachment">
         <button
           class="rounded-full border border-dashed p-1"
-          :class="taskPayload.picture ? 'border-info-dark text-info-dark' : 'border-grey text-grey'"
+          :class="taskPayload.attachment ? 'border-info-dark text-info-dark' : 'border-grey text-grey'"
           type="button"
           @click="handleAttachment"
         >
@@ -142,6 +143,7 @@
       </InfoButton>
 
       <Menu
+        v-if="taskPayload.id"
         as="div"
         class="relative inline-block text-left"
       >
@@ -175,6 +177,7 @@
                     'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                   ]"
                   type="button"
+                  @click="detailTask"
                 >
                   <EyeIcon
                     :active="active"
@@ -210,16 +213,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
+import { watchDebounced } from '@vueuse/core'
 import dayjs from 'dayjs'
 import Datepicker from '@vuepic/vue-datepicker'
 import Multiselect from 'vue-multiselect'
 import { Menu, MenuButton, MenuItems, MenuItem, Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { CalendarIcon, UserAddIcon, PaperClipIcon, PhotographIcon, DotsHorizontalIcon, TrashIcon, EyeIcon } from '@heroicons/vue/solid'
+
 import { Project } from '@/typings/models/project.type'
 import { ProjectTask } from '@/typings/models/project-task.type'
 import { insert as insertProjectTask, update as updateProjectTask, del as deleteProjectTask } from '@/api/project-task'
 import InfoButton from '@/components/helper/InfoButton.vue'
+import { jsonToFormData } from '@/utils'
 
 const defaultTaskPayload = {
   id: null,
@@ -247,7 +253,7 @@ const props = withDefaults(defineProps<Props>(), {
   } as ProjectTask)
 })
 
-const emit = defineEmits(['insert', 'update', 'delete'])
+const emit = defineEmits(['insert', 'update', 'delete', 'detail'])
 
 const loading = ref(false)
 const taskPayload = ref(props.task)
@@ -255,10 +261,10 @@ const taskPayload = ref(props.task)
 const submitTask = () => {
   loading.value = true
 
-  const payload = {
+  const payload = jsonToFormData({
     ...taskPayload.value,
     projectId: props.project.id
-  } as ProjectTask
+  })
 
   if (taskPayload.value.id) {
     updateProjectTask(taskPayload.value.id, payload)
@@ -281,9 +287,28 @@ const submitTask = () => {
   }
 }
 
-watch(() => taskPayload.value.isFinish, () => {
-  submitTask()
-})
+// watch(() => taskPayload.value.isFinish, () => {
+//   submitTask()
+// })
+
+watchDebounced(
+  taskPayload,
+  () => {
+    // Only auto submit if update\
+    if (taskPayload.value.id) {
+      submitTask()
+    }
+  },
+  {
+    deep: true,
+    debounce: 1000,
+    maxWait: 1000
+  }
+)
+
+const detailTask = () => {
+  emit('detail', props.task)
+}
 
 const deleteTask = () => {
   loading.value = true
@@ -307,8 +332,6 @@ const onPictureChange = (e) => {
   const files = e.target.files || e.dataTransfer.files
   if (!files.length) return
 
-  const url = URL.createObjectURL(files[0])
-  console.log(url)
   taskPayload.value.picture = files[0]
 }
 

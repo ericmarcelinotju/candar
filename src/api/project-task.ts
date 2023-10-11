@@ -11,11 +11,11 @@ const detail = (id: string): Promise<BaseResponse<ProjectTask>> => {
   return axios.get(`/project-task/${id}`)
 }
 
-const insert = (data: ProjectTask): Promise<BaseResponse<null>> => {
+const insert = (data: FormData): Promise<BaseResponse<null>> => {
   return axios.post('/project-task', data)
 }
 
-const update = (id: string, data: ProjectTask): Promise<BaseResponse<null>> => {
+const update = (id: string, data: FormData): Promise<BaseResponse<null>> => {
   return axios.put(`/project-task/${id}`, data)
 }
 

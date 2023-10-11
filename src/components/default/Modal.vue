@@ -51,7 +51,7 @@
             "
               :class="className"
             >
-              <div class="hidden sm:block absolute top-0 right-0 pt-4 pr-4">
+              <div class="hidden sm:block absolute z-50 top-0 right-0 pt-4 pr-4">
                 <button
                   class="
                   bg-white

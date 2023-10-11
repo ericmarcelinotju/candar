@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div v-if="!isMultiple" class="w-full mt-1">
+    <div
+      v-if="!isMultiple"
+      class="w-full mt-1"
+    >
       <input
         :id="id"
         accept="image/*"
@@ -8,18 +11,21 @@
         :name="name"
         type="file"
         @change="onFileChange"
-      />
+      >
       <div
         v-if="createObjectURL(modelValue) != ''"
         class="relative opacity-70 rounded-md"
       >
         <img
-          :src="createObjectURL(modelValue)"
           class="h-24 w-24 object-cover rounded-md"
-        />
+          :src="createObjectURL(modelValue)"
+        >
       </div>
     </div>
-    <div v-else class="py-20 bg-white px-2">
+    <div
+      v-else
+      class="py-20 bg-white px-2"
+    >
       <div class="max-w-lg rounded-md overflow-hidden">
         <div class="flex">
           <div class="w-full">
@@ -38,7 +44,7 @@
                   multiple
                   type="file"
                   @change="onFileChange"
-                />
+                >
               </div>
               <div
                 v-if="images"
@@ -53,7 +59,7 @@
                     <img
                       class="h-24 w-24 object-cover rounded-md"
                       :src="image"
-                    />
+                    >
                   </div>
                   <div
                     class="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center"

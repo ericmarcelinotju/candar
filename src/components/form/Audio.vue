@@ -74,7 +74,7 @@ const onDurationChange = (e: Event) => {
 <style lang="scss" scoped>
 input[type="file"]::-webkit-file-upload-button,
 input[type="file"]::file-selector-button {
-  @apply text-white bg-info hover: bg-secondary-blue font-medium text-sm cursor-pointer border-0 py-1.5 pl-8 pr-4;
+  @apply text-white bg-info hover:bg-secondary-blue font-medium text-sm cursor-pointer border-0 py-1.5 pl-8 pr-4;
   margin-inline-start: -1rem;
   margin-inline-end: 1rem;
 }

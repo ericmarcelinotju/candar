@@ -33,8 +33,7 @@
       </div>
     </div>
     <div class="task-status">
-      <!-- TODO : Count task -->
-      4/5
+      {{ taskProgress }}
     </div>
     <PencilIcon class="edit-icon" />
   </div>
@@ -62,6 +61,7 @@ const {
   userInitial,
   isAlmostExpired,
   isNeedQuotation,
+  taskProgress,
   hasTag
 } = useProject(props.data)
 </script>

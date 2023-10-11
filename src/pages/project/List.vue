@@ -166,7 +166,24 @@
         title=""
         type="info"
       >
-        <ProjectDetail :data="detailItem" />
+        <ProjectDetail
+          :data="detailItem"
+          @detail:task="handleTaskDetail"
+          @update="onProjectUpdate"
+        />
+      </DefaultModal>
+      <DefaultModal
+        v-model="visibleTaskDetailModal"
+        class-name="!max-w-7xl"
+        description=""
+        :has-cancel="false"
+        :has-confirm="false"
+        :has-icon="false"
+        :loading="loadingTaskDetail"
+        title=""
+        type="info"
+      >
+        <ProjectTaskDetail :data="detailTaskItem" />
       </DefaultModal>
     </template>
   </DefaultPage>
@@ -184,10 +201,12 @@ import {
 } from '@/api/project'
 import { useNotify } from '@/composables/use-notify'
 import { Project } from '@/typings/models/project.type'
-import { projectCreate, projectEdit } from '@/router/routes/project'
+import { projectCreate } from '@/router/routes/project'
 import Draggable from 'vuedraggable'
 import ProjectCard from '@/components/project/Card.vue'
-import ProjectDetail from './Detail.vue'
+import ProjectDetail from '@/components/project/Detail.vue'
+import ProjectTaskDetail from '@/components/project/task/Detail.vue'
+import { ProjectTask } from '@/typings/models/project-task.type'
 
 const router = useRouter()
 const store = useStore()
@@ -234,10 +253,6 @@ const handleCreate = () => {
   router.push(projectCreate)
 }
 
-const handleEdit = ({ id }) => {
-  router.push({ ...projectEdit, params: { id } })
-}
-
 // Detail project
 const loadingDetail = ref(false)
 const visibleDetailModal = ref(false)
@@ -245,6 +260,26 @@ const detailItem: Ref<Project> = ref()
 const handleDetail = (data) => {
   visibleDetailModal.value = true
   detailItem.value = data
+}
+
+// Detail project task
+const loadingTaskDetail = ref(false)
+const visibleTaskDetailModal = ref(false)
+const detailTaskItem: Ref<ProjectTask> = ref()
+const handleTaskDetail = (data) => {
+  visibleDetailModal.value = false
+  detailItem.value = null
+
+  visibleTaskDetailModal.value = true
+  detailTaskItem.value = data
+}
+
+const onProjectUpdate = (payload) => {
+  items.value.splice(
+    items.value.findIndex(item => item.id === payload.id),
+    1,
+    payload
+  )
 }
 
 // Delete project
