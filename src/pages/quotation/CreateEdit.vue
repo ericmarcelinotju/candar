@@ -1,9 +1,6 @@
 <template>
   <DefaultPage :title="$t('app.columns.project')">
-    <div
-      v-if="loading"
-      class="w-full h-full flex justify-center items-center"
-    >
+    <div v-if="loading" class="w-full h-full flex justify-center items-center">
       <Loading class="h-12 w-12" />
     </div>
     <DefaultCreateEdit
@@ -11,27 +8,7 @@
       :form-settings="formSettings"
       :initial-data="initialData"
       @submit="onSubmit"
-    >
-      <template #label>
-        Assign To
-      </template>
-      <template #user_id="{ form }">
-        <Dropdown
-          v-model="form.userId"
-          class="default-input"
-          label="Assign To"
-          :options="userOptions"
-        >
-          <template #default="{ option }">
-            <div
-              class="info-tag !rounded-full capitalize w-6 h-6 mr-3"
-            >
-              {{ option.label[0] }}
-            </div>
-          </template>
-        </Dropdown>
-      </template>
-    </DefaultCreateEdit>
+    />
   </DefaultPage>
 </template>
 
@@ -56,7 +33,6 @@ import { projectList } from '@/router/routes/project'
 import { Option } from '@/typings/option.type'
 import { User } from '@/typings/models/user.type'
 import { projectSources, projectStatuses } from './options'
-import Dropdown from '@/components/form/dropdown/Dropdown.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -84,7 +60,7 @@ const clientOptions: Ref<Option[]> = computed(() =>
 const users: Ref<User[]> = ref([])
 const userOptions: Ref<Option[]> = computed(() =>
   users.value.map((user) => ({
-    label: user.username,
+    label: currUser.username === user.username ? 'Me' : user.username,
     value: user.id
   }))
 )

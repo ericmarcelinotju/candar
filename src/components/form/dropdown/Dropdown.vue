@@ -5,7 +5,11 @@
       :disabled="disabled"
     >
       <ListboxLabel>
-        <slot name="label" />
+        <label
+          class="default-label"
+        >
+          {{ label }}
+        </label>
       </ListboxLabel>
       <div class="relative">
         <ListboxButton
@@ -84,6 +88,7 @@
                     'block truncate',
                   ]"
                 >
+                  <slot :option="option" />
                   {{ option.label }}
                 </span>
                 <span
@@ -123,6 +128,7 @@ interface Props {
   className?: string
   modelValue?: string
   disabled?: boolean
+  label: string
 }
 
 const props = withDefaults(defineProps<Props>(), {

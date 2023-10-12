@@ -16,20 +16,25 @@
         <div class="flex-[2_2_0%] px-3">
           <div class="flex gap-2 mb-2">
             <div
+              v-if="isNeedQuotation"
+              class="warning-tag cursor-pointer hover:bg-warning-dark"
+              @click="handleQuotation"
+            >
+              <PlusIcon class="w-3 h-3 mr-1" />
+              Quotation Needed
+            </div>
+            <div
               v-if="isAlmostExpired"
               class="danger-tag"
             >
               Antention Needed
             </div>
-            <div
-              v-if="isNeedQuotation"
-              class="warning-tag"
-            >
-              Quotation Needed
-            </div>
             <div class="flex justify-end">
               <div v-if="avatar">
-                <img :src="avatar">
+                <img
+                  class="avatar"
+                  :src="avatar"
+                >
               </div>
               <div
                 v-else
@@ -139,6 +144,7 @@
 import { Ref, ref, watch } from 'vue'
 import { watchDebounced } from '@vueuse/core'
 import dayjs from 'dayjs'
+import { PlusIcon } from '@heroicons/vue/solid'
 import { Project, getProjectStatusColor } from '@/typings/models/project.type'
 import { update as updateProject, detail as getProject } from '@/api/project'
 import { useProject } from '@/composables/use-project'
@@ -217,6 +223,10 @@ const onTaskDetail = (data) => {
 
 const formatDate = (date) => {
   return dayjs(date).format('MMM DD, HH:mm')
+}
+
+const handleQuotation = () => {
+  // TODO :: redirect to quotation page
 }
 
 const {
