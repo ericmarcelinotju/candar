@@ -1,6 +1,9 @@
 <template>
-  <DefaultPage :title="$t('app.columns.project')">
-    <div v-if="loading" class="w-full h-full flex justify-center items-center">
+  <DefaultPage :title="$t('app.columns.quotation')">
+    <div
+      v-if="loading"
+      class="w-full h-full flex justify-center items-center"
+    >
       <Loading class="h-12 w-12" />
     </div>
     <DefaultCreateEdit
@@ -8,42 +11,117 @@
       :form-settings="formSettings"
       :initial-data="initialData"
       @submit="onSubmit"
-    />
+    >
+      <template #products="{ form, formSetting }">
+        <div
+          v-for="(quotationProduct, index) in form.quotationProducts"
+          :key="quotationProduct.id"
+          class="flex mb-4"
+        >
+          <div class="flex flex-col flex-1 gap-4 border rounded-md p-4">
+            <div class="default-field">
+              <label
+                class="default-label"
+                :for="`user-${index}`"
+              >
+                Produk<sup>*</sup>
+              </label>
+              <Dropdown
+                :id="`user-${index}`"
+                v-model="form.quotationProducts[index].productId"
+                class="default-input"
+                :options="(formSetting.options as Option[])"
+                @input="(val) => onChangeProduct(val, form, index)"
+              />
+            </div>
+            <div class="default-field">
+              <label
+                class="default-label"
+                :for="`price-${index}`"
+              >
+                Harga
+              </label>
+              <input
+                :id="`price-${index}`"
+                v-model="form.quotationProducts[index].priceNumber"
+                class="default-input"
+                type="number"
+              >
+            </div>
+            <div class="default-field">
+              <label
+                class="default-label"
+                :for="`quantity-${index}`"
+              >
+                Kuantitas
+              </label>
+              <input
+                :id="`quantity-${index}`"
+                v-model="form.quotationProducts[index].quantity"
+                class="default-input"
+                type="number"
+              >
+            </div>
+          </div>
+          <div class="flex flex-col gap-4 ml-4">
+            <!-- <button
+              class="default-button flex-1"
+              type="button"
+              @click="handleRemoveProduct(form, index)"
+            >
+              <PencilIcon class="w-4 h-4" />
+            </button> -->
+            <button
+              class="danger-button flex-1"
+              type="button"
+              @click="handleRemoveProduct(form, index)"
+            >
+              <TrashIcon class="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+        <button
+          class="info-button"
+          type="button"
+          @click="handleAddProduct(form)"
+        >
+          <PlusIcon class="w-4 h-4 mr-2" />
+          Add Product
+        </button>
+      </template>
+    </DefaultCreateEdit>
   </DefaultPage>
 </template>
 
 <script setup lang="ts">
 import { Ref, computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+import { PlusIcon, TrashIcon } from '@heroicons/vue/solid'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
+import Dropdown from '@/components/form/dropdown/Dropdown.vue'
 import {
-  detail as getProject,
-  insert as insertProject,
-  update as updateProject
-} from '@/api/project'
-import { get as getClient } from '@/api/client'
-import { get as getUser } from '@/api/user'
+  detail as getQuotation,
+  insert as insertQuotation,
+  update as updateQuotation
+} from '@/api/quotation'
+import { get as getProject } from '@/api/project'
+import { get as getProduct } from '@/api/product'
 import { required } from '@/utils/validation'
 import { FormSetting } from '@/typings/form.type'
-import { Client } from '@/typings/models/client.type'
-import { Project } from '@/typings/models/project.type'
-import { projectList } from '@/router/routes/project'
+import { Quotation } from '@/typings/models/quotation.type'
+import { quotationList } from '@/router/routes/quotation'
 import { Option } from '@/typings/option.type'
-import { User } from '@/typings/models/user.type'
-import { projectSources, projectStatuses } from './options'
+import { Project } from '@/typings/models/project.type'
+import { QuotationProduct } from '@/typings/models/quotation-product.type'
+import { Product } from '@/typings/models/product.type'
 
 const route = useRoute()
 const router = useRouter()
-const store = useStore()
 
-const currUser = store.getters['auth/user']
+const { notify } = useNotify('quotation')
 
-const { notify } = useNotify('project')
-
-const initialData: Ref<Project> = ref(new Project())
-initialData.value.status = 'initiate'
+const initialData: Ref<Quotation> = ref(new Quotation())
 
 const loading: Ref<boolean> = ref(false)
 
@@ -52,61 +130,82 @@ if (typeof route.params.id === 'string') {
   id = route.params.id
 }
 
-const clients: Ref<Client[]> = ref([])
-const clientOptions: Ref<Option[]> = computed(() =>
-  clients.value.map((client) => ({ label: client.name, value: client.id }))
-)
+let projectId = ''
+if (typeof route.params.project_id === 'string') {
+  projectId = route.params.project_id
+}
 
-const users: Ref<User[]> = ref([])
-const userOptions: Ref<Option[]> = computed(() =>
-  users.value.map((user) => ({
-    label: currUser.username === user.username ? 'Me' : user.username,
-    value: user.id
+const projects: Ref<Project[]> = ref([])
+const projectOptions: Ref<Option[]> = computed(() =>
+  projects.value.map((project) => ({
+    label: project.name,
+    value: project.id
   }))
 )
 
-const initPage = () => {
-  if (!hasPermission('GET', 'CLIENT')) {
-    // Forbidden
-  }
-  Promise.all([getClient(), getUser()]).then((res) => {
-    clients.value = res[0].data.data
-    users.value = res[1].data.data
-    initForm()
-  })
-  if (!id) return
+const products: Ref<Product[]> = ref([])
+const productOptions: Ref<Option[]> = computed(() =>
+  products.value.map((product) => ({
+    label: product.name,
+    value: product.id
+  }))
+)
+
+const initPage = async () => {
   loading.value = true
-  getProject(id)
-    .then((res) => {
-      initialData.value = res.data
+  try {
+    await Promise.all([getProject(), getProduct()]).then((res) => {
+      projects.value = res[0].data.data
+      products.value = res[1].data.data
     })
-    .catch(() => {
-      notify('loaded', 'danger')
-    })
-    .finally(() => {
-      loading.value = false
-    })
+
+    if (id) {
+      const resp = await getQuotation(id)
+      initialData.value = resp.data
+    } else {
+      handleAddProduct(initialData.value)
+    }
+
+    initialData.value.date = new Date()
+    if (projectId) {
+      initialData.value.projectId = projectId
+    }
+
+    initForm()
+  } catch {
+    notify('loaded', 'danger')
+  } finally {
+    loading.value = false
+  }
 }
 
-const onSubmit = (form, onFinish) => {
+const onSubmit = (form: Ref<Quotation>, onFinish: () => void) => {
+  const payload = {
+    ...form.value,
+    quotationProducts: form.value.quotationProducts.map(f => ({
+      ...f,
+      price: f.priceNumber
+    }))
+  } as unknown as Quotation
+
   if (id) {
-    return updateProject(id, { ...form.value })
+    return updateQuotation(id, payload)
       .then(() => {
-        router.push(projectList)
+        router.push(quotationList)
         notify('updated')
       })
-      .catch(() => {
-        notify('updated', 'danger')
+      .catch(err => {
+        notify('updated', 'danger', err.message)
       })
       .finally(onFinish)
   } else {
-    return insertProject({ ...form.value })
+    return insertQuotation(payload)
       .then(() => {
-        router.push(projectList)
+        router.push(quotationList)
         notify('inserted')
       })
-      .catch(() => {
-        notify('inserted', 'danger')
+      .catch(err => {
+        notify('inserted', 'danger', err.message)
       })
       .finally(onFinish)
   }
@@ -116,59 +215,55 @@ onMounted(() => {
   initPage()
 })
 
-const hasPermission = (method, module = 'PROJECT') => {
-  return store.getters['auth/hasPermission'](module, method)
-}
-
 const formSettings: Ref<FormSetting[]> = ref([])
 const initForm = () => {
   formSettings.value = [
     {
       key: 'code',
-      label: 'Code',
+      label: 'Kode',
       isRequired: true,
       rules: [required]
     },
     {
-      key: 'name',
-      label: 'Name',
+      key: 'date',
+      label: 'Tanggal',
+      type: 'date',
       isRequired: true,
       rules: [required]
     },
     {
-      key: 'description',
-      label: 'Description',
-      type: 'textarea'
+      key: 'projectId',
+      label: 'Projek',
+      type: 'dropdown',
+      isRequired: true,
+      rules: [required],
+      options: projectOptions.value
     },
     {
-      key: 'source',
-      label: 'Source',
-      isRequired: true,
-      type: 'dropdown',
-      options: projectSources
-    },
-    {
-      key: 'status',
-      label: 'Status',
-      isRequired: true,
-      type: 'dropdown',
-      options: projectStatuses
-    },
-    {
-      key: 'client_id',
-      label: 'Client',
-      isRequired: true,
-      type: 'dropdown',
-      options: clientOptions.value
-    },
-    {
-      key: 'user_id',
-      label: 'Assign To',
-      isRequired: true,
-      type: 'dropdown',
-      options: userOptions.value
+      key: 'products',
+      label: 'Produk',
+      options: productOptions.value
     }
   ]
 }
 initForm()
+
+const handleAddProduct = (form) => {
+  if (!form.quotationProducts) {
+    form.quotationProducts = []
+  }
+  const quotationProduct = new QuotationProduct()
+  quotationProduct.quantity = 1
+  form.quotationProducts.push(quotationProduct)
+}
+
+const handleRemoveProduct = (form, index) => {
+  form.quotationProducts.splice(index, 1)
+}
+
+const onChangeProduct = (val: string, form: Quotation, index: number) => {
+  const product = products.value.find(product => product.id === val)
+
+  form.quotationProducts[index].priceNumber = product.priceNumber
+}
 </script>

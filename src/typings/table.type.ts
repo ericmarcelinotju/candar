@@ -9,6 +9,6 @@ export class TableColumn {
   isHidden?: boolean
   isSortable?: boolean
   isSearchable?: boolean
-  options?: Option[]
-  type?: 'text' | 'dropdown' | 'date' | 'date-range' | 'image'
+  searchOptions?: Option[]
+  searchType?: 'text' | 'dropdown' | 'date' | 'date-range' | 'image'
 }

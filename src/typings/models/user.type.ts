@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { BaseModel } from './model.type'
 import { Role } from './role.type'
 
@@ -9,8 +8,8 @@ export class User extends BaseModel {
 
   avatar: string
 
-  last_login: Date
+  lastLogin: Date
 
   role: Role
-  role_name: string
+  roleName: string
 }

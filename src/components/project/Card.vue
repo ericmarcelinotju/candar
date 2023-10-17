@@ -19,6 +19,12 @@
       >
         Quotation Needed
       </div>
+      <div
+        v-if="isQuoted"
+        class="success-tag"
+      >
+        Quoted
+      </div>
     </div>
     <div>{{ data.name }}</div>
     <div class="flex justify-end mt-2">
@@ -61,6 +67,7 @@ const {
   userInitial,
   isAlmostExpired,
   isNeedQuotation,
+  isQuoted,
   taskProgress,
   hasTag
 } = useProject(props.data)

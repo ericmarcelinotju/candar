@@ -12,13 +12,16 @@ const useProject = (project?: Project) => {
   })
 
   const isNeedQuotation = computed(() => {
-    // TODO :: validate quotation must exist
-    return project?.status === 'quotation'
+    return project?.status === 'quotation' && project?.quotations?.length <= 0
+  })
+
+  const isQuoted = computed(() => {
+    return project?.quotations?.length > 0
   })
 
   const isAlmostExpired = computed(() => {
     // TODO :: validate project expiry
-    return dayjs().diff(dayjs(project?.created_at), 'day') > 15
+    return dayjs().diff(dayjs(project?.createdAt), 'day') > 15
   })
 
   const taskProgress = computed(() => {
@@ -30,13 +33,14 @@ const useProject = (project?: Project) => {
     return `${finishedTasks.length}/${project.tasks.length}`
   })
 
-  const hasTag = computed(() => isNeedQuotation.value || isAlmostExpired.value)
+  const hasTag = computed(() => isNeedQuotation.value || isAlmostExpired.value || isQuoted.value)
 
   return {
     avatar,
     userInitial,
     isAlmostExpired,
     isNeedQuotation,
+    isQuoted,
     taskProgress,
     hasTag
   }

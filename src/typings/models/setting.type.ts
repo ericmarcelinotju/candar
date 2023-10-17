@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { BaseModel } from './model.type'
 
 export class Setting extends BaseModel {
@@ -7,11 +6,8 @@ export class Setting extends BaseModel {
 }
 
 export class AppSetting {
-  smtp_host: string
-  smtp_port: string
-  smtp_email: string
-  smtp_password: string
-
-  apilogik_url: string
-  apilogik_key: string
+  smtpHost: string
+  smtpPort: string
+  smtpEmail: string
+  smtpPassword: string
 }

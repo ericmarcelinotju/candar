@@ -14,6 +14,9 @@
   <DatePicker
     v-else-if="type === 'date'"
     v-model="inputVal"
+    auto-apply
+    :clearable="false"
+    :enable-time-picker="false"
     input-class-name="default-input"
   />
   <ImageInput

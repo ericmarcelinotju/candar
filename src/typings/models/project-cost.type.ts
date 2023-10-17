@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { BaseModel } from './model.type'
 
 export class ProjectCost extends BaseModel {

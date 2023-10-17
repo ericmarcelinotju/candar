@@ -1,4 +1,4 @@
-/* eslint-disable camelcase */
+
 export class BaseResponse<T> {
   app_version: string;
   code: number;

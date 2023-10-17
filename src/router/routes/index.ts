@@ -10,6 +10,7 @@ import { logList } from './log'
 import { forbiddenRoute, notFoundRoute } from './error'
 import { variantCategoryCreate, variantCategoryEdit, variantCategoryList, variantCreate, variantEdit, variantList } from './variant'
 import { productCategoryCreate, productCategoryEdit, productCategoryList, productCreate, productEdit, productList } from './product'
+import { quotationCreate, quotationEdit, quotationList } from './quotation'
 
 export const dashboardRoute: RouteRecordRaw = {
   path: '/dashboard',
@@ -121,6 +122,12 @@ export const projectRoutes: Record<string, RouteRecordRaw> = {
   list: projectList,
   create: projectCreate,
   edit: projectEdit
+}
+
+export const quotationRoutes: Record<string, RouteRecordRaw> = {
+  list: quotationList,
+  create: quotationCreate,
+  edit: quotationEdit
 }
 
 export const errorRoutes: Record<string, RouteRecordRaw> = {

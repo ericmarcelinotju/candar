@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { BaseModel } from './model.type'
 
 export class Variant extends BaseModel {
@@ -7,5 +6,5 @@ export class Variant extends BaseModel {
 
 export class VariantCategory extends BaseModel {
   name: string
-  variants:Variant[]
+  variants: Variant[]
 }

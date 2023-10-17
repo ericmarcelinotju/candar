@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { BaseModel } from './model.type'
 import { User } from './user.type'
 

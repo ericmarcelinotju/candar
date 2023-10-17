@@ -24,6 +24,13 @@
               Quotation Needed
             </div>
             <div
+              v-if="isQuoted"
+              class="success-tag cursor-pointer hover:bg-success-dark"
+              @click="handleQuoted"
+            >
+              Quoted
+            </div>
+            <div
               v-if="isAlmostExpired"
               class="danger-tag"
             >
@@ -91,7 +98,7 @@
               <p class="mb-1 text-grey-dark">
                 CREATED
               </p>
-              <p>{{ formatDate(project.created_at) }}</p>
+              <p>{{ project.createdAt }}</p>
             </div>
 
             <div class="w-[0.05rem] bg-grey" />
@@ -143,6 +150,7 @@
 <script setup lang="ts">
 import { Ref, ref, watch } from 'vue'
 import { watchDebounced } from '@vueuse/core'
+import { useRouter } from 'vue-router'
 import dayjs from 'dayjs'
 import { PlusIcon } from '@heroicons/vue/solid'
 import { Project, getProjectStatusColor } from '@/typings/models/project.type'
@@ -151,15 +159,14 @@ import { useProject } from '@/composables/use-project'
 import TaskForm from '@/components/project/task/Form.vue'
 import { useNotify } from '@/composables/use-notify'
 import { snakeToTitle } from '@/utils/string'
+import { quotationCreate, quotationList } from '@/router/routes/quotation'
 
 interface Props {
   data: Project
 }
-
 const props = defineProps<Props>()
-
 const emit = defineEmits(['update', 'detail:task'])
-
+const router = useRouter()
 const { notify } = useNotify('project')
 
 const isLoaded = ref(false)
@@ -226,7 +233,11 @@ const formatDate = (date) => {
 }
 
 const handleQuotation = () => {
-  // TODO :: redirect to quotation page
+  router.push({ ...quotationCreate, params: { project_id: project.value.id } })
+}
+
+const handleQuoted = () => {
+  router.push({ ...quotationList, query: { project_id: project.value.id } })
 }
 
 const {
@@ -234,6 +245,7 @@ const {
   userInitial,
   isAlmostExpired,
   isNeedQuotation,
+  isQuoted,
   hasTag
 } = useProject(props.data)
 </script>

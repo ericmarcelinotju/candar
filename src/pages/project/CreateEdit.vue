@@ -90,9 +90,6 @@ const userOptions: Ref<Option[]> = computed(() =>
 )
 
 const initPage = () => {
-  if (!hasPermission('GET', 'CLIENT')) {
-    // Forbidden
-  }
   Promise.all([getClient(), getUser()]).then((res) => {
     clients.value = res[0].data.data
     users.value = res[1].data.data

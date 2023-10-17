@@ -41,7 +41,7 @@
     <div
       :class="[
         {
-          'border-l-2 border-gray-300 bg-gray-100 w-72 rounded-r-md overflow-hidden': hasSearchableColumns,
+          'border-l-2 border-gray-300 bg-gray-100 w-72 rounded-r-md': hasSearchableColumns,
         },
         'relative',
       ]"
@@ -63,16 +63,16 @@
         />
       </div>
       <InputDropdown
-        v-if="selectedColumn && selectedColumn.type === 'dropdown'"
+        v-if="selectedColumn && selectedColumn.searchType === 'dropdown'"
         v-model="searchQuery"
-        class="pl-12"
-        class-name="text-left w-full py-2 sm:text-sm border-transparent bg-gray-100 block"
+        class="pl-12 h-full"
+        class-name="text-left w-full h-full sm:text-sm border-transparent bg-gray-100 block"
         :options="options"
         type="list"
         @input="search"
       />
       <Datepicker
-        v-else-if="selectedColumn && selectedColumn.type === 'date-range'"
+        v-else-if="selectedColumn && selectedColumn.searchType === 'date-range'"
         v-model="searchQuery"
         auto-apply
         :clearable="false"
@@ -82,7 +82,7 @@
         @update:model-value="search"
       />
       <Datepicker
-        v-else-if="selectedColumn && selectedColumn.type === 'date'"
+        v-else-if="selectedColumn && selectedColumn.searchType === 'date'"
         v-model="searchQuery"
         auto-apply
         :clearable="false"
@@ -90,13 +90,17 @@
         input-class-name="search-datepicker"
         @update:model-value="search"
       />
-      <div v-else>
+      <div
+        v-else
+        class="h-full"
+      >
         <input
           id="search"
           v-model="searchQuery"
           class="
             focus:ring-info focus:border-info
             w-full
+            h-full
             pl-12
             sm:text-sm
             border-transparent
@@ -159,7 +163,7 @@ const router = useRouter()
 
 const selectedColumnKey = ref('')
 const selectedColumn = computed(() => props.columns.find(column => column.key === selectedColumnKey.value))
-const options = computed(() => selectedColumn.value?.options)
+const options = computed(() => selectedColumn.value?.searchOptions)
 
 const searchQuery = ref(null)
 
@@ -177,8 +181,7 @@ const search = () => {
   // TODO :: reset pagination
   pagination.page = 1
 
-  const search = {}
-  search[selectedColumnKey.value] = searchQuery.value
+  const search = { search: `${selectedColumnKey.value}:${searchQuery.value}` }
   queryParams.value = search
   submitSearch()
 }

@@ -287,7 +287,7 @@ hr {
 }
 
 input.search-datepicker {
-  @apply pl-12 text-left w-full py-2 sm:text-sm border-transparent rounded-tr-md rounded-br-md bg-gray-100 block
+  @apply pl-12 text-left w-full py-[0.657rem] sm:text-sm border-transparent rounded-tr-md rounded-br-md bg-gray-100 block ring-0 border-0;
 }
 
 .workspace {

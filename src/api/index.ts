@@ -14,7 +14,8 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response) {
-      console.log(error.response.status)
+      error.message = error.response.data
+
       if (error.response.status === 401) {
         stores.commit('auth/setLogout')
       } else if (error.response.status === 403) {

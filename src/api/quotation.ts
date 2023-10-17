@@ -1,26 +1,26 @@
 import axios from './index'
 import { serializeQueryParams } from '@/utils'
 import { BaseResponse, ListResponse } from '@/typings/response.type'
-import { Project } from '@/typings/models/project.type'
+import { Quotation } from '@/typings/models/quotation.type'
 
-const get = (filter?: Project): Promise<BaseResponse<ListResponse<Project>>> => {
-  return axios.get(`/project${serializeQueryParams(filter)}`)
+const get = (filter?: Quotation): Promise<BaseResponse<ListResponse<Quotation>>> => {
+  return axios.get(`/quotation${serializeQueryParams(filter)}`)
 }
 
-const detail = (id: string): Promise<BaseResponse<Project>> => {
-  return axios.get(`/project/${id}`)
+const detail = (id: string): Promise<BaseResponse<Quotation>> => {
+  return axios.get(`/quotation/${id}`)
 }
 
-const insert = (data: Project): Promise<BaseResponse<null>> => {
-  return axios.post('/project', data)
+const insert = (data: Quotation): Promise<BaseResponse<null>> => {
+  return axios.post('/quotation', data)
 }
 
-const update = (id: string, data: Project): Promise<BaseResponse<null>> => {
-  return axios.put(`/project/${id}`, data)
+const update = (id: string, data: Quotation): Promise<BaseResponse<null>> => {
+  return axios.put(`/quotation/${id}`, data)
 }
 
 const del = (id: string): Promise<BaseResponse<null>> => {
-  return axios.delete(`/project/${id}`)
+  return axios.delete(`/quotation/${id}`)
 }
 
 export {

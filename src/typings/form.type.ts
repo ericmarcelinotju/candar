@@ -10,7 +10,7 @@ export class FormSetting {
   autocomplete?: string
   rules?: ValidationRule[]
   options?: Option[] | BaseModel[]
-  type?: string
+  type?: 'text' | 'date' | 'dropdown' | 'combobox' | 'image' | 'textarea' | string
   isMultiple?: boolean
   col?: number
 }

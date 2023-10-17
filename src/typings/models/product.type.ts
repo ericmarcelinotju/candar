@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { BaseModel } from './model.type'
 
 export class ProductCategory extends BaseModel {
@@ -6,8 +5,10 @@ export class ProductCategory extends BaseModel {
   code: string
   name: string
   stock: number
-  cost: number
-  price:number
+  cost: string
+  costNumber: number
+  price: string
+  priceNumber: number
 }
 
 export class Product extends BaseModel {
@@ -15,8 +16,10 @@ export class Product extends BaseModel {
   code: string
   name: string
   stock: number
-  cost: number
-  price:number
+  cost: string
+  costNumber: number
+  price: string
+  priceNumber: number
 
   categoryId: string
   category: ProductCategory

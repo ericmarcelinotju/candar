@@ -18,7 +18,8 @@ import {
   variantRoutes,
   variantCategoryRoutes,
   productRoutes,
-  productCategoryRoutes
+  productCategoryRoutes,
+  quotationRoutes
 } from './routes'
 
 import DefaultContainer from '@/components/layout/Container.vue'
@@ -37,22 +38,25 @@ const router = createRouter({
         maintenanceRoute,
         settingRoute,
 
-        ...Object.values(clientRoutes),
-        ...Object.values(clientAddressRoutes),
-        ...Object.values(clientContactRoutes),
-
-        ...Object.values(divisionRoutes),
-        ...Object.values(projectRoutes),
+        ...Object.values(logRoutes),
 
         ...Object.values(userRoutes),
         ...Object.values(roleRoutes),
         ...Object.values(permissionRoutes),
-        ...Object.values(logRoutes),
-        ...Object.values(roleRoutes),
-        ...Object.values(variantRoutes),
-        ...Object.values(variantCategoryRoutes),
+
+        ...Object.values(clientRoutes),
+        ...Object.values(clientAddressRoutes),
+        ...Object.values(clientContactRoutes),
+        ...Object.values(divisionRoutes),
+
+        ...Object.values(projectRoutes),
+        ...Object.values(quotationRoutes),
+
         ...Object.values(productRoutes),
-        ...Object.values(productCategoryRoutes)
+        ...Object.values(productCategoryRoutes),
+
+        ...Object.values(variantRoutes),
+        ...Object.values(variantCategoryRoutes)
       ],
       beforeEnter: guardAuth
     },
