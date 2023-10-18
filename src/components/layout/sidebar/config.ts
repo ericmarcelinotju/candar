@@ -10,7 +10,8 @@ import {
   ShoppingBagIcon,
   ShoppingCartIcon,
   UsersIcon,
-  DocumentReportIcon
+  DocumentReportIcon,
+  CalendarIcon
 } from '@heroicons/vue/outline'
 
 export const navigations: Navigation[] = [
@@ -19,6 +20,11 @@ export const navigations: Navigation[] = [
     module: 'DASHBOARD',
     href: '/dashboard',
     icon: HomeIcon
+  },
+  {
+    name: 'Calendar',
+    href: '/calendar',
+    icon: CalendarIcon
   },
   {
     name: 'Product',

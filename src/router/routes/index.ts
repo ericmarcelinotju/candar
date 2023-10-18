@@ -23,6 +23,17 @@ export const dashboardRoute: RouteRecordRaw = {
   }
 }
 
+export const calendarRoute: RouteRecordRaw = {
+  path: '/calendar',
+  name: 'calendar',
+  component: () =>
+    import(/* webpackChunkName: 'p-calendar */ '@/pages/Calendar.vue'),
+  meta: {
+    auth: true,
+    title: 'Calendar'
+  }
+}
+
 export const settingRoute: RouteRecordRaw = {
   path: '/setting',
   name: 'setting',

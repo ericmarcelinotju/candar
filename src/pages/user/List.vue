@@ -14,9 +14,9 @@
       <template #role="{ item }">
         <span>{{ item.role.name }}</span>
       </template>
-      <template #last_login="{ item }">
+      <!-- <template #last_login="{ item }">
         <span>{{ item.last_login }}</span>
-      </template>
+      </template> -->
     </DefaultTable>
     <template #action>
       <button

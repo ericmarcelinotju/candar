@@ -190,15 +190,17 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, computed, reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { Ref, computed, onMounted, reactive, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { PlusIcon } from '@heroicons/vue/solid'
 import {
   get as getProjects,
   del as deleteProject,
-  update as updateProject
+  update as updateProject,
+  detail as getProject
 } from '@/api/project'
+import { detail as getProjectTask } from '@/api/project-task'
 import { useNotify } from '@/composables/use-notify'
 import { Project } from '@/typings/models/project.type'
 import { projectCreate } from '@/router/routes/project'
@@ -208,6 +210,7 @@ import ProjectDetail from '@/components/project/Detail.vue'
 import ProjectTaskDetail from '@/components/project/task/Detail.vue'
 import { ProjectTask } from '@/typings/models/project-task.type'
 
+const route = useRoute()
 const router = useRouter()
 const store = useStore()
 const { notify } = useNotify('project')
@@ -257,7 +260,7 @@ const handleCreate = () => {
 const loadingDetail = ref(false)
 const visibleDetailModal = ref(false)
 const detailItem: Ref<Project> = ref()
-const handleDetail = (data) => {
+const handleDetail = (data: Project) => {
   visibleDetailModal.value = true
   detailItem.value = data
 }
@@ -266,13 +269,27 @@ const handleDetail = (data) => {
 const loadingTaskDetail = ref(false)
 const visibleTaskDetailModal = ref(false)
 const detailTaskItem: Ref<ProjectTask> = ref()
-const handleTaskDetail = (data) => {
+const handleTaskDetail = (data: ProjectTask) => {
   visibleDetailModal.value = false
   detailItem.value = null
 
   visibleTaskDetailModal.value = true
   detailTaskItem.value = data
 }
+
+const initPage = async () => {
+  if (route.params.project_task_id) {
+    const projectTaskResp = await getProjectTask(route.params.project_task_id as string)
+    handleTaskDetail(projectTaskResp.data)
+  } else if (route.params.project_id) {
+    const projectResp = await getProject(route.params.project_id as string)
+    handleDetail(projectResp.data)
+  }
+}
+
+onMounted(() => {
+  initPage()
+})
 
 const onProjectUpdate = (payload) => {
   items.value.splice(
