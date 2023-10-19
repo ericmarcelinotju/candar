@@ -124,7 +124,7 @@ import { Option } from '@/typings/option.type'
 interface Props {
   options: Option[]
   className?: string
-  modelValue?: string
+  modelValue?: string | string[]
   disabled?: boolean
   label?: string
 }

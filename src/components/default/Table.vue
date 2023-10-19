@@ -95,9 +95,14 @@
                       :name="column.key"
                     />
                   </template>
-                  <span v-else>
-                    {{ item[column.key] }}
-                  </span>
+                  <template v-else>
+                    <span v-if="isDeep(column.key)">
+                      {{ getValue(item, column.key) }}
+                    </span>
+                    <span v-else>
+                      {{ item[column.key] }}
+                    </span>
+                  </template>
                 </td>
                 <td
                   v-if="hasEdit || hasDelete"
@@ -267,6 +272,9 @@ const paginationOptions = ref(config.paginationOptions)
 
 const tableStyle = computed(() => ({ minHeight: `${props.height}px` }))
 const hasItems = computed(() => props.items && props.items.length > 0)
+const isDeep = (e: string) => {
+  return e.includes('.')
+}
 
 const filterColumns = computed(() =>
   props.columns.filter((column) => !column.isHidden)
@@ -325,6 +333,12 @@ const isDetailOpens: Ref<boolean[]> = ref([])
 const onToogleDetail = (index, item) => {
   isDetailOpens[index] = !isDetailOpens[index]
   emit('detail', isDetailOpens[index], index, item)
+}
+
+const getValue = (obj, path) => {
+  if (!path) return obj
+  const properties = path.split('.')
+  return getValue(obj[properties.shift()], properties.join('.'))
 }
 
 const onRowClick = (item) => {
