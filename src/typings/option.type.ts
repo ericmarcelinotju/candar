@@ -4,10 +4,12 @@ export class Option {
 }
 
 export class OptionObject {
-  label: string
+  id: string
+  name: string
   disabled?: boolean
-  value: Array<{
-    value: string,
+  variant: Array<{
+    id: string,
+    name: string,
     disabled: boolean
   }>
 }

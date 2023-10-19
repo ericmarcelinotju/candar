@@ -336,6 +336,8 @@ const onToogleDetail = (index, item) => {
 }
 
 const getValue = (obj, path) => {
+  if (!obj) return
+
   if (!path) return obj
   const properties = path.split('.')
   return getValue(obj[properties.shift()], properties.join('.'))
