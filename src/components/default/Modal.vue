@@ -162,7 +162,7 @@ export default {}
 
 <script setup lang="ts">
 interface Props {
-  className: string
+  className?: string
   modelValue: boolean
   type?: DisplayType
   title?: string
@@ -177,6 +177,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  className: '',
   type: 'warning',
   title: defaultTitle,
   description: defaultDescription,

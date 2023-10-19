@@ -2,6 +2,7 @@
   <Listbox
     v-model="value"
     as="div"
+    v-bind="{ [`${returnObject ? 'by': ''}`]: itemKey }"
     class="relative"
     :disabled="disabled"
   >
@@ -22,7 +23,7 @@
         v-if="selectedOption"
         class="block truncate"
       >
-        {{ selectedOption.label }}
+        {{ returnObject ? selectedOption[itemKey] : selectedOption.label }}
       </span>
       <span
         v-else
@@ -70,11 +71,11 @@
           "
       >
         <ListboxOption
-          v-for="option in options"
-          :key="option.value"
+          v-for="option in returnObject ? optionsObject : options"
+          :key="returnObject ? option[itemKey] : option.value"
           v-slot="{ active, selected }"
           as="template"
-          :value="option.value"
+          :value="returnObject ? option : option.value"
         >
           <li
             :class="[
@@ -89,7 +90,7 @@
               ]"
             >
               <slot :option="option" />
-              {{ option.label }}
+              {{ returnObject ? option[itemKey] : option.label }}
             </span>
             <span
               v-if="selected"
@@ -122,18 +123,25 @@ import { CheckIcon, SelectorIcon } from '@heroicons/vue/solid'
 import { Option } from '@/typings/option.type'
 
 interface Props {
-  options: Option[]
+  options?: Option[]
+  optionsObject?: any
   className?: string
-  modelValue?: string | string[]
+  modelValue?: string | string[] | { [x: string]: string | boolean | number }
   disabled?: boolean
-  label?: string
+  label?: string,
+  returnObject?: boolean,
+  itemKey?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   className: '',
   modelValue: '',
   disabled: false,
-  label: null
+  label: null,
+  returnObject: false,
+  options: () => { return [] },
+  optionsObject: () => { return [] },
+  itemKey: 'key'
 })
 
 const emit = defineEmits(['update:modelValue', 'input'])
@@ -148,7 +156,12 @@ const value = computed({
   }
 })
 
-const selectedOption = computed(() =>
-  props.options ? props.options.find(option => option.value === value.value) : null
+const selectedOption = computed(() => {
+  if (props.returnObject === true) {
+    return props.optionsObject ? props.optionsObject.find(option => option[props.itemKey] === value.value[props.itemKey]) : null
+  }
+
+  return props.options ? props.options.find(option => option.value === value.value) : null
+}
 )
 </script>

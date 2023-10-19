@@ -17,6 +17,8 @@ export class Project extends BaseModel {
   status: ProjectStatus
 
   userId: string
+  // eslint-disable-next-line camelcase
+  user_id?: string
   user: User
 
   clientId: string

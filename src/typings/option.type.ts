@@ -13,3 +13,17 @@ export class OptionObject {
     disabled: boolean
   }>
 }
+
+export class UserOptionObject {
+  email: string
+  firstName: string
+  id: string
+  lastName: string
+  phone: string
+  updateAt: string
+  username: string
+
+  role: {
+    [ x: string ]: boolean | number | string
+  }
+}
