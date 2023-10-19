@@ -297,6 +297,7 @@ const initPage = () => {
 }
 
 onMounted(() => {
+  initForm()
   initPage()
   initOptions()
 })
@@ -321,8 +322,11 @@ const initForm = () => {
       label: 'Description',
       isRequired: true,
       rules: [required]
-    },
-    {
+    }
+  ]
+
+  if (!id) {
+    formSettings.value = [...formSettings.value, {
       key: 'cost',
       label: 'Cost',
       isRequired: true,
@@ -348,12 +352,11 @@ const initForm = () => {
       key: 'variant',
       label: 'Variants',
       isRequired: false
-    }
-
-  ]
+    }]
+  }
 }
 // const hasPermission = (method, module = 'USER') => {
 //   return store.getters['auth/hasPermission'](module, method)
 // }
-initForm()
+// initForm()
 </script>

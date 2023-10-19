@@ -121,6 +121,12 @@ const initForm = () => {
       rules: [required]
     },
     {
+      key: 'code',
+      label: 'Code',
+      isRequired: true,
+      rules: [required]
+    },
+    {
       key: 'categoryId',
       label: 'Variant Category',
       isRequired: true,
