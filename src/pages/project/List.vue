@@ -30,7 +30,7 @@
             name: !drag ? 'flip-list' : null
           }"
           group="people"
-          item-key="id"
+          item-key="user_id"
           v-bind="dragOptions"
           @end="drag = false"
           @start="drag = true"
@@ -58,7 +58,7 @@
             name: !drag ? 'flip-list' : null
           }"
           group="people"
-          item-key="id"
+          item-key="user_id"
           v-bind="dragOptions"
           @end="drag = false"
           @start="drag = true"
@@ -86,7 +86,7 @@
             name: !drag ? 'flip-list' : null
           }"
           group="people"
-          item-key="id"
+          item-key="user_id"
           v-bind="dragOptions"
           @end="drag = false"
           @start="drag = true"
@@ -114,7 +114,7 @@
             name: !drag ? 'flip-list' : null
           }"
           group="people"
-          item-key="id"
+          item-key="user_id"
           v-bind="dragOptions"
           @end="drag = false"
           @start="drag = true"
@@ -190,7 +190,7 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, computed, onMounted, reactive, ref } from 'vue'
+import { Ref, watch, computed, onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { PlusIcon } from '@heroicons/vue/solid'
@@ -262,7 +262,7 @@ const visibleDetailModal = ref(false)
 const detailItem: Ref<Project> = ref()
 const handleDetail = (data: Project) => {
   visibleDetailModal.value = true
-  detailItem.value = data
+  detailItem.value = { ...data }
 }
 
 // Detail project task
@@ -292,6 +292,7 @@ onMounted(() => {
 })
 
 const onProjectUpdate = (payload) => {
+  detailItem.value = { ...payload }
   items.value.splice(
     items.value.findIndex(item => item.id === payload.id),
     1,
@@ -325,7 +326,7 @@ const confirmDelete = () => {
 }
 
 const projectsInitiate = computed({
-  get: () => items.value.filter((item) => item.status === 'initiate'),
+  get: () => [...items.value.filter((item) => item.status === 'initiate')],
   set: (val) => {
     for (let i = 0; i < val.length; i++) {
       if (val[i].status !== 'initiate') {
@@ -339,7 +340,7 @@ const projectsInitiate = computed({
   }
 })
 const projectsQualification = computed({
-  get: () => items.value.filter((item) => item.status === 'qualification'),
+  get: () => [...items.value.filter((item) => item.status === 'qualification')],
   set: (val) => {
     for (let i = 0; i < val.length; i++) {
       if (val[i].status !== 'qualification') {
@@ -354,7 +355,7 @@ const projectsQualification = computed({
 })
 
 const projectsLead = computed({
-  get: () => items.value.filter((item) => item.status === 'lead'),
+  get: () => [...items.value.filter((item) => item.status === 'lead')],
   set: (val) => {
     for (let i = 0; i < val.length; i++) {
       if (val[i].status !== 'lead') {
@@ -369,7 +370,7 @@ const projectsLead = computed({
 })
 
 const projectsQuotation = computed({
-  get: () => items.value.filter((item) => item.status === 'quotation'),
+  get: () => [...items.value.filter((item) => item.status === 'quotation')],
   set: (val) => {
     for (let i = 0; i < val.length; i++) {
       if (val[i].status !== 'quotation') {
@@ -395,6 +396,7 @@ const drag = ref(false)
 const hasPermission = (method, module = 'DEVICE') => {
   return store.getters['auth/hasPermission'](module, method)
 }
+
 </script>
 
 <style lang="scss" scoped>

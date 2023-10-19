@@ -36,20 +36,61 @@
             >
               Antention Needed
             </div>
-            <div class="flex justify-end">
-              <div v-if="avatar">
-                <img
-                  class="avatar"
-                  :src="avatar"
-                >
-              </div>
-              <div
-                v-else
-                class="info-tag !rounded-full capitalize"
+            <Popover
+              v-slot="{ open }"
+              class="relative"
+            >
+              <PopoverButton @click="() => handleClickUser(open)">
+                <div class="flex justify-end p-0.5 hover:cursor-pointer hover:border border-black rounded-full">
+                  <div v-if="avatar">
+                    <img
+                      class="avatar"
+                      :src="avatar"
+                    >
+                  </div>
+                  <div
+                    v-else
+                    class="info-tag !rounded-full capitalize"
+                  >
+                    {{ userInitial }}
+                  </div>
+                </div>
+                <!-- <button
+                    class="rounded-full border border-dashed border-grey p-1"
+                    type="button"
+                  >
+                    <UserAddIcon class="w-4 h-4 text-grey" />
+                  </button> -->
+              </PopoverButton>
+              <transition
+                enter-active-class="transition duration-200 ease-out"
+                enter-from-class="translate-y-1 opacity-0"
+                enter-to-class="translate-y-0 opacity-100"
+                leave-active-class="transition duration-150 ease-in"
+                leave-from-class="translate-y-0 opacity-100"
+                leave-to-class="translate-y-1 opacity-0"
               >
-                {{ userInitial }}
-              </div>
-            </div>
+                <PopoverPanel
+                  class="absolute left-0 z-10 mt-2 min-w-[200px] max-w-sm transform px-4 sm:px-0 bg-white"
+                >
+                  <Dropdown
+                    v-model="(project.user as any)"
+                    class="default-input"
+                    item-key="username"
+                    :options-object="userOptions"
+                    :return-object="true"
+                  >
+                    <template #default="{ option }">
+                      <div
+                        class="info-tag !rounded-full capitalize w-6 h-6 mr-3"
+                      >
+                        {{ option.username[0] }}
+                      </div>
+                    </template>
+                  </Dropdown>
+                </PopoverPanel>
+              </transition>
+            </Popover>
           </div>
           <div class="-ml-3">
             <input
@@ -148,17 +189,22 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, ref, watch } from 'vue'
+import { Ref, ref, watch, computed } from 'vue'
 import { watchDebounced } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 import dayjs from 'dayjs'
 import { PlusIcon } from '@heroicons/vue/solid'
+import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
+import Dropdown from '@/components/form/dropdown/Dropdown.vue'
+
 import { Project, getProjectStatusColor } from '@/typings/models/project.type'
 import { update as updateProject, detail as getProject } from '@/api/project'
+import { get as getUser } from '@/api/user'
 import { useProject } from '@/composables/use-project'
 import TaskForm from '@/components/project/task/Form.vue'
 import { useNotify } from '@/composables/use-notify'
 import { snakeToTitle } from '@/utils/string'
+import { User } from '@/typings/models/user.type'
 import { quotationCreate, quotationList } from '@/router/routes/quotation'
 
 interface Props {
@@ -173,10 +219,20 @@ const isLoaded = ref(false)
 const loading = ref(true)
 const project: Ref<Project> = ref()
 
+const userOptions: Ref<User[]> = ref([])
+
+// watch(
+//   () => props.data.user,
+//   (val) => {
+//     console.log('props.data.user', val)
+//   })
+
 watch(
   () => props.data,
-  (val) => {
-    if (val) {
+  (val, oldValue) => {
+    // Guard for not getProject when user is updated to Prevent Infinite Loop
+
+    if (val && !oldValue?.user) {
       getProject(val.id)
         .then((res) => {
           project.value = res.data
@@ -195,9 +251,15 @@ watchDebounced(
   project,
   () => {
     if (!isLoaded.value) { return }
+
     saveLoading.value = true
 
-    const payload = project.value
+    const payload = { ...project.value }
+
+    if (payload.user?.id) {
+      payload.user_id = payload.user?.id
+    }
+
     updateProject(payload.id, payload)
       .then(() => {
         emit('update', payload)
@@ -232,6 +294,18 @@ const formatDate = (date) => {
   return dayjs(date).format('MMM DD, HH:mm')
 }
 
+const handleClickUser = (open) => {
+  return getUser()
+    .then(res => {
+      const { data } = res
+      userOptions.value = [...data.data] as User[]
+      open && open()
+    })
+    .catch(() => {
+      notify('loaded', 'danger')
+    })
+}
+
 const handleQuotation = () => {
   router.push({ ...quotationCreate, params: { project_id: project.value.id } })
 }
@@ -240,9 +314,17 @@ const handleQuoted = () => {
   router.push({ ...quotationList, query: { project_id: project.value.id } })
 }
 
+const avatar = computed(() => {
+  return props.data?.user?.avatar
+})
+
+const userInitial = computed(() => {
+  return props.data?.user?.username[0]
+})
+
 const {
-  avatar,
-  userInitial,
+  // avatar,
+  // userInitial,
   isAlmostExpired,
   isNeedQuotation,
   isQuoted,
