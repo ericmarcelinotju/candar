@@ -348,7 +348,7 @@ const onAttachmentChange = (e) => {
   taskPayload.value.attachment = files[0]
 }
 
-const attendeeOptions = computed(() => ['budi', 'bambang', 'udin'].filter(option => taskPayload.value.attendees.indexOf(option) === -1))
+const attendeeOptions = computed(() => ['budi', 'bambang', 'udin'].filter(option => taskPayload.value.attendees?.indexOf(option) === -1))
 
 const addAttendee = (close, attendee) => {
   if (taskPayload.value.attendees.indexOf(attendee) === -1) {

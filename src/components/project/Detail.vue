@@ -74,7 +74,7 @@
                   class="absolute left-0 z-10 mt-2 min-w-[200px] max-w-sm transform px-4 sm:px-0 bg-white"
                 >
                   <Dropdown
-                    v-model="(project.user as any)"
+                    v-model="project.user"
                     class="default-input"
                     item-key="username"
                     :options-object="userOptions"
@@ -230,8 +230,9 @@ const userOptions: Ref<User[]> = ref([])
 watch(
   () => props.data,
   (val, oldValue) => {
-    // Guard for not getProject when user is updated to Prevent Infinite Loop
+    console.log('props.data', props.data)
 
+    // Guard for not getProject when user is updated to Prevent Infinite Loop
     if (val && !oldValue?.user) {
       getProject(val.id)
         .then((res) => {

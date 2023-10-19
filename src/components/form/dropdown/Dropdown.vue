@@ -126,7 +126,7 @@ interface Props {
   options?: Option[]
   optionsObject?: any
   className?: string
-  modelValue?: string | string[] | { [x: string]: string | boolean | number }
+  modelValue?: string | string[] | { [x: string]: string | boolean | number } | any
   disabled?: boolean
   label?: string,
   returnObject?: boolean,
