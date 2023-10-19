@@ -185,7 +185,6 @@ const handleDeleteVariant = (e: { id: string, index: number }) => {
 
   const tempValue = [...modelValue.value[e.index].value]
   const tempOptions = [...modelValue.value[e.index].options]
-  const tempAllOptions = [...modelValue.value]
 
   const findIndex = tempOptions.findIndex((e2: OptionObject) => {
     return e2.variant.some((element: { id: string, name: string, disabled: boolean }) => {
@@ -196,25 +195,12 @@ const handleDeleteVariant = (e: { id: string, index: number }) => {
   if (findIndex < 0) return
 
   tempOptions[findIndex].disabled = false
-  tempAllOptions.map((e3: { value: { id: string, name: string, disabled: boolean} [], options: OptionObject[] }) => {
-    e3.options.map((e4: OptionObject) => {
-      e4.variant.map((e5: { id: string, name: string, disabled: boolean }) => {
-        if (e5.id === id) {
-          e5.disabled = false
-        }
-        return e5
-      })
-      return e4
-    })
-    return e3
-  })
 
   const findindexVariant = tempValue.findIndex((e4: { id: string, name: string, disabled: boolean }) => e4.id === e.id)
   if (findindexVariant < 0) return
 
   tempValue.splice(findindexVariant, 1)
 
-  modelValue.value = tempAllOptions
   modelValue.value[e.index].value = tempValue
 }
 
