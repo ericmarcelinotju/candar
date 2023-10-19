@@ -104,6 +104,21 @@
           </div>
         </div>
         <div class="flex-1 border-l px-3">
+          <InfoButton
+            v-if="hasType"
+            class="mb-4"
+            info="Task Type"
+          >
+            <div
+
+              class="group relative success-tag !rounded-lg !p-0 h-[1.6rem] hover:cursor-pointer mb-1"
+            >
+              <div class="px-3">
+                {{ projectTask.type }}
+              </div>
+            </div>
+          </InfoButton>
+
           <div>
             <p class="text-md">
               Picture
@@ -210,6 +225,7 @@ watch(
     if (val) {
       getProjectTask(val.id)
         .then((res) => {
+          res.data.type = 'Ini adalah type'
           projectTask.value = res.data
           isLoaded.value = true
         })
@@ -247,17 +263,19 @@ watchDebounced(
   }
 )
 
+const hasType = computed(() => projectTask.value.type)
+
 const attendeeOptions = computed(() => ['budi', 'bambang', 'udin'].filter(option => projectTask.value.attendees.indexOf(option) === -1))
 
 const addAttendee = (close, attendee) => {
-  if (projectTask.value.attendees.indexOf(attendee) === -1) {
+  if (projectTask.value.attendees?.indexOf(attendee) === -1) {
     projectTask.value.attendees.push(attendee)
   }
   close()
 }
 
 const removeAttendee = (attendee) => {
-  projectTask.value.attendees.splice(projectTask.value.attendees.indexOf(attendee), 1)
+  projectTask.value.attendees.splice(projectTask.value.attendees?.indexOf(attendee), 1)
 }
 
 const inputPicture = ref(null)

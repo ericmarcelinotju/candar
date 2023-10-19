@@ -76,6 +76,57 @@
         </transition>
       </Popover>
 
+      <div
+        v-if="taskPayload.type"
+        class="group relative success-tag !rounded-xl !p-0 h-[1.6rem]"
+      >
+        <div class="px-3">
+          {{ taskPayload.type }}
+        </div>
+
+        <div
+          class="group-hover:block hidden absolute top-0 right-0 ml-1 py-[0.2rem] px-2 text-white bg-success-dark rounded-xl cursor-pointer font-bold"
+          @click="removeType"
+        >
+          x
+        </div>
+      </div>
+
+      <Popover
+        v-if="!hasType"
+        class="relative"
+      >
+        <PopoverButton>
+          <InfoButton info="Set Type">
+            <button
+              class="rounded-full border border-dashed border-grey p-1"
+              type="button"
+            >
+              <TagIcon class="w-4 h-4 text-grey" />
+            </button>
+          </InfoButton>
+        </PopoverButton>
+
+        <transition
+          enter-active-class="transition duration-200 ease-out"
+          enter-from-class="translate-y-1 opacity-0"
+          enter-to-class="translate-y-0 opacity-100"
+          leave-active-class="transition duration-150 ease-in"
+          leave-from-class="translate-y-0 opacity-100"
+          leave-to-class="translate-y-1 opacity-0"
+        >
+          <PopoverPanel
+            class="absolute bg-white left-0 z-10 mt-2 min-w-[180px] max-w-sm -translate-x-1/2 transform px-4 sm:px-0"
+          >
+            <Dropdown
+              v-model="taskPayload.type"
+              class="default-input"
+              :options="typeOptions"
+            />
+          </PopoverPanel>
+        </transition>
+      </Popover>
+
       <Datepicker
         v-model="taskPayload.date"
         auto-apply
@@ -213,18 +264,20 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, Ref, watch } from 'vue'
 import { watchDebounced } from '@vueuse/core'
 import dayjs from 'dayjs'
 import Datepicker from '@vuepic/vue-datepicker'
 import Multiselect from 'vue-multiselect'
 import { Menu, MenuButton, MenuItems, MenuItem, Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
-import { CalendarIcon, UserAddIcon, PaperClipIcon, PhotographIcon, DotsHorizontalIcon, TrashIcon, EyeIcon } from '@heroicons/vue/solid'
+import { CalendarIcon, UserAddIcon, PaperClipIcon, PhotographIcon, DotsHorizontalIcon, TrashIcon, EyeIcon, TagIcon } from '@heroicons/vue/solid'
+import { Option } from '@/typings/option.type'
 
 import { Project } from '@/typings/models/project.type'
 import { ProjectTask } from '@/typings/models/project-task.type'
 import { insert as insertProjectTask, update as updateProjectTask, del as deleteProjectTask } from '@/api/project-task'
 import InfoButton from '@/components/helper/InfoButton.vue'
+import Dropdown from '@/components/form/dropdown/Dropdown.vue'
 import { jsonToFormData } from '@/utils'
 
 const defaultTaskPayload = {
@@ -233,6 +286,7 @@ const defaultTaskPayload = {
   description: null,
   date: null,
   attendees: [],
+  type: null,
   picture: null,
   attachment: null
 } as ProjectTask
@@ -248,6 +302,7 @@ const props = withDefaults(defineProps<Props>(), {
     description: null,
     date: null,
     attendees: [],
+    type: null,
     picture: null,
     attachment: null
   } as ProjectTask)
@@ -266,11 +321,11 @@ const submitTask = () => {
     projectId: props.project.id
   })
 
+
   if (taskPayload.value.id) {
     updateProjectTask(taskPayload.value.id, payload)
       .then(() => {
-        // project.value.tasks.push(payload)
-        emit('update', taskPayload)
+        emit('update', { ...taskPayload })
       })
       .finally(() => {
         loading.value = false
@@ -278,18 +333,23 @@ const submitTask = () => {
   } else {
     insertProjectTask(payload)
       .then(() => {
-        emit('insert', taskPayload)
+        console.log('insertProjectTask')
+        emit('insert', { ...taskPayload })
       })
       .finally(() => {
-        taskPayload.value = defaultTaskPayload
+        taskPayload.value = { ...defaultTaskPayload }
         loading.value = false
       })
   }
 }
 
-// watch(() => taskPayload.value.isFinish, () => {
-//   submitTask()
-// })
+const hasType = computed(() => taskPayload.value.type)
+
+const removeType = () => (taskPayload.value.type = null)
+
+watch(() => taskPayload.value.type, (val) => {
+  console.log(val)
+})
 
 watchDebounced(
   taskPayload,
@@ -348,17 +408,22 @@ const onAttachmentChange = (e) => {
   taskPayload.value.attachment = files[0]
 }
 
+const typeOptions: Ref<Option[]> = ref([
+  { label: 'Task', value: 'task' },
+  { label: 'Bugs', value: 'bugs' }
+])
+
 const attendeeOptions = computed(() => ['budi', 'bambang', 'udin'].filter(option => taskPayload.value.attendees?.indexOf(option) === -1))
 
 const addAttendee = (close, attendee) => {
-  if (taskPayload.value.attendees.indexOf(attendee) === -1) {
+  if (taskPayload.value.attendees?.indexOf(attendee) === -1) {
     taskPayload.value.attendees.push(attendee)
   }
   close()
 }
 
 const removeAttendee = (attendee) => {
-  taskPayload.value.attendees.splice(taskPayload.value.attendees.indexOf(attendee), 1)
+  taskPayload.value.attendees.splice(taskPayload.value.attendees?.indexOf(attendee), 1)
 }
 
 const formatDate = (date) => {
