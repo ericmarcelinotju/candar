@@ -13,7 +13,7 @@
         {{ project.client?.name }} > {{ project.code }}
       </div>
       <div class="mt-3 flex gap-3">
-        <div class="flex-[2_2_0%] px-3">
+        <div class="flex-[1_1_11%] px-3">
           <div class="flex gap-2 mb-2">
             <div
               v-if="isNeedQuotation"
@@ -41,7 +41,7 @@
               class="relative"
             >
               <PopoverButton @click="() => handleClickUser(open)">
-                <div class="flex justify-end p-0.5 hover:cursor-pointer hover:border border-black rounded-full">
+                <div class="flex justify-end p-0.5 hover:cursor-pointer hover:opacity-70 rounded-full">
                   <div v-if="avatar">
                     <img
                       class="avatar"
@@ -144,6 +144,40 @@
 
             <div class="w-[0.05rem] bg-grey" />
 
+            <div class="pt-2 px-2">
+              <p class="text-grey-dark">
+                DUE DATE
+              </p>
+              <Datepicker
+                v-model="project.dueDate"
+                auto-apply
+                :clearable="false"
+                :enable-time-picker="false"
+              >
+                <template #trigger>
+                  <div class="hover:bg-gray-200 p-1 transition duration-300 rounded-md -translate-x-1">
+                    <InfoButton
+                      v-if="project.dueDate"
+                      :info="formatDate(project.dueDate)"
+                    >
+                      <!-- <p>{{ project.createdAt }}</p> -->
+                      <p class="text-xs font-medium">
+                        {{ formatDate(project.dueDate) }}
+                      </p>
+                    </InfoButton>
+                    <InfoButton
+                      v-else
+                      info="Set Date"
+                    >
+                      -
+                    </InfoButton>
+                  </div>
+                </template>
+              </Datepicker>
+            </div>
+
+            <div class="w-[0.05rem] bg-grey" />
+
             <div class="p-2">
               <p class="mb-1 text-grey-dark">
                 SOURCE
@@ -196,6 +230,8 @@ import dayjs from 'dayjs'
 import { PlusIcon } from '@heroicons/vue/solid'
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import Dropdown from '@/components/form/dropdown/Dropdown.vue'
+import Datepicker from '@vuepic/vue-datepicker'
+import InfoButton from '@/components/helper/InfoButton.vue'
 
 import { Project, getProjectStatusColor } from '@/typings/models/project.type'
 import { update as updateProject, detail as getProject } from '@/api/project'
@@ -221,19 +257,14 @@ const project: Ref<Project> = ref()
 
 const userOptions: Ref<User[]> = ref([])
 
-// watch(
-//   () => props.data.user,
-//   (val) => {
-//     console.log('props.data.user', val)
-//   })
+watch(() => props.data.user, (val) => {
+  console.log(val)
+})
 
 watch(
   () => props.data,
-  (val, oldValue) => {
-    console.log('props.data', props.data)
-
-    // Guard for not getProject when user is updated to Prevent Infinite Loop
-    if (val && !oldValue?.user) {
+  (val) => {
+    if (val) {
       getProject(val.id)
         .then((res) => {
           project.value = res.data
@@ -292,7 +323,7 @@ const onTaskDetail = (data) => {
 }
 
 const formatDate = (date) => {
-  return dayjs(date).format('MMM DD, HH:mm')
+  return dayjs(date).format('DD MMMM YYYY')
 }
 
 const handleClickUser = (open) => {
@@ -316,11 +347,11 @@ const handleQuoted = () => {
 }
 
 const avatar = computed(() => {
-  return props.data?.user?.avatar
+  return project.value.user?.avatar
 })
 
 const userInitial = computed(() => {
-  return props.data?.user?.username[0]
+  return project.value.user?.username[0]
 })
 
 const {
