@@ -181,6 +181,32 @@
               />
             </div>
           </div>
+          <div class="mt-6">
+            <p class="text-md">
+              Costs
+            </p>
+
+            <div class="mt-3 flex flex-col gap-3">
+              <transition-group name="list">
+                <CostForm
+                  v-for="cost in project.costs"
+                  :key="cost.id"
+                  :cost="cost"
+                  :project="project"
+                  @delete="onCostUpdate"
+                  @detail="onCostDetail"
+                  @insert="onCostUpdate"
+                  @update="onCostUpdate"
+                />
+              </transition-group>
+              <CostForm
+                :project="project"
+                @delete="onCostUpdate"
+                @insert="onCostUpdate"
+                @update="onCostUpdate"
+              />
+            </div>
+          </div>
         </div>
         <div class="flex-1 border-l px-3">
           <div class="flex gap-3 text-xs font-semibold">
@@ -293,6 +319,7 @@ import { update as updateProject, detail as getProject } from '@/api/project'
 import { get as getUser } from '@/api/user'
 import { useProject } from '@/composables/use-project'
 import TaskForm from '@/components/project/task/Form.vue'
+import CostForm from '@/components/project/cost/Form.vue'
 import { useNotify } from '@/composables/use-notify'
 import { snakeToTitle } from '@/utils/string'
 import { User } from '@/typings/models/user.type'
@@ -302,7 +329,7 @@ interface Props {
   data: Project
 }
 const props = defineProps<Props>()
-const emit = defineEmits(['update', 'detail:task', 'close'])
+const emit = defineEmits(['update', 'detail:task', 'detail:cost', 'close'])
 const router = useRouter()
 const { notify } = useNotify('project')
 
@@ -369,8 +396,20 @@ const onTaskUpdate = () => {
     })
 }
 
+const onCostUpdate = () => {
+  // TODO :: Update without API
+  getProject(props.data.id)
+    .then((res) => {
+      project.value = res.data
+    })
+}
+
 const onTaskDetail = (data) => {
   emit('detail:task', data)
+}
+
+const onCostDetail = (data) => {
+  emit('detail:cost', data)
 }
 
 const formatDate = (date) => {

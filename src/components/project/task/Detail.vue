@@ -225,7 +225,6 @@ watch(
     if (val) {
       getProjectTask(val.id)
         .then((res) => {
-          res.data.type = 'Ini adalah type'
           projectTask.value = res.data
           isLoaded.value = true
         })

@@ -60,7 +60,6 @@
             mt-1
             z-10
             overflow-auto
-            text-base
             bg-white
             rounded-md
             shadow-lg

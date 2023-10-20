@@ -275,11 +275,12 @@ import Multiselect from 'vue-multiselect'
 import { Menu, MenuButton, MenuItems, MenuItem, Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { CalendarIcon, UserAddIcon, PaperClipIcon, PhotographIcon, DotsHorizontalIcon, TrashIcon, EyeIcon, TagIcon } from '@heroicons/vue/solid'
 import { Option } from '@/typings/option.type'
+import { useNotify } from '@/composables/use-notify'
 
 import { get as getAttendee } from '@/api/task-attendee'
 import { Project } from '@/typings/models/project.type'
 import { ProjectTask } from '@/typings/models/project-task.type'
-import { Attendee } from '@/typings/models/task-attendee.type'
+
 import { insert as insertProjectTask, update as updateProjectTask, del as deleteProjectTask } from '@/api/project-task'
 import InfoButton from '@/components/helper/InfoButton.vue'
 import Dropdown from '@/components/form/dropdown/Dropdown.vue'
@@ -315,6 +316,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits(['insert', 'update', 'delete', 'detail'])
 
+const { notify } = useNotify('task')
+
 const loading = ref(false)
 const taskPayload = ref(props.task)
 
@@ -331,14 +334,19 @@ const submitTask = () => {
       .then(() => {
         emit('update', { ...taskPayload })
       })
+      .catch(() => {
+        notify('updated', 'danger')
+      })
       .finally(() => {
         loading.value = false
       })
   } else {
     insertProjectTask(payload)
       .then(() => {
-        console.log('insertProjectTask')
         emit('insert', { ...taskPayload })
+      })
+      .catch(() => {
+        notify('inserted', 'danger')
       })
       .finally(() => {
         taskPayload.value = { ...defaultTaskPayload }

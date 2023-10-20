@@ -170,6 +170,7 @@
           <ProjectDetail
             :data="detailItem"
             @close="close"
+            @detail:cost="handleCostDetail"
             @detail:task="handleTaskDetail"
             @update="onProjectUpdate"
           />
@@ -187,6 +188,19 @@
         type="info"
       >
         <ProjectTaskDetail :data="detailTaskItem" />
+      </DefaultModal>
+      <DefaultModal
+        v-model="visibleCostDetailModal"
+        class-name="!max-w-7xl"
+        description=""
+        :has-cancel="false"
+        :has-confirm="false"
+        :has-icon="false"
+        :loading="loadingCostDetail"
+        title=""
+        type="info"
+      >
+        <ProjectCostDetail :data="detailCostItem" />
       </DefaultModal>
     </template>
   </DefaultPage>
@@ -210,8 +224,12 @@ import { projectCreate } from '@/router/routes/project'
 import Draggable from 'vuedraggable'
 import ProjectCard from '@/components/project/Card.vue'
 import ProjectDetail from '@/components/project/Detail.vue'
+
 import ProjectTaskDetail from '@/components/project/task/Detail.vue'
 import { ProjectTask } from '@/typings/models/project-task.type'
+
+import ProjectCostDetail from '@/components/project/cost/Detail.vue'
+import { ProjectCost } from '@/typings/models/project-cost.type'
 
 const route = useRoute()
 const router = useRouter()
@@ -271,7 +289,6 @@ const detailItem: Ref<Project> = ref()
 const handleDetail = (data: Project) => {
   visibleDetailModal.value = true
   detailItem.value = { ...data }
-  console.log(detailItem.value)
 }
 
 // Detail project task
@@ -284,6 +301,18 @@ const handleTaskDetail = (data: ProjectTask) => {
 
   visibleTaskDetailModal.value = true
   detailTaskItem.value = data
+}
+
+// Detail project Cost
+const loadingCostDetail = ref(false)
+const visibleCostDetailModal = ref(false)
+const detailCostItem: Ref<ProjectCost> = ref()
+const handleCostDetail = (data: ProjectCost) => {
+  visibleDetailModal.value = false
+  detailItem.value = null
+
+  visibleCostDetailModal.value = true
+  detailCostItem.value = data
 }
 
 const initPage = async () => {
