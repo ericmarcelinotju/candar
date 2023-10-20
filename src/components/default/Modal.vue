@@ -105,7 +105,7 @@
                       {{ description }}
                     </p>
                   </div>
-                  <slot />
+                  <slot :close="close" />
                 </div>
               </div>
               <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">

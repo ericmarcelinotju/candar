@@ -14,83 +14,132 @@
       </div>
       <div class="mt-3 flex gap-3">
         <div class="flex-[1_1_11%] px-3">
-          <div class="flex gap-2 mb-2">
-            <div
-              v-if="isNeedQuotation"
-              class="warning-tag cursor-pointer hover:bg-warning-dark"
-              @click="handleQuotation"
-            >
-              <PlusIcon class="w-3 h-3 mr-1" />
-              Quotation Needed
-            </div>
-            <div
-              v-if="isQuoted"
-              class="success-tag cursor-pointer hover:bg-success-dark"
-              @click="handleQuoted"
-            >
-              Quoted
-            </div>
-            <div
-              v-if="isAlmostExpired"
-              class="danger-tag"
-            >
-              Antention Needed
-            </div>
-            <Popover
-              v-slot="{ open }"
-              class="relative"
-            >
-              <PopoverButton @click="() => handleClickUser(open)">
-                <div class="flex justify-end p-0.5 hover:cursor-pointer hover:opacity-70 rounded-full">
-                  <div v-if="avatar">
-                    <img
-                      class="avatar"
-                      :src="avatar"
+          <div class="flex flex-row justify-between gap-2 mb-2">
+            <div class="flex flex-row gap-2">
+              <div
+                v-if="isNeedQuotation"
+                class="warning-tag cursor-pointer hover:bg-warning-dark"
+                @click="handleQuotation"
+              >
+                <PlusIcon class="w-3 h-3 mr-1" />
+                Quotation Needed
+              </div>
+              <div
+                v-if="isQuoted"
+                class="success-tag cursor-pointer hover:bg-success-dark"
+                @click="handleQuoted"
+              >
+                Quoted
+              </div>
+              <div
+                v-if="isAlmostExpired"
+                class="danger-tag"
+              >
+                Antention Needed
+              </div>
+              <Popover
+                v-slot="{ open }"
+                class="relative"
+              >
+                <PopoverButton @click="() => handleClickUser(open)">
+                  <div class="flex justify-end p-0.5 hover:cursor-pointer hover:opacity-70 rounded-full">
+                    <div v-if="avatar">
+                      <img
+                        class="avatar"
+                        :src="avatar"
+                      >
+                    </div>
+                    <div
+                      v-else
+                      class="info-tag !rounded-full capitalize"
                     >
+                      {{ userInitial }}
+                    </div>
                   </div>
-                  <div
-                    v-else
-                    class="info-tag !rounded-full capitalize"
-                  >
-                    {{ userInitial }}
-                  </div>
-                </div>
-                <!-- <button
+                  <!-- <button
                     class="rounded-full border border-dashed border-grey p-1"
                     type="button"
                   >
                     <UserAddIcon class="w-4 h-4 text-grey" />
                   </button> -->
-              </PopoverButton>
-              <transition
-                enter-active-class="transition duration-200 ease-out"
-                enter-from-class="translate-y-1 opacity-0"
-                enter-to-class="translate-y-0 opacity-100"
-                leave-active-class="transition duration-150 ease-in"
-                leave-from-class="translate-y-0 opacity-100"
-                leave-to-class="translate-y-1 opacity-0"
-              >
-                <PopoverPanel
-                  class="absolute left-0 z-10 mt-2 min-w-[200px] max-w-sm transform px-4 sm:px-0 bg-white"
+                </PopoverButton>
+                <transition
+                  enter-active-class="transition duration-200 ease-out"
+                  enter-from-class="translate-y-1 opacity-0"
+                  enter-to-class="translate-y-0 opacity-100"
+                  leave-active-class="transition duration-150 ease-in"
+                  leave-from-class="translate-y-0 opacity-100"
+                  leave-to-class="translate-y-1 opacity-0"
                 >
-                  <Dropdown
-                    v-model="project.user"
-                    class="default-input"
-                    item-key="username"
-                    :options-object="userOptions"
-                    :return-object="true"
+                  <PopoverPanel
+                    class="absolute left-0 z-10 mt-2 min-w-[200px] max-w-sm transform px-4 sm:px-0 bg-white"
                   >
-                    <template #default="{ option }">
-                      <div
-                        class="info-tag !rounded-full capitalize w-6 h-6 mr-3"
+                    <Dropdown
+                      v-model="project.user"
+                      class="default-input"
+                      item-key="username"
+                      :options-object="userOptions"
+                      :return-object="true"
+                    >
+                      <template #default="{ option }">
+                        <div
+                          class="info-tag !rounded-full capitalize w-6 h-6 mr-3"
+                        >
+                          {{ option.username[0] }}
+                        </div>
+                      </template>
+                    </Dropdown>
+                  </PopoverPanel>
+                </transition>
+              </Popover>
+            </div>
+            <Menu
+              as="div"
+              class="relative inline-block text-left"
+            >
+              <div>
+                <MenuButton
+                  class="info-button ml-2"
+                >
+                  <DotsVerticalIcon
+                    aria-hidden="true"
+                    class="h-4 w-4 text-white"
+                  />
+                </MenuButton>
+              </div>
+
+              <transition
+                enter-active-class="transition duration-100 ease-out"
+                enter-from-class="transform scale-95 opacity-0"
+                enter-to-class="transform scale-100 opacity-100"
+                leave-active-class="transition duration-75 ease-in"
+                leave-from-class="transform scale-100 opacity-100"
+                leave-to-class="transform scale-95 opacity-0"
+              >
+                <MenuItems
+                  class="z-20 absolute right-0 -translate-y-1 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                >
+                  <div class="px-1 py-1">
+                    <MenuItem v-slot="{ active }">
+                      <button
+                        :class="[
+                          active ? 'bg-info-dark text-white' : 'text-gray-900',
+                          'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                        ]"
+                        @click.prevent="() => handleCloseProject()"
                       >
-                        {{ option.username[0] }}
-                      </div>
-                    </template>
-                  </Dropdown>
-                </PopoverPanel>
+                        <XIcon
+                          :active="active"
+                          aria-hidden="true"
+                          :class="[active ? 'text-white' : 'text-black', 'mr-2 h-5 w-5']"
+                        />
+                        Close Project
+                      </button>
+                    </MenuItem>
+                  </div>
+                </MenuItems>
               </transition>
-            </Popover>
+            </Menu>
           </div>
           <div class="-ml-3">
             <input
@@ -219,6 +268,12 @@
         </div>
       </div>
     </div>
+    <DefaultModal
+      v-model="visibleDeleteConfirmationModal"
+      :loading="loadingDelete"
+      type="danger"
+      @confirm="confirmDelete"
+    />
   </div>
 </template>
 
@@ -227,8 +282,8 @@ import { Ref, ref, watch, computed } from 'vue'
 import { watchDebounced } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 import dayjs from 'dayjs'
-import { PlusIcon } from '@heroicons/vue/solid'
-import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
+import { PlusIcon, DotsVerticalIcon, XIcon } from '@heroicons/vue/solid'
+import { Popover, PopoverButton, PopoverPanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import Dropdown from '@/components/form/dropdown/Dropdown.vue'
 import Datepicker from '@vuepic/vue-datepicker'
 import InfoButton from '@/components/helper/InfoButton.vue'
@@ -247,7 +302,7 @@ interface Props {
   data: Project
 }
 const props = defineProps<Props>()
-const emit = defineEmits(['update', 'detail:task'])
+const emit = defineEmits(['update', 'detail:task', 'close'])
 const router = useRouter()
 const { notify } = useNotify('project')
 
@@ -256,7 +311,6 @@ const loading = ref(true)
 const project: Ref<Project> = ref()
 
 const userOptions: Ref<User[]> = ref([])
-
 
 watch(
   () => props.data,
@@ -321,6 +375,36 @@ const onTaskDetail = (data) => {
 
 const formatDate = (date) => {
   return dayjs(date).format('DD MMMM YYYY')
+}
+
+// Delete client
+const loadingDelete = ref(false)
+const visibleDeleteConfirmationModal = ref(false)
+
+const handleCloseProject = () => {
+  visibleDeleteConfirmationModal.value = true
+}
+
+const confirmDelete = () => {
+  const { id } = project.value
+  loadingDelete.value = true
+  setTimeout(() => {
+    console.log(id)
+    loadingDelete.value = false
+    emit('close')
+  }, 2000)
+  // deleteProduct(id)
+  //   .then(() => {
+  //     notify('deleted')
+  //     emit('close')
+  //   })
+  //   .catch(() => {
+  //     notify('deleted', 'danger')
+  //   })
+  //   .finally(() => {
+  //     loadingDelete.value = false
+  //     visibleDeleteConfirmationModal.value = false
+  //   })
 }
 
 const handleClickUser = (open) => {

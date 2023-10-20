@@ -166,11 +166,14 @@
         title=""
         type="info"
       >
-        <ProjectDetail
-          :data="detailItem"
-          @detail:task="handleTaskDetail"
-          @update="onProjectUpdate"
-        />
+        <template #default="{ close }">
+          <ProjectDetail
+            :data="detailItem"
+            @close="close"
+            @detail:task="handleTaskDetail"
+            @update="onProjectUpdate"
+          />
+        </template>
       </DefaultModal>
       <DefaultModal
         v-model="visibleTaskDetailModal"
