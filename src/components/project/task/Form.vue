@@ -41,12 +41,15 @@
         </div>
       </div>
 
-      <Popover class="relative">
+      <Popover
+        class="relative"
+      >
         <PopoverButton>
           <InfoButton info="Add Assignee">
             <button
               class="rounded-full border border-dashed border-grey p-1"
               type="button"
+              @click="() => handleOpenAssignee()"
             >
               <UserAddIcon class="w-4 h-4 text-grey" />
             </button>
@@ -273,8 +276,10 @@ import { Menu, MenuButton, MenuItems, MenuItem, Popover, PopoverButton, PopoverP
 import { CalendarIcon, UserAddIcon, PaperClipIcon, PhotographIcon, DotsHorizontalIcon, TrashIcon, EyeIcon, TagIcon } from '@heroicons/vue/solid'
 import { Option } from '@/typings/option.type'
 
+import { get as getAttendee } from '@/api/task-attendee'
 import { Project } from '@/typings/models/project.type'
 import { ProjectTask } from '@/typings/models/project-task.type'
+import { Attendee } from '@/typings/models/task-attendee.type'
 import { insert as insertProjectTask, update as updateProjectTask, del as deleteProjectTask } from '@/api/project-task'
 import InfoButton from '@/components/helper/InfoButton.vue'
 import Dropdown from '@/components/form/dropdown/Dropdown.vue'
@@ -320,7 +325,6 @@ const submitTask = () => {
     ...taskPayload.value,
     projectId: props.project.id
   })
-
 
   if (taskPayload.value.id) {
     updateProjectTask(taskPayload.value.id, payload)
@@ -413,9 +417,19 @@ const typeOptions: Ref<Option[]> = ref([
   { label: 'Bugs', value: 'bugs' }
 ])
 
-const attendeeOptions = computed(() => ['budi', 'bambang', 'udin'].filter(option => taskPayload.value.attendees?.indexOf(option) === -1))
+const attendees: Ref<string[]> = ref([])
+const attendeeOptions = computed(() => attendees.value?.filter(option => taskPayload.value?.attendees.indexOf(option) === -1))
+
+const handleOpenAssignee = () => {
+  getAttendee()
+    .then(res => {
+      attendees.value = [...res.data?.attendees]
+    })
+}
 
 const addAttendee = (close, attendee) => {
+  if (!taskPayload.value.attendees || taskPayload.value.attendees.length <= 0) (taskPayload.value.attendees = [])
+
   if (taskPayload.value.attendees?.indexOf(attendee) === -1) {
     taskPayload.value.attendees.push(attendee)
   }

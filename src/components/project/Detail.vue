@@ -257,9 +257,6 @@ const project: Ref<Project> = ref()
 
 const userOptions: Ref<User[]> = ref([])
 
-watch(() => props.data.user, (val) => {
-  console.log(val)
-})
 
 watch(
   () => props.data,
