@@ -14,21 +14,36 @@
       />
       <div class="mt-3 flex gap-3">
         <div class="flex-[2_2_0%] px-3">
-          <div class="flex items-center">
-            <input
-              id="is-finish"
-              v-model="projectTask.isFinish"
-              class="default-input cursor-pointer"
-              :class="[ projectTask.isFinish ? 'accent-success-dark' : 'accent-info-dark' ]"
-              type="checkbox"
+          <div class="flex flex-row justify-between items-center">
+            <div class="flex items-center">
+              <input
+                id="is-finish"
+                v-model="projectTask.isFinish"
+                class="default-input cursor-pointer"
+                :class="[ projectTask.isFinish ? 'accent-success-dark' : 'accent-info-dark' ]"
+                type="checkbox"
+              >
+              <label
+                class="mr-3 font-semibold cursor-pointer"
+                :class="[ projectTask.isFinish ? 'text-success-dark' : 'text-info-dark' ]"
+                for="is-finish"
+              >
+                {{ projectTask.isFinish ? 'DONE' : 'PENDING' }}
+              </label>
+            </div>
+            <InfoButton
+              v-if="hasType"
+              info="Task Type"
             >
-            <label
-              class="mr-3 font-semibold cursor-pointer"
-              :class="[ projectTask.isFinish ? 'text-success-dark' : 'text-info-dark' ]"
-              for="is-finish"
-            >
-              {{ projectTask.isFinish ? 'DONE' : 'PENDING' }}
-            </label>
+              <div
+
+                class="group relative success-tag !rounded-lg !p-0 h-[1.6rem] hover:cursor-pointer mb-1"
+              >
+                <div class="px-3">
+                  {{ projectTask.type }}
+                </div>
+              </div>
+            </InfoButton>
           </div>
           <div class="-ml-3">
             <input
@@ -104,21 +119,6 @@
           </div>
         </div>
         <div class="flex-1 border-l px-3">
-          <InfoButton
-            v-if="hasType"
-            class="mb-4"
-            info="Task Type"
-          >
-            <div
-
-              class="group relative success-tag !rounded-lg !p-0 h-[1.6rem] hover:cursor-pointer mb-1"
-            >
-              <div class="px-3">
-                {{ projectTask.type }}
-              </div>
-            </div>
-          </InfoButton>
-
           <div>
             <p class="text-md">
               Picture
