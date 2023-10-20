@@ -21,6 +21,9 @@ const getters = {
   isLoggedIn (state: State) {
     return !!state.user
   },
+  hasClicked (state: State) {
+    return !!state.user?.notification
+  },
   hasPermission (state: State) {
     return (module, method) => {
       // if (!state.user || !state.user.role) {
@@ -40,11 +43,15 @@ const getters = {
 
 const mutations = {
   setLogin (state: State, value: State) {
+    value.user.notification = false
     state.user = value.user
   },
   setLogout (state: State) {
     state.user = null
     router.replace(loginRoute)
+  },
+  setClickNotif (state: State) {
+    state.user.notification = true
   }
 }
 

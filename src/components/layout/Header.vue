@@ -20,13 +20,13 @@
           class="ml-3 relative"
         >
           <div>
-            <MenuButton class="menu-button">
+            <MenuButton class="menu-button" @click="handleClickNotif">
               <BellIcon
                 aria-hidden="true"
                 class="h-6 w-6"
               />
               <div
-                v-if="notifications.length > 0"
+                v-if="notifications.length > 0 && !hasClicked"
                 class="absolute top-0 right-0 w-2 h-2 rounded-full bg-danger"
               />
             </MenuButton>
@@ -40,7 +40,7 @@
             leave-to-class="transform opacity-0 scale-95"
           >
             <MenuItems
-              class="origin-top-right absolute right-0 mt-4 w-52 z-10 rounded-md shadow-lg py-1 z-10 bg-info ring-1 ring-grey-dark focus:outline-none"
+              class="origin-top-right absolute right-0 mt-4 w-52 z-10 rounded-md shadow-lg bg-info ring-1 ring-grey-dark focus:outline-none"
             >
               <MenuItem v-if="notifications.length <= 0">
                 <span
@@ -55,16 +55,16 @@
               >
                 <a
                   :class="[
-                    active ? 'bg-white' : '',
+                    active ? 'bg-primary-dark rounded-md' : '',
                     'block px-4 py-2 text-grey cursor-pointer'
                   ]"
                   @click="handleNotification(notification)"
                 >
-                  <div class="font-bold">
+                  <div class="text-black font-bold">
                     {{ notification.title }}
                   </div>
                   <div
-                    class="text-sm whitespace-nowrap text-ellipsis overflow-hidden"
+                    class="text-black text-sm whitespace-nowrap text-ellipsis overflow-hidden"
                   >
                     {{ notification.subject }}
                   </div>
@@ -117,7 +117,7 @@
                 <a
                   :class="[
                     active ? 'bg-info-dark' : '',
-                    'block px-4 py-2 text-grey-dark cursor-pointer flex items-center'
+                    'px-4 py-2 text-grey-dark cursor-pointer flex items-center'
                   ]"
                   @click="handleLogout"
                 >
@@ -150,7 +150,30 @@ const emit = defineEmits(['openSidebar', 'logout', 'notification'])
 const store = useStore()
 
 const user = computed(() => store.getters['auth/user'])
-const notifications = computed(() => [])
+const hasClicked = computed(() => store.getters['auth/hasClicked'])
+const clickNotif = () => store.commit('auth/setClickNotif')
+
+const notifications = computed(() => [
+  {
+    id: 1,
+    title: 'Notification',
+    subject: 'There is a new notification'
+  },
+  {
+    id: 1,
+    title: 'Notification',
+    subject: 'There is a new notification'
+  },
+  {
+    id: 1,
+    title: 'Notification',
+    subject: 'There is a new notification'
+  }
+])
+
+const handleClickNotif = () => {
+  clickNotif()
+}
 
 const openSidebar = () => {
   emit('openSidebar')

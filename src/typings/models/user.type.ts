@@ -12,4 +12,6 @@ export class User extends BaseModel {
 
   role: Role
   roleName: string
+
+  notification: boolean
 }
