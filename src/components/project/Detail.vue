@@ -280,7 +280,7 @@
             </p>
             <div
               v-if="project.updates"
-              class="ml-1 mt-1 text-sm"
+              class="ml-1 mt-1 text-sm overflow-scroll max-h-[70vh]"
             >
               <p
                 v-for="update in project.updates"
