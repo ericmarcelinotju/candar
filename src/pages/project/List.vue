@@ -30,7 +30,7 @@
             name: !drag ? 'flip-list' : null
           }"
           group="people"
-          item-key="user_id"
+          item-key="id"
           v-bind="dragOptions"
           @end="drag = false"
           @start="drag = true"
@@ -58,7 +58,7 @@
             name: !drag ? 'flip-list' : null
           }"
           group="people"
-          item-key="user_id"
+          item-key="id"
           v-bind="dragOptions"
           @end="drag = false"
           @start="drag = true"
@@ -86,7 +86,7 @@
             name: !drag ? 'flip-list' : null
           }"
           group="people"
-          item-key="user_id"
+          item-key="id"
           v-bind="dragOptions"
           @end="drag = false"
           @start="drag = true"
@@ -114,7 +114,7 @@
             name: !drag ? 'flip-list' : null
           }"
           group="people"
-          item-key="user_id"
+          item-key="id"
           v-bind="dragOptions"
           @end="drag = false"
           @start="drag = true"
@@ -190,7 +190,7 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, watch, computed, onMounted, reactive, ref } from 'vue'
+import { Ref, computed, onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { PlusIcon } from '@heroicons/vue/solid'
@@ -243,6 +243,11 @@ const handleSearch = (params) => {
   loading.value = true
   getProjects(params)
     .then((res) => {
+      // Dont Forget to Erase this code #ERASE_CODE
+      res.data.data.map(res => {
+        res.dueDate = ''
+        return res
+      })
       items.value = res.data.data
       itemsTotal.value = res.data.total_item
     })
@@ -263,6 +268,7 @@ const detailItem: Ref<Project> = ref()
 const handleDetail = (data: Project) => {
   visibleDetailModal.value = true
   detailItem.value = { ...data }
+  console.log(detailItem.value)
 }
 
 // Detail project task
@@ -292,7 +298,6 @@ onMounted(() => {
 })
 
 const onProjectUpdate = (payload) => {
-  detailItem.value = { ...payload }
   items.value.splice(
     items.value.findIndex(item => item.id === payload.id),
     1,
