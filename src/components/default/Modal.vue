@@ -169,7 +169,7 @@ interface Props {
   description?: string
   confirmText?: string
   cancelText?: string
-  loading: boolean
+  loading?: boolean
   hasCancel?: boolean
   hasConfirm?: boolean
   hasIcon?: boolean
@@ -180,6 +180,7 @@ const props = withDefaults(defineProps<Props>(), {
   className: '',
   type: 'warning',
   title: defaultTitle,
+  loading: false,
   description: defaultDescription,
   confirmText: defaultConfirmText,
   cancelText: defaultCancelText,

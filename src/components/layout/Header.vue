@@ -157,17 +157,20 @@ const notifications = computed(() => [
   {
     id: 1,
     title: 'Notification',
-    subject: 'There is a new notification'
+    subject: 'There is a new notification',
+    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis consequat ultrices. Aliquam suscipit ligula eu nisi lacinia, in ullamcorper risus laoreet. Nunc hendrerit sem sed neque finibus convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque maximus arcu at lacus congue sollicitudin. Aliquam ut lacus quis dolor luctus dictum. Fusce ut vehicula nulla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Morbi id orci risus. Nam erat sapien, faucibus ut leo in, efficitur rhoncus ante. Mauris et porta risus. Curabitur efficitur semper blandit.'
   },
   {
     id: 1,
     title: 'Notification',
-    subject: 'There is a new notification'
+    subject: 'There is a new notification',
+    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis consequat ultrices. Aliquam suscipit ligula eu nisi lacinia, in ullamcorper risus laoreet. Nunc hendrerit sem sed neque finibus convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque maximus arcu at lacus congue sollicitudin. Aliquam ut lacus quis dolor luctus dictum. Fusce ut vehicula nulla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Morbi id orci risus. Nam erat sapien, faucibus ut leo in, efficitur rhoncus ante. Mauris et porta risus. Curabitur efficitur semper blandit.'
   },
   {
     id: 1,
     title: 'Notification',
-    subject: 'There is a new notification'
+    subject: 'There is a new notification',
+    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis consequat ultrices. Aliquam suscipit ligula eu nisi lacinia, in ullamcorper risus laoreet. Nunc hendrerit sem sed neque finibus convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque maximus arcu at lacus congue sollicitudin. Aliquam ut lacus quis dolor luctus dictum. Fusce ut vehicula nulla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Morbi id orci risus. Nam erat sapien, faucibus ut leo in, efficitur rhoncus ante. Mauris et porta risus. Curabitur efficitur semper blandit.'
   }
 ])
 

@@ -87,7 +87,7 @@ const handleLogout = () => {
 const handleNotification = (notification) => {
   visibleNotificationModal.value = true
   currNotification.value = notification
-  store.commit('notification/readNotification', notification.id)
+  // store.commit('notification/readNotification', notification.id)
 }
 
 const handleAbout = () => {
