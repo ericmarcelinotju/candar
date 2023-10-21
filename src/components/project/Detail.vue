@@ -117,7 +117,7 @@
                 leave-to-class="transform scale-95 opacity-0"
               >
                 <MenuItems
-                  class="z-20 absolute right-0 -translate-y-1 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                  class="z-20 absolute right-0 -translate-y-1 mt-2 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                 >
                   <div class="px-1 py-1">
                     <MenuItem v-slot="{ active }">
@@ -128,11 +128,6 @@
                         ]"
                         @click.prevent="() => handleCloseProject()"
                       >
-                        <XIcon
-                          :active="active"
-                          aria-hidden="true"
-                          :class="[active ? 'text-white' : 'text-black', 'mr-2 h-5 w-5']"
-                        />
                         Close Project
                       </button>
                     </MenuItem>
@@ -295,28 +290,54 @@
       </div>
     </div>
     <DefaultModal
-      v-model="visibleDeleteConfirmationModal"
-      :loading="loadingDelete"
-      type="danger"
-      @confirm="confirmDelete"
-    />
+      v-model="visibleCloseConfirmationModal"
+      description=""
+      :has-icon="false"
+      :is-close-on-confirm="false"
+      :loading="loadingClose"
+      title="Close Project"
+      type="success"
+      @confirm="confirmClose"
+    >
+      <template #default>
+        <div class="flex flex-col mb-4 mt-12 space-y-4">
+          <div class="flex flex-col">
+            <p class="text-sm font-semibold mb-2">
+              Status
+            </p>
+            <Switch
+              v-model="projectClose.status"
+              text-false="Lose"
+              text-true="Won"
+            />
+          </div>
+          <div class="flex flex-col">
+            <p class="text-sm font-semibold mb-2">
+              Reason
+            </p>
+            <Input
+              v-model="projectClose.reason"
+              type="text"
+            />
+          </div>
+        </div>
+      </template>
+    </DefaultModal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Ref, ref, watch, computed } from 'vue'
+import { Ref, ref, reactive, watch, computed } from 'vue'
 import { watchDebounced } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 import dayjs from 'dayjs'
-import { PlusIcon, DotsVerticalIcon, XIcon } from '@heroicons/vue/solid'
+import { PlusIcon, DotsVerticalIcon } from '@heroicons/vue/solid'
 import { Popover, PopoverButton, PopoverPanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import Dropdown from '@/components/form/dropdown/Dropdown.vue'
-import Datepicker from '@vuepic/vue-datepicker'
-import InfoButton from '@/components/helper/InfoButton.vue'
 
-import { Project, getProjectStatusColor } from '@/typings/models/project.type'
-import { update as updateProject, detail as getProject } from '@/api/project'
+import { Project, ProjectClose, getProjectStatusColor } from '@/typings/models/project.type'
+import { update as updateProject, detail as getProject, updateStatus as updateProjectStatus } from '@/api/project'
 import { get as getUser } from '@/api/user'
+
 import { useProject } from '@/composables/use-project'
 import TaskForm from '@/components/project/task/Form.vue'
 import CostForm from '@/components/project/cost/Form.vue'
@@ -324,6 +345,11 @@ import { useNotify } from '@/composables/use-notify'
 import { snakeToTitle } from '@/utils/string'
 import { User } from '@/typings/models/user.type'
 import { quotationCreate, quotationList } from '@/router/routes/quotation'
+import Input from '@/components/form/Input.vue'
+import Switch from '@/components/form/Switch.vue'
+import Dropdown from '@/components/form/dropdown/Dropdown.vue'
+import Datepicker from '@vuepic/vue-datepicker'
+import InfoButton from '@/components/helper/InfoButton.vue'
 
 interface Props {
   data: Project
@@ -417,33 +443,43 @@ const formatDate = (date) => {
 }
 
 // Delete client
-const loadingDelete = ref(false)
-const visibleDeleteConfirmationModal = ref(false)
+const visibleCloseConfirmationModal = ref(false)
 
 const handleCloseProject = () => {
-  visibleDeleteConfirmationModal.value = true
+  visibleCloseConfirmationModal.value = true
 }
 
-const confirmDelete = () => {
+// Close Project
+const loadingClose: Ref<boolean> = ref(false)
+const projectClose: {
+  status: boolean,
+  reason: string
+} = reactive({
+  status: true,
+  reason: null
+})
+
+const confirmClose = () => {
   const { id } = project.value
-  loadingDelete.value = true
-  setTimeout(() => {
-    console.log(id)
-    loadingDelete.value = false
-    emit('close')
-  }, 2000)
-  // deleteProduct(id)
-  //   .then(() => {
-  //     notify('deleted')
-  //     emit('close')
-  //   })
-  //   .catch(() => {
-  //     notify('deleted', 'danger')
-  //   })
-  //   .finally(() => {
-  //     loadingDelete.value = false
-  //     visibleDeleteConfirmationModal.value = false
-  //   })
+  loadingClose.value = true
+
+  const payload: ProjectClose = {
+    status: projectClose.status ? 'won' : 'lose',
+    reason: projectClose.reason
+  }
+
+  return updateProjectStatus(id, payload)
+    .then(() => {
+      notify('closed')
+      emit('close')
+    })
+    .catch(() => {
+      notify('closed', 'danger')
+    })
+    .finally(() => {
+      loadingClose.value = false
+      visibleCloseConfirmationModal.value = false
+    })
 }
 
 const handleClickUser = (open) => {
