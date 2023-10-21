@@ -33,7 +33,7 @@ export class Project extends BaseModel {
 }
 
 export class ProjectClose {
-  status: string
+  status: ProjectStatus
   reason: string
 }
 

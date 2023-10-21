@@ -94,6 +94,7 @@
               </Popover>
             </div>
             <Menu
+              v-if="!isClosed"
               as="div"
               class="relative inline-block text-left"
             >
@@ -399,6 +400,8 @@ watchDebounced(
     updateProject(payload.id, payload)
       .then(() => {
         emit('update', payload)
+
+        if (isClosed.value) emit('close')
       })
       .catch(() => {
         notify('saved', 'danger')
@@ -451,6 +454,8 @@ const handleCloseProject = () => {
 
 // Close Project
 const loadingClose: Ref<boolean> = ref(false)
+const isClosed = computed(() => ['lose', 'won'].find(e => e === project.value?.status?.toLowerCase()))
+
 const projectClose: {
   status: boolean,
   reason: string
@@ -470,8 +475,8 @@ const confirmClose = () => {
 
   return updateProjectStatus(id, payload)
     .then(() => {
+      project.value.status = payload.status
       notify('closed')
-      emit('close')
     })
     .catch(() => {
       notify('closed', 'danger')
