@@ -318,7 +318,9 @@
             </p>
             <Input
               v-model="projectClose.reason"
-              type="text"
+              class="hover-input h-36 text-sm"
+              placeholder="Write something"
+              type="textarea"
             />
           </div>
         </div>
