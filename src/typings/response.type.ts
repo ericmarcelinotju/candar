@@ -3,7 +3,7 @@ export class BaseResponse<T> {
   app_version: string;
   code: number;
   data: T;
-  status: string;
+  status: string | number
 }
 
 export class ListResponse<T> {

@@ -6,6 +6,7 @@ export class ProjectTask extends BaseModel {
   description: string
   date: number
   attendees: string[]
+  type: string | null
   picture: string
   attachment: string
   isFinish: boolean

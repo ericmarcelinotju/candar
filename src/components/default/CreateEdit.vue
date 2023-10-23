@@ -104,6 +104,7 @@ const onReset = () => {
 const onSubmit = () => {
   loading.value = true
   touch()
+
   if (!validation.value.isValid) {
     loading.value = false
     return

@@ -2,13 +2,19 @@
   <div class="wrapper bg-white rounded shadow w-full ">
     <div class="header flex justify-between items-center border-b p-4">
       <div>
-        <button class="default-button mr-4 !px-2" @click="handlePrevMonth">
+        <button
+          class="default-button mr-4 !px-2"
+          @click="handlePrevMonth"
+        >
           <ChevronLeftIcon class="w-4 h-4" />
         </button>
         <span class="text-lg font-bold">
           {{ dayjsDate.format('MMMM') }} {{ dayjsDate.get('year') }}
         </span>
-        <button class="default-button ml-4 !px-2" @click="handleNextMonth">
+        <button
+          class="default-button ml-4 !px-2"
+          @click="handleNextMonth"
+        >
           <ChevronRightIcon class="w-4 h-4" />
         </button>
       </div>
@@ -81,7 +87,7 @@
                     @click="handleEventClick(day, event)"
                   >
                     <span class="event-name">
-                      {{ event.type }} {{ event.code }}
+                      {{ event.name }}
                     </span>
                   </div>
                   <div
@@ -102,14 +108,14 @@
 import { Ref, computed, ref } from 'vue'
 import dayjs from 'dayjs'
 import isToday from 'dayjs/plugin/isToday'
-import { Inspection } from '@/typings/models/inspection.type'
+import { ProjectTask } from '@/typings/models/project-task.type'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/solid'
 
 dayjs.extend(isToday)
 
 interface Props {
   date?: Date
-  events: {[key: string]: Inspection[]}
+  events: {[key: string]: ProjectTask[]}
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -158,7 +164,7 @@ const handleDayClick = (date: dayjs.Dayjs) => {
   emit('click:date', date)
 }
 
-const handleEventClick = (date: dayjs.Dayjs, event: Inspection) => {
+const handleEventClick = (date: dayjs.Dayjs, event: ProjectTask) => {
   emit('click:event', date, event)
 }
 </script>

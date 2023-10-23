@@ -46,6 +46,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { Project } from '@/typings/models/project.type'
 import { useProject } from '@/composables/use-project'
 import { PencilIcon } from '@heroicons/vue/solid'
@@ -62,9 +63,17 @@ const onClick = () => {
   emit('click', props.data)
 }
 
+const avatar = computed(() => {
+  return props.data?.user?.avatar
+})
+
+const userInitial = computed(() => {
+  return props.data?.user?.username[0]
+})
+
 const {
-  avatar,
-  userInitial,
+  // avatar,
+  // userInitial,
   isAlmostExpired,
   isNeedQuotation,
   isQuoted,

@@ -78,14 +78,16 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import BarChart from '@/components/chart/barChart'
 import PieChart from '@/components/chart/pieChart'
 import DefaultTable from '@/components/default/Table.vue'
 import { snakeToTitle } from '@/utils/string'
 
 const store = useStore()
+const router = useRouter()
 
 const barData = ref([[12, 5, 1, 3], [2, 3, 5, 6], [5, 9, 5, 6], [2, 1, 1, 1]])
 const barDataLabels = ref(['Cold Call', 'Qualification', 'Lead', 'Quotation'])
@@ -160,17 +162,6 @@ const getTagClass = (status: string) => {
   }
   return 'default-tag'
 }
-
-const initPage = () => {
-  // getInspections()
-  //   .then(res => {
-  //     inspections.value = res.data.inspections
-  //   })
-}
-
-onMounted(() => {
-  initPage()
-})
 
 const hasPermission = (module) => {
   return store.getters['auth/hasPermission'](module, 'GET')

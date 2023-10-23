@@ -14,21 +14,36 @@
       />
       <div class="mt-3 flex gap-3">
         <div class="flex-[2_2_0%] px-3">
-          <div class="flex items-center">
-            <input
-              id="is-finish"
-              v-model="projectTask.isFinish"
-              class="default-input cursor-pointer"
-              :class="[ projectTask.isFinish ? 'accent-success-dark' : 'accent-info-dark' ]"
-              type="checkbox"
+          <div class="flex flex-row justify-between items-center">
+            <div class="flex items-center">
+              <input
+                id="is-finish"
+                v-model="projectTask.isFinish"
+                class="default-input cursor-pointer"
+                :class="[ projectTask.isFinish ? 'accent-success-dark' : 'accent-info-dark' ]"
+                type="checkbox"
+              >
+              <label
+                class="mr-3 font-semibold cursor-pointer"
+                :class="[ projectTask.isFinish ? 'text-success-dark' : 'text-info-dark' ]"
+                for="is-finish"
+              >
+                {{ projectTask.isFinish ? 'DONE' : 'PENDING' }}
+              </label>
+            </div>
+            <InfoButton
+              v-if="hasType"
+              info="Task Type"
             >
-            <label
-              class="mr-3 font-semibold cursor-pointer"
-              :class="[ projectTask.isFinish ? 'text-success-dark' : 'text-info-dark' ]"
-              for="is-finish"
-            >
-              {{ projectTask.isFinish ? 'DONE' : 'PENDING' }}
-            </label>
+              <div
+
+                class="group relative success-tag !rounded-lg !p-0 h-[1.6rem] hover:cursor-pointer mb-1"
+              >
+                <div class="px-3">
+                  {{ projectTask.type }}
+                </div>
+              </div>
+            </InfoButton>
           </div>
           <div class="-ml-3">
             <input
@@ -247,17 +262,19 @@ watchDebounced(
   }
 )
 
+const hasType = computed(() => projectTask.value.type)
+
 const attendeeOptions = computed(() => ['budi', 'bambang', 'udin'].filter(option => projectTask.value.attendees.indexOf(option) === -1))
 
 const addAttendee = (close, attendee) => {
-  if (projectTask.value.attendees.indexOf(attendee) === -1) {
+  if (projectTask.value.attendees?.indexOf(attendee) === -1) {
     projectTask.value.attendees.push(attendee)
   }
   close()
 }
 
 const removeAttendee = (attendee) => {
-  projectTask.value.attendees.splice(projectTask.value.attendees.indexOf(attendee), 1)
+  projectTask.value.attendees.splice(projectTask.value.attendees?.indexOf(attendee), 1)
 }
 
 const inputPicture = ref(null)
