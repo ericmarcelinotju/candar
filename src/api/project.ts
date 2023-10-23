@@ -1,7 +1,7 @@
 import axios from './index'
 import { serializeQueryParams } from '@/utils'
 import { BaseResponse, ListResponse } from '@/typings/response.type'
-import { Project } from '@/typings/models/project.type'
+import { Project, ProjectClose } from '@/typings/models/project.type'
 
 const get = (filter?: Project): Promise<BaseResponse<ListResponse<Project>>> => {
   return axios.get(`/project${serializeQueryParams(filter)}`)
@@ -19,6 +19,10 @@ const update = (id: string, data: Project): Promise<BaseResponse<null>> => {
   return axios.put(`/project/${id}`, data)
 }
 
+const updateStatus = (id: string, data: ProjectClose): Promise<BaseResponse<null>> => {
+  return axios.put(`/project/close/${id}`, data)
+}
+
 const del = (id: string): Promise<BaseResponse<null>> => {
   return axios.delete(`/project/${id}`)
 }
@@ -28,5 +32,6 @@ export {
   detail,
   insert,
   update,
+  updateStatus,
   del
 }

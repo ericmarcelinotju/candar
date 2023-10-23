@@ -19,7 +19,8 @@ import {
   variantCategoryRoutes,
   productRoutes,
   productCategoryRoutes,
-  quotationRoutes
+  quotationRoutes,
+  calendarRoute
 } from './routes'
 
 import DefaultContainer from '@/components/layout/Container.vue'
@@ -35,6 +36,7 @@ const router = createRouter({
       redirect: '/dashboard',
       children: [
         dashboardRoute,
+        calendarRoute,
         maintenanceRoute,
         settingRoute,
 

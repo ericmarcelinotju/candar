@@ -121,7 +121,7 @@ const columns = [
   },
   {
     label: 'Variant Category',
-    key: 'category_name',
+    key: 'category.name',
     isSortable: false,
     isSearchable: false
   }

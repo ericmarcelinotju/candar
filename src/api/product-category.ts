@@ -8,7 +8,7 @@ const get = (filter?: ProductCategory): Promise<BaseResponse<ListResponse<Produc
 }
 
 const detail = (id: string): Promise<BaseResponse<ProductCategory>> => {
-  return axios.get(`/product-category${id}`)
+  return axios.get(`/product-category/${id}`)
 }
 
 const insert = (data: ProductCategory): Promise<BaseResponse<null>> => {

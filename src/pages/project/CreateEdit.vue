@@ -110,8 +110,12 @@ const initPage = () => {
 }
 
 const onSubmit = (form, onFinish) => {
+  const payload = {
+    ...form.value,
+    user_id: form.value.userId
+  }
   if (id) {
-    return updateProject(id, { ...form.value })
+    return updateProject(id, payload)
       .then(() => {
         router.push(projectList)
         notify('updated')
@@ -121,7 +125,7 @@ const onSubmit = (form, onFinish) => {
       })
       .finally(onFinish)
   } else {
-    return insertProject({ ...form.value })
+    return insertProject(payload)
       .then(() => {
         router.push(projectList)
         notify('inserted')

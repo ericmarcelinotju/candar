@@ -81,7 +81,7 @@ const initPage = () => {
 const onSubmit = (form, onFinish) => {
   const payload = {
     ...form.value,
-    coordinates: [form.coord_x, form.coord_y]
+    code: 'VA'
   }
   if (id) {
     return updateVariant(id, payload)
@@ -117,6 +117,12 @@ const initForm = () => {
     {
       key: 'name',
       label: 'Name',
+      isRequired: true,
+      rules: [required]
+    },
+    {
+      key: 'code',
+      label: 'Code',
       isRequired: true,
       rules: [required]
     },
