@@ -399,6 +399,10 @@ watchDebounced(
       payload.user_id = payload.user?.id
     }
 
+    if (project.value?.dueDate) {
+      payload.dueDate = new Date(project.value?.dueDate)
+    }
+
     updateProject(payload.id, payload)
       .then(() => {
         emit('update', payload)

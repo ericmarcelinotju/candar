@@ -264,11 +264,6 @@ const handleSearch = (params) => {
   loading.value = true
   getProjects(params)
     .then((res) => {
-      // Dont Forget to Erase this code #ERASE_CODE
-      res.data.data.map(res => {
-        res.dueDate = ''
-        return res
-      })
       items.value = res.data.data
       itemsTotal.value = res.data.total_item
     })

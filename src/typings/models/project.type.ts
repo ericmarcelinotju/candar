@@ -24,7 +24,7 @@ export class Project extends BaseModel {
   clientId: string
   client: Client
 
-  dueDate: string
+  dueDate: string | Date
 
   updates: ProjectUpdate[]
   tasks: ProjectTask[]
