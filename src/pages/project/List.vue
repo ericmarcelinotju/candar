@@ -15,8 +15,14 @@
         <p v-html="item.content" />
       </template>
     </DefaultTable> -->
-
-    <div class="mt-4 grid grid-cols-4 gap-6">
+    <!-- <div class="mt-4 grid grid-cols-4 gap-6"> -->
+    <div
+      class="mt-4 grid"
+      :class="[
+        isClosedProjectsShown ?
+          'grid-cols-6 gap-4' : 'grid-cols-4 gap-6'
+      ]"
+    >
       <div class="project-list">
         <h3 class="font-semibold ml-2">
           Cold Call
@@ -128,18 +134,84 @@
           </template>
         </Draggable>
       </div>
+      <template v-if="isClosedProjectsShown">
+        <div class="project-list">
+          <h3 class="font-semibold ml-2">
+            Win
+          </h3>
+          <Draggable
+            v-model="projectsWin"
+            class="project-group"
+            :component-data="{
+              tag: 'div',
+              type: 'transition-group',
+              name: !drag ? 'flip-list' : null
+            }"
+            group="people"
+            item-key="id"
+            v-bind="dragOptions"
+            @end="drag = false"
+            @start="drag = true"
+          >
+            <template #item="{ element, index }">
+              <ProjectCard
+                :data="element"
+                :index="index"
+                @click="handleDetail"
+              />
+            </template>
+          </Draggable>
+        </div>
+        <div class="project-list">
+          <h3 class="font-semibold ml-2">
+            Lose
+          </h3>
+          <Draggable
+            v-model="projectsLose"
+            class="project-group"
+            :component-data="{
+              tag: 'div',
+              type: 'transition-group',
+              name: !drag ? 'flip-list' : null
+            }"
+            group="people"
+            item-key="id"
+            v-bind="dragOptions"
+            @end="drag = false"
+            @start="drag = true"
+          >
+            <template #item="{ element, index }">
+              <ProjectCard
+                :data="element"
+                :index="index"
+                @click="handleDetail"
+              />
+            </template>
+          </Draggable>
+        </div>
+      </template>
     </div>
 
     <template #action>
-      <button
-        v-if="hasPermission('POST')"
-        class="info-button mr-4"
-        type="button"
-        @click="handleCreate"
-      >
-        <PlusIcon class="w-4 h-4 mr-1" />
-        {{ $t('app.create') }}
-      </button>
+      <div class="flex flex-row">
+        <button
+          v-if="hasPermission('POST')"
+          class="info-button mr-4"
+          type="button"
+          @click="handleCreate"
+        >
+          <PlusIcon class="w-4 h-4 mr-1" />
+          {{ $t('app.create') }}
+        </button>
+        <div class="flex flex-col">
+          <p class="text-sm font-semibold mb-2 text-primary">
+            Show closed projects
+          </p>
+          <Switch
+            v-model="isClosedProjectsShown"
+          />
+        </div>
+      </div>
     </template>
     <template #search>
       <DefaultSearch
@@ -222,6 +294,9 @@ import { useNotify } from '@/composables/use-notify'
 import { Project } from '@/typings/models/project.type'
 import { projectCreate } from '@/router/routes/project'
 import Draggable from 'vuedraggable'
+
+import Switch from '@/components/form/Switch.vue'
+
 import ProjectCard from '@/components/project/Card.vue'
 import ProjectDetail from '@/components/project/Detail.vue'
 
@@ -276,6 +351,8 @@ handleSearch({})
 const handleCreate = () => {
   router.push(projectCreate)
 }
+
+const isClosedProjectsShown: Ref<boolean> = ref(false)
 
 // Detail project
 const loadingDetail = ref(false)
@@ -363,6 +440,7 @@ const projectsInitiate = computed({
     for (let i = 0; i < val.length; i++) {
       if (val[i].status !== 'initiate') {
         val[i].status = 'initiate'
+        val[i].dueDate = val[i]?.dueDate && new Date(val[i].dueDate)
 
         updateProject(val[i].id, val[i]).catch((err) => {
           notify('update', 'danger', err.message)
@@ -377,6 +455,7 @@ const projectsQualification = computed({
     for (let i = 0; i < val.length; i++) {
       if (val[i].status !== 'qualification') {
         val[i].status = 'qualification'
+        val[i].dueDate = val[i]?.dueDate && new Date(val[i].dueDate)
 
         updateProject(val[i].id, val[i]).catch((err) => {
           notify('update', 'danger', err.message)
@@ -392,6 +471,7 @@ const projectsLead = computed({
     for (let i = 0; i < val.length; i++) {
       if (val[i].status !== 'lead') {
         val[i].status = 'lead'
+        val[i].dueDate = val[i]?.dueDate && new Date(val[i].dueDate)
 
         updateProject(val[i].id, val[i]).catch((err) => {
           notify('update', 'danger', err.message)
@@ -407,6 +487,39 @@ const projectsQuotation = computed({
     for (let i = 0; i < val.length; i++) {
       if (val[i].status !== 'quotation') {
         val[i].status = 'quotation'
+        val[i].dueDate = val[i]?.dueDate && new Date(val[i].dueDate)
+
+        updateProject(val[i].id, val[i]).catch((err) => {
+          notify('update', 'danger', err.message)
+        })
+      }
+    }
+  }
+})
+
+const projectsWin = computed({
+  get: () => [...items.value.filter((item) => item.status === 'win')],
+  set: (val) => {
+    for (let i = 0; i < val.length; i++) {
+      if (val[i].status !== 'win') {
+        val[i].status = 'win'
+        val[i].dueDate = val[i]?.dueDate && new Date(val[i].dueDate)
+
+        updateProject(val[i].id, val[i]).catch((err) => {
+          notify('update', 'danger', err.message)
+        })
+      }
+    }
+  }
+})
+
+const projectsLose = computed({
+  get: () => [...items.value.filter((item) => item.status === 'lose')],
+  set: (val) => {
+    for (let i = 0; i < val.length; i++) {
+      if (val[i].status !== 'lose') {
+        val[i].status = 'lose'
+        val[i].dueDate = val[i]?.dueDate && new Date(val[i].dueDate)
 
         updateProject(val[i].id, val[i]).catch((err) => {
           notify('update', 'danger', err.message)

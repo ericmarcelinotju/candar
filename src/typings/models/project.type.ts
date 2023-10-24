@@ -6,7 +6,7 @@ import { ProjectUpdate } from './project-update.type'
 import { Quotation } from './quotation.type'
 import { User } from './user.type'
 
-type ProjectStatus = 'initiate' | 'qualification' | 'lead' | 'quotation' | 'won' | 'lose'
+type ProjectStatus = 'initiate' | 'qualification' | 'lead' | 'quotation' | 'win' | 'lose'
 
 export class Project extends BaseModel {
   id: string
