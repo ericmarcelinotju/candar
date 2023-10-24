@@ -30,7 +30,7 @@
         <hr>
         <div class="flex justify-between items-center p-4">
           <span class="font-bold">
-            Projects Won / Projects Lost
+            Projects Win / Projects Lost
           </span>
         </div>
       </div>
