@@ -14,7 +14,7 @@
     <span
       aria-hidden="true"
       class="pointer-events-none inline-block h-[18px] w-[18px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out"
-      :class="value ? 'translate-x-10' : 'translate-x-0'"
+      :class="value ? [ hasText ? 'translate-x-10' : 'translate-x-4' ] : 'translate-x-0'"
     />
     <span
       v-if="!value && hasText"
