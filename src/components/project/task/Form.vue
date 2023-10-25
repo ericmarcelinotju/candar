@@ -421,8 +421,8 @@ const onAttachmentChange = (e) => {
 }
 
 const typeOptions: Ref<Option[]> = ref([
-  { label: 'Task', value: 'task' },
-  { label: 'Bugs', value: 'bugs' }
+  { label: 'Meeting', value: 'meeting' },
+  { label: 'Cold Call', value: 'cold call' }
 ])
 
 const attendees: Ref<string[]> = ref([])
