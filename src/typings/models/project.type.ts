@@ -6,7 +6,7 @@ import { ProjectUpdate } from './project-update.type'
 import { Quotation } from './quotation.type'
 import { User } from './user.type'
 
-type ProjectStatus = 'initiate' | 'qualification' | 'lead' | 'quotation'
+type ProjectStatus = 'initiate' | 'qualification' | 'lead' | 'quotation' | 'won' | 'lose'
 
 export class Project extends BaseModel {
   id: string
@@ -17,15 +17,24 @@ export class Project extends BaseModel {
   status: ProjectStatus
 
   userId: string
+  // eslint-disable-next-line camelcase
+  user_id?: string
   user: User
 
   clientId: string
   client: Client
 
+  dueDate: string
+
   updates: ProjectUpdate[]
   tasks: ProjectTask[]
   costs: ProjectCost[]
   quotations: Quotation[]
+}
+
+export class ProjectClose {
+  status: ProjectStatus
+  reason: string
 }
 
 export const getProjectStatusColor = (status: ProjectStatus): string => {

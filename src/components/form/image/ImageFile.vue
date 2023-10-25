@@ -89,7 +89,7 @@ interface Props {
   isMultiple: boolean
   id?: string
   name?: string
-  modelValue: File
+  modelValue: File | string | string[]
   image: string
 }
 

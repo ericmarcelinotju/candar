@@ -166,11 +166,15 @@
         title=""
         type="info"
       >
-        <ProjectDetail
-          :data="detailItem"
-          @detail:task="handleTaskDetail"
-          @update="onProjectUpdate"
-        />
+        <template #default="{ close }">
+          <ProjectDetail
+            :data="detailItem"
+            @close="close"
+            @detail:cost="handleCostDetail"
+            @detail:task="handleTaskDetail"
+            @update="onProjectUpdate"
+          />
+        </template>
       </DefaultModal>
       <DefaultModal
         v-model="visibleTaskDetailModal"
@@ -184,6 +188,19 @@
         type="info"
       >
         <ProjectTaskDetail :data="detailTaskItem" />
+      </DefaultModal>
+      <DefaultModal
+        v-model="visibleCostDetailModal"
+        class-name="!max-w-7xl"
+        description=""
+        :has-cancel="false"
+        :has-confirm="false"
+        :has-icon="false"
+        :loading="loadingCostDetail"
+        title=""
+        type="info"
+      >
+        <ProjectCostDetail :data="detailCostItem" />
       </DefaultModal>
     </template>
   </DefaultPage>
@@ -207,8 +224,12 @@ import { projectCreate } from '@/router/routes/project'
 import Draggable from 'vuedraggable'
 import ProjectCard from '@/components/project/Card.vue'
 import ProjectDetail from '@/components/project/Detail.vue'
+
 import ProjectTaskDetail from '@/components/project/task/Detail.vue'
 import { ProjectTask } from '@/typings/models/project-task.type'
+
+import ProjectCostDetail from '@/components/project/cost/Detail.vue'
+import { ProjectCost } from '@/typings/models/project-cost.type'
 
 const route = useRoute()
 const router = useRouter()
@@ -243,6 +264,11 @@ const handleSearch = (params) => {
   loading.value = true
   getProjects(params)
     .then((res) => {
+      // Dont Forget to Erase this code #ERASE_CODE
+      res.data.data.map(res => {
+        res.dueDate = ''
+        return res
+      })
       items.value = res.data.data
       itemsTotal.value = res.data.total_item
     })
@@ -262,7 +288,7 @@ const visibleDetailModal = ref(false)
 const detailItem: Ref<Project> = ref()
 const handleDetail = (data: Project) => {
   visibleDetailModal.value = true
-  detailItem.value = data
+  detailItem.value = { ...data }
 }
 
 // Detail project task
@@ -275,6 +301,18 @@ const handleTaskDetail = (data: ProjectTask) => {
 
   visibleTaskDetailModal.value = true
   detailTaskItem.value = data
+}
+
+// Detail project Cost
+const loadingCostDetail = ref(false)
+const visibleCostDetailModal = ref(false)
+const detailCostItem: Ref<ProjectCost> = ref()
+const handleCostDetail = (data: ProjectCost) => {
+  visibleDetailModal.value = false
+  detailItem.value = null
+
+  visibleCostDetailModal.value = true
+  detailCostItem.value = data
 }
 
 const initPage = async () => {
@@ -325,7 +363,7 @@ const confirmDelete = () => {
 }
 
 const projectsInitiate = computed({
-  get: () => items.value.filter((item) => item.status === 'initiate'),
+  get: () => [...items.value.filter((item) => item.status === 'initiate')],
   set: (val) => {
     for (let i = 0; i < val.length; i++) {
       if (val[i].status !== 'initiate') {
@@ -339,7 +377,7 @@ const projectsInitiate = computed({
   }
 })
 const projectsQualification = computed({
-  get: () => items.value.filter((item) => item.status === 'qualification'),
+  get: () => [...items.value.filter((item) => item.status === 'qualification')],
   set: (val) => {
     for (let i = 0; i < val.length; i++) {
       if (val[i].status !== 'qualification') {
@@ -354,7 +392,7 @@ const projectsQualification = computed({
 })
 
 const projectsLead = computed({
-  get: () => items.value.filter((item) => item.status === 'lead'),
+  get: () => [...items.value.filter((item) => item.status === 'lead')],
   set: (val) => {
     for (let i = 0; i < val.length; i++) {
       if (val[i].status !== 'lead') {
@@ -369,7 +407,7 @@ const projectsLead = computed({
 })
 
 const projectsQuotation = computed({
-  get: () => items.value.filter((item) => item.status === 'quotation'),
+  get: () => [...items.value.filter((item) => item.status === 'quotation')],
   set: (val) => {
     for (let i = 0; i < val.length; i++) {
       if (val[i].status !== 'quotation') {
@@ -395,6 +433,7 @@ const drag = ref(false)
 const hasPermission = (method, module = 'DEVICE') => {
   return store.getters['auth/hasPermission'](module, method)
 }
+
 </script>
 
 <style lang="scss" scoped>

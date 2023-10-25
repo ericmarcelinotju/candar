@@ -105,7 +105,7 @@
                       {{ description }}
                     </p>
                   </div>
-                  <slot />
+                  <slot :close="close" />
                 </div>
               </div>
               <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
@@ -162,14 +162,14 @@ export default {}
 
 <script setup lang="ts">
 interface Props {
-  className: string
+  className?: string
   modelValue: boolean
   type?: DisplayType
   title?: string
   description?: string
   confirmText?: string
   cancelText?: string
-  loading: boolean
+  loading?: boolean
   hasCancel?: boolean
   hasConfirm?: boolean
   hasIcon?: boolean
@@ -177,8 +177,10 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  className: '',
   type: 'warning',
   title: defaultTitle,
+  loading: false,
   description: defaultDescription,
   confirmText: defaultConfirmText,
   cancelText: defaultCancelText,
