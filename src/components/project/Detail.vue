@@ -309,7 +309,7 @@
             <Switch
               v-model="projectClose.status"
               text-false="Lose"
-              text-true="Won"
+              text-true="Win"
             />
           </div>
           <div class="flex flex-col">
@@ -399,11 +399,15 @@ watchDebounced(
       payload.user_id = payload.user?.id
     }
 
+    if (project.value?.dueDate) {
+      payload.dueDate = new Date(project.value?.dueDate)
+    }
+
     updateProject(payload.id, payload)
       .then(() => {
         emit('update', payload)
 
-        if (isClosed.value) emit('close')
+        // if (isClosed.value) emit('close')
       })
       .catch(() => {
         notify('saved', 'danger')
@@ -456,7 +460,7 @@ const handleCloseProject = () => {
 
 // Close Project
 const loadingClose: Ref<boolean> = ref(false)
-const isClosed = computed(() => ['lose', 'won'].find(e => e === project.value?.status?.toLowerCase()))
+const isClosed = computed(() => ['lose', 'win'].find(e => e === project.value?.status?.toLowerCase()))
 
 const projectClose: {
   status: boolean,
@@ -471,13 +475,16 @@ const confirmClose = () => {
   loadingClose.value = true
 
   const payload: ProjectClose = {
-    status: projectClose.status ? 'won' : 'lose',
+    status: projectClose.status ? 'win' : 'lose',
     reason: projectClose.reason
   }
 
   return updateProjectStatus(id, payload)
     .then(() => {
       project.value.status = payload.status
+      emit('update', project.value)
+      emit('close')
+
       notify('closed')
     })
     .catch(() => {
