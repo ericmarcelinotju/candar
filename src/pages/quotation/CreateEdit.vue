@@ -225,9 +225,9 @@ const initForm = () => {
       rules: [required]
     },
     {
-      key: 'date',
-      label: 'Tanggal',
-      type: 'date',
+      key: 'date_range',
+      label: 'Tanggal Berlaku',
+      type: 'date_range',
       isRequired: true,
       rules: [required]
     },

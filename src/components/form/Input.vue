@@ -19,6 +19,15 @@
     :enable-time-picker="false"
     input-class-name="default-input"
   />
+  <DatePicker
+    v-else-if="type === 'date_range'"
+    v-model="inputVal"
+    auto-apply
+    :clearable="false"
+    :enable-time-picker="false"
+    input-class-name="default-input"
+    range
+  />
   <ImageInput
     v-else-if="type === 'image'"
     v-bind="$props"
