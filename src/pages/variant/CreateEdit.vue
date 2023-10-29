@@ -80,8 +80,7 @@ const initPage = () => {
 
 const onSubmit = (form, onFinish) => {
   const payload = {
-    ...form.value,
-    code: 'VA'
+    ...form.value
   }
   if (id) {
     return updateVariant(id, payload)
