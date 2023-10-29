@@ -70,8 +70,7 @@ const initPage = () => {
 
 const onSubmit = (form, onFinish) => {
   const payload = {
-    ...form.value,
-    coordinates: [form.coord_x, form.coord_y]
+    ...form.value
   }
   if (id) {
     return updateVariantCategory(id, payload)
