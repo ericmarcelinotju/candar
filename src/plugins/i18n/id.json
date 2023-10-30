@@ -159,8 +159,8 @@
       "clientAddress": "Client Address",
       "clientContact": "Client Contact",
       "variant":"Variant",
-      "variantOption":"Variant Option"
-
+      "variantOption":"Variant Option",
+      "contract": "Kontrak"
     }
   }
 }
