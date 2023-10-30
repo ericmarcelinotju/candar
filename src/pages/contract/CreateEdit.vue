@@ -11,16 +11,34 @@
       :form-settings="formSettings"
       :initial-data="initialData"
       @submit="onSubmit"
-    />
+    >
+      <template #contract="{ form }">
+        <div v-if="form.clientId">
+          <label
+            class="default-label"
+          >
+            Contract
+          </label>
+          <Input
+            :id="form.id"
+            v-model="form.contractId"
+            :callback="() => initOptions(form.clientId)"
+            :options="contracts"
+            type="dropdown"
+          />
+        </div>
+      </template>
+    </DefaultCreateEdit>
   </DefaultPage>
 </template>
 
 <script setup lang="ts">
-import { Ref, computed, onMounted, ref } from 'vue'
+import { Ref, computed, watch, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
 import {
+  get as getContractList,
   detail as getContract,
   insert as insertContract,
   update as updateContract
@@ -32,6 +50,7 @@ import { Contract } from '@/typings/models/contract.type'
 import { contractList } from '@/router/routes/contract'
 import { Option } from '@/typings/option.type'
 import { Client } from '@/typings/models/client.type'
+import Input from '@/components/form/Input.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -39,6 +58,7 @@ const router = useRouter()
 const { notify } = useNotify('contract')
 
 const initialData: Ref<Contract> = ref(new Contract())
+const contracts: Ref<Option[]> = ref([])
 
 const loading: Ref<boolean> = ref(false)
 
@@ -64,6 +84,9 @@ const initPage = async () => {
   loading.value = true
   try {
     await getClient().then((res) => {
+      res.data.data.forEach((data) => {
+        data.hasContract = true
+      })
       clients.value = res.data.data
     })
 
@@ -120,6 +143,25 @@ const onSubmit = (form: Ref<Contract>, onFinish: () => void) => {
   }
 }
 
+watch(() => initialData.value, (val) => console.log(val))
+
+const initOptions = async (clientId: string) => {
+  const contract = new Contract()
+  contract.clientId = clientId
+  getContractList(contract)
+    .then((result) => {
+      contracts.value = result.data.data.map(contract => {
+        return {
+          value: contract.id,
+          label: contract.code
+        }
+      })
+    })
+    .catch(() => {
+      notify('loaded', 'danger')
+    })
+}
+
 onMounted(() => {
   initPage()
 })
@@ -156,6 +198,13 @@ const initForm = () => {
       isRequired: true,
       rules: [required],
       options: clientOptions.value
+    },
+    {
+      key: 'contract',
+      label: 'Contract',
+      type: 'dropdown',
+      isRequired: true,
+      options: contracts.value
     },
     {
       key: 'content',

@@ -9,6 +9,8 @@ export class Contract extends BaseModel {
   dateFrom: Date
   dateTo: Date
 
+  contractId: string
+
   clientId: string
   client: Client
 }
