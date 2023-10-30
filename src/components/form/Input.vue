@@ -63,7 +63,7 @@ interface Props {
   type?: string
   options?: Option[] | OptionObject[]
   className?: string
-  modelValue?: string | string[] | number
+  modelValue?: string | string[] | number | Date
   objectModelValue?: { id: string, name: string, disabled: boolean }[]
   disabled?: boolean
   index?: number | null

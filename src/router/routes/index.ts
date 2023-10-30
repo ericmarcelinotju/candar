@@ -11,6 +11,7 @@ import { forbiddenRoute, notFoundRoute } from './error'
 import { variantCategoryCreate, variantCategoryEdit, variantCategoryList, variantCreate, variantEdit, variantList } from './variant'
 import { productCategoryCreate, productCategoryEdit, productCategoryList, productCreate, productEdit, productList } from './product'
 import { quotationCreate, quotationEdit, quotationList } from './quotation'
+import { contractCreate, contractEdit, contractList } from './contract'
 
 export const dashboardRoute: RouteRecordRaw = {
   path: '/dashboard',
@@ -101,6 +102,12 @@ export const variantRoutes: Record<string, RouteRecordRaw> = {
   list: variantList,
   create: variantCreate,
   edit: variantEdit
+}
+
+export const contractRoutes: Record<string, RouteRecordRaw> = {
+  list: contractList,
+  create: contractCreate,
+  edit: contractEdit
 }
 
 export const productRoutes: Record<string, RouteRecordRaw> = {
