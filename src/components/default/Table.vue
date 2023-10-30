@@ -36,6 +36,7 @@
               :key="column.key"
               class="head"
               :class="column.class"
+              rowspan="3"
               scope="col"
               :title="column.label"
               :width="column.width"
@@ -52,11 +53,15 @@
                 />
               </div>
             </th>
+            <slot
+              name="custom-head"
+            />
             <th
               v-if="hasEdit || hasDelete"
               class="head action"
             />
           </tr>
+          <slot name="custom-head-2" />
         </thead>
         <tbody>
           <template v-if="hasItems">
@@ -104,6 +109,10 @@
                     </span>
                   </template>
                 </td>
+                <slot
+                  :item="item"
+                  name="custom-body"
+                />
                 <td
                   v-if="hasEdit || hasDelete"
                   class="action"

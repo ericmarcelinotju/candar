@@ -10,7 +10,240 @@
       @delete="handleDelete"
       @edit="handleEdit"
       @search="handleSearch"
-    />
+    >
+      <template #custom-head>
+        <th
+          class="head"
+          colspan="9"
+          scope="col"
+          style="text-align: center;"
+        >
+          Iregular
+        </th>
+        <th
+          class="head"
+          colspan="9"
+          scope="col"
+          style="text-align: center;"
+        >
+          Regular
+        </th>
+      </template>
+      <template #custom-head-2>
+        <tr>
+          <th
+            class="head"
+            colspan="3"
+            style="text-align: center;"
+          >
+            Tier 1
+          </th>
+          <th
+            class="head"
+            colspan="3"
+            style="text-align: center;"
+          >
+            Tier 2
+          </th>
+          <th
+            class="head"
+            colspan="3"
+            style="text-align: center;"
+          >
+            Tier 3
+          </th>
+          <th
+            class="head"
+            colspan="3"
+            style="text-align: center;"
+          >
+            Tier 1
+          </th>
+          <th
+            class="head"
+            colspan="3"
+            style="text-align: center;"
+          >
+            Tier 2
+          </th>
+          <th
+            class="head"
+            colspan="3"
+            style="text-align: center;"
+          >
+            Tier 3
+          </th>
+          <th />
+        </tr>
+        <tr>
+          <th
+            class="head"
+            scope="col"
+          >
+            M.O.Q
+          </th>
+          <th
+            class="head"
+            scope="col"
+          >
+            Disc. Rate
+          </th>
+          <th
+            class="head"
+            scope="col"
+          >
+            Price/Unit
+          </th>
+          <th
+            class="head"
+            scope="col"
+          >
+            M.O.Q
+          </th>
+          <th
+            class="head"
+            scope="col"
+          >
+            Disc. Rate
+          </th>
+          <th
+            class="head"
+            scope="col"
+          >
+            Price/Unit
+          </th>
+          <th
+            class="head"
+            scope="col"
+          >
+            M.O.Q
+          </th>
+          <th
+            class="head"
+            scope="col"
+          >
+            Disc. Rate
+          </th>
+          <th
+            class="head"
+            scope="col"
+          >
+            Price/Unit
+          </th>
+          <th
+            class="head"
+            scope="col"
+          >
+            M.O.Q
+          </th>
+          <th
+            class="head"
+            scope="col"
+          >
+            Disc. Rate
+          </th>
+          <th
+            class="head"
+            scope="col"
+          >
+            Price/Unit
+          </th>
+          <th
+            class="head"
+            scope="col"
+          >
+            M.O.Q
+          </th>
+          <th
+            class="head"
+            scope="col"
+          >
+            Disc. Rate
+          </th>
+          <th
+            class="head"
+            scope="col"
+          >
+            Price/Unit
+          </th>
+          <th
+            class="head"
+            scope="col"
+          >
+            M.O.Q
+          </th>
+          <th
+            class="head"
+            scope="col"
+          >
+            Disc. Rate
+          </th>
+          <th
+            class="head"
+            scope="col"
+          >
+            Price/Unit
+          </th>
+          <th />
+        </tr>
+      </template>
+      <template #custom-body>
+        <td class="text-center">
+          default
+        </td>
+        <td class="text-center">
+          default
+        </td>
+        <td class="text-center">
+          default
+        </td>
+        <td class="text-center">
+          default
+        </td>
+        <td class="text-center">
+          default
+        </td>
+        <td class="text-center">
+          default
+        </td>
+        <td class="text-center">
+          default
+        </td>
+        <td class="text-center">
+          default
+        </td>
+        <td class="text-center">
+          default
+        </td>
+        <td class="text-center">
+          default
+        </td>
+        <td class="text-center">
+          default
+        </td>
+        <td class="text-center">
+          default
+        </td>
+        <td class="text-center">
+          default
+        </td>
+        <td class="text-center">
+          default
+        </td>
+        <td class="text-center">
+          default
+        </td>
+        <td class="text-center">
+          default
+        </td>
+        <td class="text-center">
+          default
+        </td>
+        <td class="text-center">
+          default
+        </td>
+      </template>
+    </DefaultTable>
     <template #action>
       <button
         v-if="hasPermission('POST')"
@@ -149,3 +382,13 @@ const hasPermission = (method, module = 'CLIENT') => {
   return store.getters['auth/hasPermission'](module, method)
 }
 </script>
+
+<style lang="scss" scoped>
+.head {
+  @apply px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 whitespace-nowrap;
+
+  &.action {
+    @apply text-center w-1;
+  }
+}
+</style>

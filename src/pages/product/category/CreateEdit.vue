@@ -1,6 +1,6 @@
 <template>
   <div>
-    <DefaultPage :title="$t('app.columns.variant')">
+    <DefaultPage :title="$t('app.columns.productCategory')">
       <div
         v-if="loading"
         class="w-full h-full flex justify-center items-center"
@@ -93,6 +93,174 @@
             </div>
           </div>
         </template>
+        <template #iregular="{ form }">
+          <label
+            class="default-label mb-2"
+          >
+            Iregular
+          </label>
+          <div class="flex flex-col bg-gray-50 px-5 py-4 rounded-xl">
+            <div
+              v-for="(_, index) in form.iregular"
+              :key="`iregular-${index}`"
+              class="flex mb-4 bg-white"
+            >
+              <div class="flex flex-col flex-1 gap-4 border rounded-md p-4">
+                <div class="flex flex-col">
+                  <label
+                    class="default-label"
+                  >
+                    Tier {{ index + 1 }}
+                  </label>
+                  <hr class="w-full border-gray-400">
+                </div>
+                <div class="default-field">
+                  <label
+                    class="default-label"
+                    :for="`price-${index}`"
+                  >
+                    M.O.Q
+                  </label>
+                  <input
+                    :id="`price-${index}`"
+                    v-model="form.iregular[index].moq"
+                    class="default-input"
+                    type="number"
+                  >
+                </div>
+                <div class="default-field">
+                  <label
+                    class="default-label"
+                    :for="`price-${index}`"
+                  >
+                    DISC RATE
+                  </label>
+                  <input
+                    :id="`price-${index}`"
+                    v-model="form.iregular[index].discRate"
+                    class="default-input"
+                    type="number"
+                  >
+                </div>
+                <div class="default-field">
+                  <label
+                    class="default-label"
+                    :for="`quantity-${index}`"
+                  >
+                    Price/Unit
+                  </label>
+                  <input
+                    :id="`quantity-${index}`"
+                    class="default-input"
+                    disabled
+                    type="number"
+                    :value="handleInputPrice(form, form.iregular[index])"
+                  >
+                </div>
+              </div>
+            <!-- <div class="flex flex-col gap-4 ml-4">
+              <button
+              class="default-button flex-1"
+              type="button"
+              @click="handleRemoveProduct(form, index)"
+            >
+              <PencilIcon class="w-4 h-4" />
+            </button>
+              <button
+                class="danger-button flex-1"
+                type="button"
+                @click="handleRemoveProduct(form, index)"
+              >
+                <TrashIcon class="w-4 h-4" />
+              </button>
+            </div> -->
+            </div>
+          </div>
+        </template>
+        <template #regular="{ form }">
+          <label
+            class="default-label mb-2"
+          >
+            Regular
+          </label>
+          <div class="flex flex-col bg-gray-50 px-5 py-4 rounded-xl">
+            <div
+              v-for="(_, index) in form.regular"
+              :key="`regular-${index}`"
+              class="flex mb-4 bg-white"
+            >
+              <div class="flex flex-col flex-1 gap-4 border rounded-md p-4">
+                <div class="flex flex-col">
+                  <label
+                    class="default-label"
+                  >
+                    Tier {{ index + 1 }}
+                  </label>
+                  <hr class="w-full border-gray-400">
+                </div>
+                <div class="default-field">
+                  <label
+                    class="default-label"
+                    :for="`price-${index}`"
+                  >
+                    M.O.Q
+                  </label>
+                  <input
+                    :id="`price-${index}`"
+                    v-model="form.regular[index].moq"
+                    class="default-input"
+                    type="text"
+                  >
+                </div>
+                <div class="default-field">
+                  <label
+                    class="default-label"
+                    :for="`price-${index}`"
+                  >
+                    DISC RATE
+                  </label>
+                  <input
+                    :id="`price-${index}`"
+                    v-model="form.regular[index].discRate"
+                    class="default-input"
+                    type="number"
+                  >
+                </div>
+                <div class="default-field">
+                  <label
+                    class="default-label"
+                    :for="`quantity-${index}`"
+                  >
+                    Price/Unit
+                  </label>
+                  <input
+                    :id="`quantity-${index}`"
+                    class="default-input"
+                    disabled
+                    type="number"
+                    :value="handleInputPrice(form, form.regular[index])"
+                  >
+                </div>
+              </div>
+            <!-- <div class="flex flex-col gap-4 ml-4">
+              <button
+              class="default-button flex-1"
+              type="button"
+              @click="handleRemoveProduct(form, index)"
+            >
+              <PencilIcon class="w-4 h-4" />
+            </button>
+              <button
+                class="danger-button flex-1"
+                type="button"
+                @click="handleRemoveProduct(form, index)"
+              >
+                <TrashIcon class="w-4 h-4" />
+              </button>
+            </div> -->
+            </div>
+          </div>
+        </template>
       </DefaultCreateEdit>
     </DefaultPage>
   </div>
@@ -117,11 +285,12 @@ import { get as getVariantCategories } from '@/api/variant-category'
 
 import { required } from '@/utils/validation'
 import { FormSetting } from '@/typings/form.type'
-import { ProductCategory } from '@/typings/models/product.type'
+import { ProductCategory, ProductContract } from '@/typings/models/product.type'
 import { OptionObject } from '@/typings/option.type'
 import { productCategoryList } from '@/router/routes/product'
 import { useStore } from 'vuex'
 import { VariantCategory } from '@/typings/models/variant.type'
+import { roundingTwoDecimal, isNumber } from '@/utils/number'
 
 const route = useRoute()
 const router = useRouter()
@@ -133,7 +302,7 @@ const options: Ref<OptionObject[]> = ref([])
 
 const modelValue: Ref<Array<{ value: { id: string, name: string, disabled: boolean }[], options: OptionObject[] }>> = ref([])
 
-const initialData: Ref<ProductCategory> = ref()
+const initialData: Ref<ProductCategory> = ref(new ProductCategory())
 const loading: Ref<boolean> = ref(false)
 
 const isVariantDeleteable = computed(() => modelValue.value.length > 1)
@@ -220,8 +389,32 @@ const onSubmit = (form, onFinish) => {
 
   const payload = {
     ...form.value,
-    variants
+    variants,
+    tiers: []
   }
+  payload.iregular.forEach((e, i) => {
+    payload.tiers.push({
+      moq: +e.moq,
+      price: e.price,
+      discRate: e.discRate,
+      name: `tier ${i + 1}`,
+      type: 'regular'
+    })
+  })
+  payload.regular.forEach((e, i) => {
+    payload.tiers.push({
+      moq: +e.moq,
+      price: e.price,
+      discRate: e.discRate,
+      name: `tier ${i + 1}`,
+      type: 'iregular'
+    })
+  })
+
+  delete payload?.variant
+  delete payload?.iregular
+  delete payload?.regular
+
   if (id) {
     return updateProductCategory(id, payload)
       .then(() => {
@@ -243,6 +436,14 @@ const onSubmit = (form, onFinish) => {
       })
       .finally(onFinish)
   }
+}
+
+const handleInputPrice = (form: any, current: any) => {
+  let rawResult = 0
+  if (!form.publishPrice || !current.discRate) return rawResult
+
+  rawResult = +(form.publishPrice * (1 - (+current.discRate / 100))).toFixed(2)
+  return roundingTwoDecimal(rawResult)
 }
 
 let id = ''
@@ -283,8 +484,8 @@ const initPage = () => {
 }
 
 onMounted(() => {
-  initForm()
   initPage()
+  initForm()
   initOptions()
 })
 
@@ -312,33 +513,250 @@ const initForm = () => {
   ]
 
   if (!id) {
-    formSettings.value = [...formSettings.value, {
-      key: 'cost',
-      label: 'Cost',
-      isRequired: true,
-      rules: [required],
-      type: 'number'
-    },
-    {
-      key: 'price',
-      label: 'Price',
-      isRequired: true,
-      rules: [required],
-      type: 'number'
+    formSettings.value = [...formSettings.value,
+    // {
+    //   key: 'cost',
+    //   label: 'Cost',
+    //   isRequired: true,
+    //   rules: [required],
+    //   type: 'number'
+    // },
+      {
+        key: 'price',
+        label: 'Price',
+        isRequired: true,
+        rules: [required],
+        type: 'number',
+        col: 6
+      },
+      {
+        key: 'stock',
+        label: 'Stock',
+        isRequired: true,
+        rules: [required],
+        type: 'number',
+        col: 6
+      },
+      {
+        key: 'variant',
+        label: 'Variants',
+        isRequired: false
+      },
+      {
+        key: 'hsCode',
+        label: 'HS Code',
+        isRequired: false,
+        rules: [required],
+        type: 'number',
+        col: 6
+      },
+      {
+        key: 'tariffBM',
+        label: 'Tarif BM',
+        isRequired: false,
+        rules: [required],
+        type: 'number',
+        col: 6
+      },
+      {
+        key: 'rateCOGS',
+        label: 'COGS Rate',
+        isRequired: false,
+        rules: [required],
+        type: 'number',
+        col: 6
+      },
+      {
+        key: 'cost',
+        label: 'Cost',
+        isRequired: false,
+        rules: [required],
+        type: 'number',
+        col: 6
+      },
+      {
+        key: 'insurance',
+        label: 'Insurance',
+        isRequired: false,
+        rules: [required],
+        type: 'number',
+        disabled: true,
+        formula: (form: any) => {
+          let rawResult = 0
+          if (!form.cost) return rawResult
 
-    },
-    {
-      key: 'stock',
-      label: 'Stock',
-      isRequired: true,
-      rules: [required],
-      type: 'number'
-    },
-    {
-      key: 'variant',
-      label: 'Variants',
-      isRequired: false
-    }]
+          rawResult = +(form.cost * 0.005).toFixed(2)
+          return roundingTwoDecimal(rawResult)
+        },
+        col: 6
+      },
+      {
+        key: 'freight',
+        label: 'Freight',
+        isRequired: false,
+        rules: [required],
+        type: 'number',
+        disabled: true,
+        formula: (form: any) => {
+          let rawResult = 0
+          if (!form.cost) return rawResult
+
+          rawResult = +(form.cost * 0.27).toFixed(2)
+          return roundingTwoDecimal(rawResult)
+        },
+        col: 6
+      },
+      {
+        key: 'BMDuty',
+        label: 'BM / Duty',
+        isRequired: false,
+        rules: [required],
+        type: 'number',
+        disabled: true,
+        formula: (form: any) => {
+          let rawResult = 0
+          if (!form.cost || !form.tariffBM) return rawResult
+
+          rawResult = +(form.cost * (form.tariffBM / 100)).toFixed(2)
+          return roundingTwoDecimal(rawResult)
+        },
+        col: 6
+      },
+      {
+        key: 'ppn',
+        label: 'PPN',
+        isRequired: false,
+        rules: [required],
+        type: 'number',
+        disabled: true,
+        formula: (form: any) => {
+          let rawResult = 0
+
+          if (!form.cost || !form.insurance || !form.freight || !form.BMDuty) return rawResult
+
+          rawResult = +((form.cost + form.insurance + form.freight + form.BMDuty) * 0.11).toFixed(2)
+          return roundingTwoDecimal(rawResult)
+        },
+        col: 6
+      },
+      {
+        key: 'pph22',
+        label: 'Pph 22',
+        isRequired: false,
+        rules: [required],
+        type: 'number',
+        disabled: true,
+        formula: (form: any) => {
+          let rawResult = 0
+          if (!form.cost || !form.insurance || !form.freight || !form.BMDuty) return rawResult
+
+          rawResult = +((form.cost + form.insurance + form.freight + form.BMDuty) * 0.025).toFixed(2)
+          return roundingTwoDecimal(rawResult)
+        },
+        col: 6
+      },
+      {
+        key: 'repack',
+        label: 'Re Pack',
+        isRequired: false,
+        rules: [required],
+        type: 'number',
+        disabled: true,
+        formula: (form: any) => {
+          let rawResult = 0
+
+          if (!form.pph22 || !form.ppn) return rawResult
+
+          rawResult = +((form.cost + form.insurance + form.freight + form.BMDuty + form.ppn + form.pph22) * 0.03).toFixed(2)
+          return roundingTwoDecimal(rawResult)
+        },
+        col: 6
+      },
+      {
+        key: 'others',
+        label: 'Others',
+        isRequired: false,
+        rules: [required],
+        type: 'number',
+        col: 6
+      },
+      {
+        key: 'subtotal',
+        label: 'Sub Total',
+        isRequired: false,
+        rules: [required],
+        type: 'number',
+        disabled: true,
+        formula: (form: any) => {
+          let rawResult = 0
+
+          if (!form.pph22 || !form.ppn || !form.others) return rawResult
+
+          rawResult = +(form.cost + form.insurance + form.freight + form.BMDuty + form.ppn + form.pph22 + form.repack + form.others).toFixed(2)
+          return roundingTwoDecimal(rawResult)
+        },
+        col: 6
+      },
+      {
+        key: 'cogs',
+        label: 'COGS',
+        isRequired: false,
+        rules: [required],
+        type: 'number',
+        disabled: true,
+        formula: (form: any) => {
+          let rawResult = 0
+          if (!form.rateCOGS || !form.subtotal) return rawResult
+
+          rawResult = +(form.subtotal / (1 - (form.rateCOGS / 100))).toFixed(2)
+          return roundingTwoDecimal(rawResult)
+        },
+        col: 6
+      },
+      {
+        key: 'sellPrice',
+        label: 'Sell Price',
+        isRequired: false,
+        rules: [required],
+        type: 'number',
+        disabled: true,
+        formula: (form: any) => {
+          let rawResult = 0
+
+          if (!form.cogs) return rawResult
+
+          rawResult = +((form.cogs / (1 - 0.35)) * 17000).toFixed(2)
+          return roundingTwoDecimal(rawResult)
+        },
+        col: 6
+      },
+      {
+        key: 'publishPrice',
+        label: 'Publish Price',
+        isRequired: false,
+        rules: [required],
+        type: 'number',
+        disabled: true,
+        formula: (form: any) => {
+          let rawResult = 0
+          if (!form.sellPrice) return rawResult
+
+          rawResult = +(form.sellPrice).toFixed(0)
+          return roundingTwoDecimal(rawResult)
+        },
+        col: 6
+      },
+      {
+        key: 'iregular',
+        label: 'Iregular',
+        isRequired: false
+      },
+      {
+        key: 'regular',
+        label: 'Regular',
+        isRequired: false
+      }
+    ]
   }
 }
 // const hasPermission = (method, module = 'USER') => {
