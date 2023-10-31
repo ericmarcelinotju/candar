@@ -55,7 +55,13 @@ export const navigations: Navigation[] = [
       name: 'Variant Category',
       module: 'VARIANT',
       href: '/variant-category'
-    }]
+    },
+    {
+      name: 'Purchase',
+      module: 'Purchase',
+      href: '/purchase'
+    }
+    ]
   },
   {
     name: 'Project',
