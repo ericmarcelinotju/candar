@@ -92,15 +92,15 @@ import { get as getDashboard } from '@/api/dashboard'
 
 import { snakeToTitle } from '@/utils/string'
 import { Project } from '@/typings/models/project.type'
-import { ProjectByStatus } from '@/typings/models/dashboard.type'
+import { ProjectByStatus, ProjectBySource, ProjectStatusBySource } from '@/typings/models/dashboard.type'
 
 const store = useStore()
 const router = useRouter()
 const { notify } = useNotify('dashboard')
 
-const barData = ref([[12, 5, 1, 3], [2, 3, 5, 6], [5, 9, 5, 6], [2, 1, 1, 1]])
-const barDataLabels = ref(['Inititate', 'Qualification', 'Lead', 'Quotation'])
-const barLabels = ref(['Technology', 'Real Estate', 'Government/Military', 'Education'])
+const barData = ref([])
+const barDataLabels = ref([])
+const barLabels = ref([])
 
 const pieData = ref([0, 0, 0, 0])
 const pieLabels = ref(['Inititate', 'Qualification', 'Lead', 'Quotation'])
@@ -201,6 +201,47 @@ const initPage = () => {
       const leadProject = result.data.projectByStatus.find((e: ProjectByStatus) => e.status === 'lead')
       const quotationProject = result.data.projectByStatus.find((e: ProjectByStatus) => e.status === 'quotation')
       const qualificationProject = result.data.projectByStatus.find((e: ProjectByStatus) => e.status === 'qualification')
+
+      const sources = []
+      const statusList = []
+
+      // First filter the status and store it on statusList variable
+      result.data.projectBySource.forEach((e: ProjectBySource) => {
+        sources.push(e.source)
+        e.status.forEach((e2: ProjectStatusBySource) => {
+          if (!statusList.some((e3) => e2?.status.toLowerCase() === e3.toLowerCase())) {
+            statusList.push(e2?.status[0].toUpperCase() + e2?.status.slice(1))
+          }
+        })
+      })
+
+      barLabels.value = [...sources]
+      barDataLabels.value = [...statusList]
+
+      const rawSourceData = []
+      const sourceData = []
+
+      // Filter it by source first
+      result.data.projectBySource.forEach((e: ProjectBySource, index: number) => {
+        // Populate the rawSourceData and sourceData paralel
+        sourceData.push(new Array(statusList.length).fill(0))
+        rawSourceData.push(new Array(statusList.length).fill(0))
+        e.status.forEach((e2: ProjectStatusBySource) => {
+          const findIndex = statusList.findIndex((e3: string) => {
+            return e3.toLowerCase() === e2?.status.toLowerCase()
+          })
+          rawSourceData[index][findIndex] = e2.count
+        })
+      })
+
+      // Reconstruct the data so the bar chart can visualize it properly
+      rawSourceData.forEach((e: string[], index: number) => {
+        e.forEach((e2: string, index2: number) => {
+          sourceData[index2][index] = e2
+        })
+      })
+
+      barData.value = [...sourceData]
 
       pieData.value = [initiateProject?.count || 0, qualificationProject?.count || 0, leadProject?.count || 0, quotationProject?.count || 0]
     })
