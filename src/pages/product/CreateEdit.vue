@@ -618,9 +618,11 @@ const initForm = () => {
       disabled: true,
       formula: (form) => {
         let rawResult = 0
-        if (!form.cost || (!form.tariffBM && !isLocal.value)) return rawResult
+        if (!form.cost || (!isLocal.value && !form.tariffBM)) return rawResult
 
-        rawResult = +(form.cost * ((!isLocal.value ? form.tariffBM : 0) / 100)).toFixed(2)
+        if (!isLocal.value) (rawResult = +(form.cost * ((form.tariffBM) / 100)).toFixed(2))
+        else (rawResult = 0)
+
         return roundingTwoDecimal(rawResult)
       },
       col: 6
@@ -635,7 +637,7 @@ const initForm = () => {
       formula: (form) => {
         let rawResult = 0
 
-        if (!form.cost || !form.insurance || !form.freight || !form.BMDuty) return rawResult
+        if (!form.cost || !form.insurance || !form.freight || (!isLocal.value && !form.BMDuty)) return rawResult
 
         rawResult = +((form.cost + form.insurance + form.freight + form.BMDuty) * 0.11).toFixed(2)
         return roundingTwoDecimal(rawResult)
@@ -651,7 +653,7 @@ const initForm = () => {
       disabled: true,
       formula: (form) => {
         let rawResult = 0
-        if (!form.cost || !form.insurance || !form.freight || !form.BMDuty) return rawResult
+        if (!form.cost || !form.insurance || !form.freight || (!isLocal.value && !form.BMDuty)) return rawResult
 
         rawResult = +((form.cost + form.insurance + form.freight + form.BMDuty) * 0.025).toFixed(2)
         return roundingTwoDecimal(rawResult)
@@ -679,7 +681,6 @@ const initForm = () => {
       key: 'others',
       label: 'Others',
       isRequired: false,
-      rules: [required],
       type: 'number',
       col: 6
     },
@@ -692,10 +693,11 @@ const initForm = () => {
       disabled: true,
       formula: (form) => {
         let rawResult = 0
+        const isOthersEmpty = form.others === ''
 
-        if (!form.pph22 || !form.ppn || !form.others) return rawResult
+        if (!form.pph22 || !form.ppn) return rawResult
 
-        rawResult = +(form.cost + form.insurance + form.freight + form.BMDuty + form.ppn + form.pph22 + form.repack + form.others).toFixed(2)
+        rawResult = +(form.cost + form.insurance + form.freight + form.BMDuty + form.ppn + form.pph22 + form.repack + (!isOthersEmpty ? form.others : 0)).toFixed(2)
         return roundingTwoDecimal(rawResult)
       },
       col: 6
