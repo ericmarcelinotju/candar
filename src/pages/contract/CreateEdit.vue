@@ -12,8 +12,26 @@
       :initial-data="initialData"
       @submit="onSubmit"
     >
+      <template #clientId="{ form, formSetting }">
+        <label
+          class="default-label"
+          :for="formSetting.key"
+        >
+          Client<sup v-if="formSetting.isRequired">*</sup>
+        </label>
+        <Input
+          :id="formSetting.key"
+          :autocomplete="formSetting.autocomplete"
+          :disabled="formSetting.disabled"
+          :formula="formSetting.formula ? () => formSetting.formula(form) : null"
+          :model-value="form[formSetting.key]"
+          :options="(formSetting.options as Option[])"
+          :type="formSetting.type"
+          @update:model-value="(newValue) => handleUpdate(newValue, form, formSetting.key)"
+        />
+      </template>
       <template #contract="{ form }">
-        <div v-if="form.clientId">
+        <div v-if="haveContract(form)">
           <label
             class="default-label"
           >
@@ -22,7 +40,6 @@
           <Input
             :id="form.id"
             v-model="form.contractId"
-            :callback="() => initOptions(form.clientId)"
             :options="contracts"
             type="dropdown"
           />
@@ -33,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, computed, watch, onMounted, ref } from 'vue'
+import { Ref, computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
@@ -72,11 +89,14 @@ if (typeof route.params.client_id === 'string') {
   clientId = route.params.client_id
 }
 
+type ClientOption = Option & { haveContract: boolean }
+
 const clients: Ref<Client[]> = ref([])
-const clientOptions: Ref<Option[]> = computed(() =>
+const clientOptions: Ref<ClientOption[]> = computed(() =>
   clients.value.map((client) => ({
     label: client.name,
-    value: client.id
+    value: client.id,
+    haveContract: client.haveContract
   }))
 )
 
@@ -84,9 +104,6 @@ const initPage = async () => {
   loading.value = true
   try {
     await getClient().then((res) => {
-      res.data.data.forEach((data) => {
-        data.hasContract = true
-      })
       clients.value = res.data.data
     })
 
@@ -94,8 +111,13 @@ const initPage = async () => {
       const resp = await getContract(id)
       initialData.value = resp.data
       initialData.value.clientId = resp.data?.client?.id
+      initialData.value.contractId = resp.data?.contract?.id
       initialData.value.dateFrom = new Date(resp.data?.dateFrom)
       initialData.value.dateTo = new Date(resp.data?.dateTo)
+
+      if (resp.data?.client?.id) {
+        initOptions(resp.data?.client.id)
+      }
     }
 
     if (!id) {
@@ -143,7 +165,10 @@ const onSubmit = (form: Ref<Contract>, onFinish: () => void) => {
   }
 }
 
-watch(() => initialData.value, (val) => console.log(val))
+const handleUpdate = (val, form, key) => {
+  form[key] = val
+  initOptions(val)
+}
 
 const initOptions = async (clientId: string) => {
   const contract = new Contract()
@@ -161,10 +186,6 @@ const initOptions = async (clientId: string) => {
       notify('loaded', 'danger')
     })
 }
-
-onMounted(() => {
-  initPage()
-})
 
 const formSettings: Ref<FormSetting[]> = ref([])
 const initForm = () => {
@@ -203,7 +224,7 @@ const initForm = () => {
       key: 'contract',
       label: 'Contract',
       type: 'dropdown',
-      isRequired: true,
+      isRequired: false,
       options: contracts.value
     },
     {
@@ -214,5 +235,19 @@ const initForm = () => {
     }
   ]
 }
+
+const haveContract = (form): boolean => {
+  if (!form?.clientId) return false
+
+  const result = clientOptions.value.some((e: ClientOption): boolean => {
+    if (form.clientId === e.value) return e.haveContract
+    return false
+  })
+  return result
+}
+
+onMounted(() => {
+  initPage()
+})
 initForm()
 </script>

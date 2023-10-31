@@ -52,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed } from 'vue'
 import DatePicker from '@vuepic/vue-datepicker'
 import { Option, OptionObject } from '@/typings/option.type'
 import Dropdown from './dropdown/Dropdown.vue'
@@ -69,7 +69,6 @@ interface Props {
   disabled?: boolean
   index?: number | null
   formula?: (() => number | string | null) | null
-  callback?: () => void | null
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -79,8 +78,7 @@ const props = withDefaults(defineProps<Props>(), {
   objectModelValue: () => { return [{ id: '', name: '', disabled: false }] },
   options: () => [],
   index: null,
-  formula: null,
-  callback: null
+  formula: null
 })
 
 const emit = defineEmits(['update:modelValue', 'update:objectModelValue', 'update-options', 'delete-variant'])
@@ -106,9 +104,5 @@ const objectInputVal = computed({
   set (val) {
     emit('update:objectModelValue', val)
   }
-})
-
-onMounted(() => {
-  props.callback && props.callback()
 })
 </script>
