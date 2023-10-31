@@ -12,6 +12,7 @@ import { variantCategoryCreate, variantCategoryEdit, variantCategoryList, varian
 import { productCategoryCreate, productCategoryEdit, productCategoryList, productCreate, productEdit, productList } from './product'
 import { quotationCreate, quotationEdit, quotationList } from './quotation'
 import { contractCreate, contractEdit, contractList } from './contract'
+import { purchaseCreate, purchaseList } from './purchase'
 
 export const dashboardRoute: RouteRecordRaw = {
   path: '/dashboard',
@@ -134,6 +135,11 @@ export const clientAddressRoutes: Record<string, RouteRecordRaw> = {
 export const clientContactRoutes: Record<string, RouteRecordRaw> = {
   create: clientContactCreate,
   edit: clientContactEdit
+}
+
+export const purchaseRoutes: Record<string, RouteRecordRaw> = {
+  list: purchaseList,
+  create: purchaseCreate
 }
 
 export const projectRoutes: Record<string, RouteRecordRaw> = {
