@@ -38,7 +38,7 @@ const useSearch = (emit, router) => {
     }
     pagination.page = page
 
-    let limit = config.paginationOptions[1]
+    let limit = config.paginationOptions[0]
     if (route.query.limit && typeof route.query.limit === 'string') {
       limit = parseInt(route.query.limit)
     }

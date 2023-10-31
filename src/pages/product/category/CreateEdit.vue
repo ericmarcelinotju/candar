@@ -285,12 +285,12 @@ import { get as getVariantCategories } from '@/api/variant-category'
 
 import { required } from '@/utils/validation'
 import { FormSetting } from '@/typings/form.type'
-import { ProductCategory, ProductContract } from '@/typings/models/product.type'
+import { ProductCategory } from '@/typings/models/product.type'
 import { OptionObject } from '@/typings/option.type'
 import { productCategoryList } from '@/router/routes/product'
 import { useStore } from 'vuex'
 import { VariantCategory } from '@/typings/models/variant.type'
-import { roundingTwoDecimal, isNumber } from '@/utils/number'
+import { roundingTwoDecimal } from '@/utils/number'
 
 const route = useRoute()
 const router = useRouter()
