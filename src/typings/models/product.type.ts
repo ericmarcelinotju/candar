@@ -23,4 +23,5 @@ export class Product extends BaseModel {
 
   categoryId: string
   category: ProductCategory
+  disabled?:boolean
 }

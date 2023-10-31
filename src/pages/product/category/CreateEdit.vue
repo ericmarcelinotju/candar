@@ -1,6 +1,6 @@
 <template>
   <div>
-    <DefaultPage :title="$t('app.columns.variant')">
+    <DefaultPage :title="$t('app.columns.productCategory')">
       <div
         v-if="loading"
         class="w-full h-full flex justify-center items-center"
@@ -113,15 +113,16 @@ import {
   update as updateProductCategory
 } from '@/api/product-category'
 
-import { get as getVariantCategories } from '@/api/variant-category'
+import { get as getProducts } from '@/api/product'
 
 import { required } from '@/utils/validation'
 import { FormSetting } from '@/typings/form.type'
-import { ProductCategory } from '@/typings/models/product.type'
+import { Product, ProductCategory } from '@/typings/models/product.type'
 import { OptionObject } from '@/typings/option.type'
 import { productCategoryList } from '@/router/routes/product'
 import { useStore } from 'vuex'
 import { VariantCategory } from '@/typings/models/variant.type'
+import { Purchase } from '@/typings/models/purchase.type'
 
 const route = useRoute()
 const router = useRouter()
@@ -133,7 +134,7 @@ const options: Ref<OptionObject[]> = ref([])
 
 const modelValue: Ref<Array<{ value: { id: string, name: string, disabled: boolean }[], options: OptionObject[] }>> = ref([])
 
-const initialData: Ref<ProductCategory> = ref()
+const initialData: Ref<Purchase> = ref()
 const loading: Ref<boolean> = ref(false)
 
 const isVariantDeleteable = computed(() => modelValue.value.length > 1)
@@ -251,11 +252,11 @@ if (typeof route.params.id === 'string') {
 }
 
 const initOptions = async () => {
-  getVariantCategories()
+  getProducts()
     .then(res => {
       if (res.status === 200) {
         const { data } = res.data
-        data.map((e: VariantCategory) => {
+        data.map((e: Product) => {
           e.disabled = false
           return e
         })
