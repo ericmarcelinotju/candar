@@ -138,6 +138,12 @@ const columns = [
     isSearchable: true
   },
   {
+    label: 'Publish Price',
+    key: 'publishPrice',
+    isSortable: false,
+    isSearchable: false
+  },
+  {
     label: 'Category',
     key: 'category.name',
     isSortable: false,
@@ -149,3 +155,13 @@ const hasPermission = (method, module = 'CLIENT') => {
   return store.getters['auth/hasPermission'](module, method)
 }
 </script>
+
+<style lang="scss" scoped>
+.head {
+  @apply px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 whitespace-nowrap;
+
+  &.action {
+    @apply text-center w-1;
+  }
+}
+</style>

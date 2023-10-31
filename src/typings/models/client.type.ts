@@ -26,6 +26,7 @@ export class Client extends BaseModel {
   phoneNumber: string
   email: string
   website: string
+  haveContract: boolean
   addresses: ClientAddress[]
   contacts: ClientContact[]
 }
