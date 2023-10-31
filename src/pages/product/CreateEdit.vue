@@ -1,6 +1,6 @@
 <template>
   <div>
-    <DefaultPage :title="$t('app.columns.variant')">
+    <DefaultPage :title="$t('app.columns.product')">
       <div
         v-if="loading"
         class="w-full h-full flex justify-center items-center"
