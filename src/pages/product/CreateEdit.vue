@@ -13,6 +13,62 @@
         :initial-data="initialData"
         @submit="onSubmit"
       >
+        <template #tariffBM="{ form, formSetting }">
+          <template v-if="!isLocal">
+            <label
+              class="default-label"
+              :for="formSetting.key"
+            >
+              Tarif BM<sup v-if="formSetting.isRequired">*</sup>
+            </label>
+            <Input
+              :id="formSetting.key"
+              v-model="form[formSetting.key]"
+              :autocomplete="formSetting.autocomplete"
+              :disabled="formSetting.disabled"
+              :formula="formSetting.formula ? () => formSetting.formula(form) : null"
+              :options="(formSetting.options as Option[])"
+              :type="formSetting.type"
+            />
+          </template>
+        </template>
+        <template #hsCode="{ form, formSetting }">
+          <template v-if="!isLocal">
+            <label
+              class="default-label"
+              :for="formSetting.key"
+            >
+              HS Code<sup v-if="formSetting.isRequired">*</sup>
+            </label>
+            <Input
+              :id="formSetting.key"
+              v-model="form[formSetting.key]"
+              :autocomplete="formSetting.autocomplete"
+              :disabled="formSetting.disabled"
+              :formula="formSetting.formula ? () => formSetting.formula(form) : null"
+              :options="(formSetting.options as Option[])"
+              :type="formSetting.type"
+            />
+          </template>
+        </template>
+        <template #source="{ form, formSetting }">
+          <label
+            class="default-label"
+            :for="formSetting.key"
+          >
+            Sources<sup v-if="formSetting.isRequired">*</sup>
+          </label>
+          <Input
+            :id="formSetting.key"
+            :autocomplete="formSetting.autocomplete"
+            :disabled="formSetting.disabled"
+            :formula="formSetting.formula ? () => formSetting.formula(form) : null"
+            :model-value="form[formSetting.key]"
+            :options="(formSetting.options as Option[])"
+            :type="formSetting.type"
+            @update:model-value="(newValue) => handleUpdate(newValue, form, formSetting.key)"
+          />
+        </template>
         <template #variant>
           <label
             class="default-label"
@@ -247,6 +303,9 @@ const modelValue: Ref<Array<{ value: { id: string, name: string, disabled: boole
 const initialData: Ref<Product> = ref(new Product())
 const loading: Ref<boolean> = ref(false)
 
+const source: Ref<string> = ref()
+const isLocal = computed(() => source.value?.toLowerCase() === 'local')
+
 let id = ''
 if (typeof route.params.id === 'string') {
   id = route.params.id
@@ -304,6 +363,11 @@ const handleInputPrice = (form: any, current: ProductContract) => {
 
   rawResult = +(form.publishPrice * (1 - (+current.discRate / 100))).toFixed(2)
   return roundingTwoDecimal(rawResult)
+}
+
+const handleUpdate = (val, form, key) => {
+  form[key] = val
+  source.value = val
 }
 
 const initOptions = async () => {
@@ -381,7 +445,20 @@ const onSubmit = (form, onFinish) => {
     ...form.value,
     variants
   }
+
+  delete payload.id
+  delete payload.iregular
+  delete payload.regular
+  delete payload.category
+
+  // if (isLocal.value) {
+  //   delete payload.tariffBM
+  //   delete payload.hsCode
+  // }
+
   if (id) {
+    delete payload.code
+
     return updateProduct(id, payload)
       .then(() => {
         router.push(variantList)
@@ -541,9 +618,9 @@ const initForm = () => {
       disabled: true,
       formula: (form) => {
         let rawResult = 0
-        if (!form.cost || !form.tariffBM) return rawResult
+        if (!form.cost || (!form.tariffBM && !isLocal.value)) return rawResult
 
-        rawResult = +(form.cost * (form.tariffBM / 100)).toFixed(2)
+        rawResult = +(form.cost * ((!isLocal.value ? form.tariffBM : 0) / 100)).toFixed(2)
         return roundingTwoDecimal(rawResult)
       },
       col: 6
