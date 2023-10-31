@@ -47,6 +47,8 @@
                 :id="row.key"
                 v-model="form[row.key]"
                 :autocomplete="row.autocomplete"
+                :disabled="row.disabled"
+                :formula="row.formula ? () => row.formula(form) : null"
                 :options="(row.options as Option[])"
                 :required="row.isRequired"
                 :type="row.type"

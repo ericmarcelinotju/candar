@@ -13,4 +13,6 @@ export class FormSetting {
   type?: 'text' | 'date' | 'dropdown' | 'combobox' | 'image' | 'textarea' | string
   isMultiple?: boolean
   col?: number
+  disabled?: boolean
+  formula?: ((form: any, current?: any) => number | string | null) | null
 }
