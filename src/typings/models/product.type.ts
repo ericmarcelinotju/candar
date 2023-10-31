@@ -7,7 +7,7 @@ export class Variant {
 }
 
 export class ProductContract {
-  moq: string
+  moq: string | number
   discRate: number
   price: number
 }
@@ -96,7 +96,7 @@ export class Product extends BaseModel {
   iregular: ProductContract[]
   regular: ProductContract[]
 
-  tiers: Array<{ name: string, type: string } & ProductContract>
+  tiers: Array<{ id: string, name: string, type: string } & ProductContract>
 
   public constructor () {
     super()
