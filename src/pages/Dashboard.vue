@@ -3,7 +3,7 @@
     <div class="grid grid-cols-12 gap-6">
       <div class="stat-card">
         <div class="stat-label">
-          100
+          {{ activeProjects || 0 }}
         </div>
         <hr>
         <div class="flex justify-between items-center p-4">
@@ -25,7 +25,7 @@
       </div>
       <div class="stat-card">
         <div class="stat-label">
-          100 / 10
+          {{ winProject || 0 }} / {{ lostProject || 0 }}
         </div>
         <hr>
         <div class="flex justify-between items-center p-4">
@@ -63,11 +63,12 @@
       </h1>
       <DefaultTable
         :columns="projectColumns"
-        :has-delete="hasPermission('DELETE')"
+        :has-delete="false"
         :has-edit="hasPermission('PUT')"
         :items="projectItems"
         :loading="false"
         :total="projectItems.length"
+        @edit="handleEdit"
       >
         <template #status="{ item }">
           <span :class="getTagClass(item.status)">{{ snakeToTitle(item.status) }}</span>
@@ -78,23 +79,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { Ref, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import BarChart from '@/components/chart/barChart'
 import PieChart from '@/components/chart/pieChart'
 import DefaultTable from '@/components/default/Table.vue'
+import { useNotify } from '@/composables/use-notify'
+import { projectList } from '@/router/routes/project'
+
+import { get as getDashboard } from '@/api/dashboard'
+
 import { snakeToTitle } from '@/utils/string'
+import { Project } from '@/typings/models/project.type'
 
 const store = useStore()
 const router = useRouter()
+const { notify } = useNotify('dashboard')
 
 const barData = ref([[12, 5, 1, 3], [2, 3, 5, 6], [5, 9, 5, 6], [2, 1, 1, 1]])
-const barDataLabels = ref(['Cold Call', 'Qualification', 'Lead', 'Quotation'])
+const barDataLabels = ref(['Inititate', 'Qualification', 'Lead', 'Quotation'])
 const barLabels = ref(['Technology', 'Real Estate', 'Government/Military', 'Education'])
 
-const pieData = ref([12, 5, 1, 3])
-const pieLabels = ref(['Cold Call', 'Qualification', 'Lead', 'Quotation'])
+const pieData = ref([0, 0, 0, 0])
+const pieLabels = ref(['Inititate', 'Qualification', 'Lead', 'Quotation'])
 
 const projectColumns = [
   {
@@ -118,37 +126,44 @@ const projectColumns = [
   },
   {
     label: 'User',
-    key: 'user'
+    key: 'user.username'
   },
   {
     label: 'Client',
-    key: 'client'
+    key: 'client.name'
   }
 ]
 
-const projectItems = [
-  {
-    number: 'PRJ001',
-    name: 'Project 01',
-    status: 'cold_call',
-    user: 'Nicholas',
-    client: 'Nike'
-  },
-  {
-    number: 'PRJ002',
-    name: 'Project 02',
-    status: 'cold_call',
-    user: 'Nicholas',
-    client: 'Adidas'
-  },
-  {
-    number: 'PRJ003',
-    name: 'Project 03',
-    status: 'quotation',
-    user: 'Nicholas',
-    client: 'Puma'
-  }
-]
+const projectItems: Ref<Project[]> = ref([])
+
+const activeProjects: Ref<number> = ref()
+const almostDueProjects: Ref<string> = ref()
+const winProject: Ref<number> = ref()
+const lostProject: Ref<number> = ref()
+
+// const projectItems = [
+//   {
+//     number: 'PRJ001',
+//     name: 'Project 01',
+//     status: 'cold_call',
+//     user: 'Nicholas',
+//     client: 'Nike'
+//   },
+//   {
+//     number: 'PRJ002',
+//     name: 'Project 02',
+//     status: 'cold_call',
+//     user: 'Nicholas',
+//     client: 'Adidas'
+//   },
+//   {
+//     number: 'PRJ003',
+//     name: 'Project 03',
+//     status: 'quotation',
+//     user: 'Nicholas',
+//     client: 'Puma'
+//   }
+// ]
 
 const getTagClass = (status: string) => {
   if (status === 'cold_call') {
@@ -166,6 +181,31 @@ const getTagClass = (status: string) => {
 const hasPermission = (module) => {
   return store.getters['auth/hasPermission'](module, 'GET')
 }
+
+const handleEdit = (e: Project) => {
+  router.push({ name: projectList.name, params: { project_id: e.id } })
+}
+
+const initPage = () => {
+  getDashboard()
+    .then((result) => {
+      projectItems.value = result.data.projects
+
+      activeProjects.value = result.data.activeProject
+      winProject.value = result.data.wonProject
+      lostProject.value = result.data.lostProject
+
+      const { initiateProject, qualificationProject, leadProject, quotationProject } = result.data
+      pieData.value = [initiateProject, qualificationProject, leadProject, quotationProject]
+    })
+    .catch(() => {
+      notify('loaded', 'danger')
+    })
+}
+
+onMounted(() => {
+  initPage()
+})
 </script>
 
 <style lang="scss" scoped>
