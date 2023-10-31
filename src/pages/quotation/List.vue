@@ -14,6 +14,58 @@
       <template #project_id="{ item }">
         {{ item.project.code }}
       </template>
+      <template #action="{ item }">
+        <template v-if="isManager">
+          <button
+            v-if="!item.approveManager"
+            class="info-button mr-3 !py-1"
+            type="button"
+            @click="handleApproveManager(item)"
+          >
+            Approve
+          </button>
+          <button
+            v-else-if="!item.approveClient"
+            class="warning-button mr-3 !py-1"
+            type="button"
+          >
+            Need Approval
+          </button>
+          <button
+            v-else
+            class="success-button mr-3 !py-1"
+            type="button"
+            @click="handleViewApproval(item)"
+          >
+            Approved
+          </button>
+        </template>
+        <template v-else>
+          <button
+            v-if="!item.approveManager"
+            class="warning-button mr-3 !py-1"
+            type="button"
+          >
+            Need Approval
+          </button>
+          <button
+            v-else-if="!item.approveClient"
+            class="info-button mr-3 !py-1"
+            type="button"
+            @click="handleApproveClient(item)"
+          >
+            Approve
+          </button>
+          <button
+            v-else
+            class="success-button mr-3 !py-1"
+            type="button"
+            @click="handleViewApproval(item)"
+          >
+            Approved
+          </button>
+        </template>
+      </template>
     </DefaultTable>
     <template #action>
       <button
@@ -40,6 +92,46 @@
         type="danger"
         @confirm="confirmDelete"
       />
+      <DefaultModal
+        v-model="visibleApproveManagerConfirmationModal"
+        :loading="loadingApproveManager"
+        type="info"
+        @confirm="confirmApproveManager"
+      />
+      <DefaultModal
+        v-model="visibleApproveClientConfirmationModal"
+        :loading="loadingApproveClient"
+        type="info"
+        @confirm="confirmApproveClient"
+      >
+        <FileInput
+          v-model="approveClientItem.approvalAttachment"
+          class="mt-3"
+        />
+      </DefaultModal>
+      <DefaultModal
+        v-model="visibleViewApprovalConfirmationModal"
+        description=""
+        :loading="false"
+        title="Approval Detail"
+        type="info"
+      >
+        <div class="mt-6 flex gap-6 items-center">
+          <div>Approved by :</div>
+          <div>{{ viewApprovalItem.approvedBy?.username }}</div>
+        </div>
+
+        <div class="mt-3 flex gap-6 items-center">
+          <div>Attachment :</div>
+          <a
+            class="info-button"
+            :href="viewApprovalItem.approvalAttachment"
+            target="_blank"
+          >
+            Download
+          </a>
+        </div>
+      </DefaultModal>
     </template>
   </DefaultPage>
 </template>
@@ -50,7 +142,8 @@ import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { PlusIcon } from '@heroicons/vue/solid'
 import DefaultTable from '@/components/default/Table.vue'
-import { get as getQuotations, del as deleteQuotation } from '@/api/quotation'
+import FileInput from '@/components/form/File.vue'
+import { get as getQuotations, del as deleteQuotation, approveManager, approveClient } from '@/api/quotation'
 import { get as getProjects } from '@/api/project'
 import { useNotify } from '@/composables/use-notify'
 import { Quotation } from '@/typings/models/quotation.type'
@@ -58,10 +151,16 @@ import { quotationCreate, quotationEdit } from '@/router/routes/quotation'
 import { TableColumn } from '@/typings/table.type'
 import { Project } from '@/typings/models/project.type'
 import { Option } from '@/typings/option.type'
+import { downloadBlob } from '@/utils'
 
 const router = useRouter()
 const store = useStore()
 const { notify } = useNotify('variant')
+
+const isManager = computed(() => {
+  const user = store.getters['auth/user']
+  return user.role.isManager
+})
 
 const loading = ref(false)
 let stateParams = reactive({})
@@ -130,6 +229,68 @@ const confirmDelete = () => {
     })
 }
 
+// Approve by manager
+const loadingApproveManager = ref(false)
+const visibleApproveManagerConfirmationModal = ref(false)
+const approveManagerItem: Ref<Quotation> = ref()
+const handleApproveManager = (data) => {
+  visibleApproveManagerConfirmationModal.value = true
+  approveManagerItem.value = data
+}
+const confirmApproveManager = () => {
+  const { id } = approveManagerItem.value
+  loadingApproveManager.value = true
+  approveManager(id)
+    .then(() => {
+      handleSearch(stateParams)
+      notify('approved')
+    })
+    .catch(() => {
+      notify('approved', 'danger')
+    })
+    .finally(() => {
+      loadingApproveManager.value = false
+      visibleApproveManagerConfirmationModal.value = false
+    })
+}
+
+// Approve by client
+const loadingApproveClient = ref(false)
+const visibleApproveClientConfirmationModal = ref(false)
+const approveClientItem: Ref<Quotation> = ref()
+const handleApproveClient = (data) => {
+  visibleApproveClientConfirmationModal.value = true
+  approveClientItem.value = data
+}
+const confirmApproveClient = () => {
+  const { id } = approveClientItem.value
+  loadingApproveClient.value = true
+
+  const payload = new FormData()
+  payload.append('attachment', approveClientItem.value.approvalAttachment)
+
+  approveClient(id, payload)
+    .then(() => {
+      handleSearch(stateParams)
+      notify('approved')
+    })
+    .catch(() => {
+      notify('approved', 'danger')
+    })
+    .finally(() => {
+      loadingApproveClient.value = false
+      visibleApproveClientConfirmationModal.value = false
+    })
+}
+
+// View approval
+const visibleViewApprovalConfirmationModal = ref(false)
+const viewApprovalItem: Ref<Quotation> = ref()
+const handleViewApproval = (data) => {
+  visibleViewApprovalConfirmationModal.value = true
+  viewApprovalItem.value = data
+}
+
 // Table columns setting
 const tableColumns: Ref<TableColumn[]> = ref([])
 const initColumns = () => {
@@ -146,8 +307,15 @@ const initColumns = () => {
       isSearchable: true
     },
     {
-      label: 'Date',
-      key: 'date',
+      label: 'Tanggal Mulai',
+      key: 'dateFrom',
+      isSortable: true,
+      isSearchable: true,
+      searchType: 'date'
+    },
+    {
+      label: 'Tanggal Selesai',
+      key: 'dateTo',
       isSortable: true,
       isSearchable: true,
       searchType: 'date'

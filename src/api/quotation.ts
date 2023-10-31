@@ -23,10 +23,20 @@ const del = (id: string): Promise<BaseResponse<null>> => {
   return axios.delete(`/quotation/${id}`)
 }
 
+const approveManager = (id: string): Promise<BaseResponse<null>> => {
+  return axios.post(`/quotation/${id}/approve-manager`)
+}
+
+const approveClient = (id: string, data: FormData): Promise<BaseResponse<null>> => {
+  return axios.post(`/quotation/${id}/approve-client`, data)
+}
+
 export {
   get,
   detail,
   insert,
   update,
-  del
+  del,
+  approveManager,
+  approveClient
 }

@@ -4,6 +4,15 @@
       v-if="!isMultiple"
       class="w-full mt-1"
     >
+      <div
+        v-if="modelValue && createObjectURL(modelValue) !== ''"
+        class="relative mb-3 opacity-70 rounded-md"
+      >
+        <img
+          class="h-24 w-24 object-cover rounded-md"
+          :src="createObjectURL(modelValue)"
+        >
+      </div>
       <input
         :id="id"
         accept="image/*"
@@ -12,15 +21,6 @@
         type="file"
         @change="onFileChange"
       >
-      <div
-        v-if="createObjectURL(modelValue) != ''"
-        class="relative opacity-70 rounded-md"
-      >
-        <img
-          class="h-24 w-24 object-cover rounded-md"
-          :src="createObjectURL(modelValue)"
-        >
-      </div>
     </div>
     <div
       v-else
@@ -86,7 +86,7 @@ import { reactive } from 'vue'
 import { CloudUploadIcon, TrashIcon } from '@heroicons/vue/outline'
 
 interface Props {
-  isMultiple: boolean
+  isMultiple?: boolean
   id?: string
   name?: string
   modelValue: File | string | string[]

@@ -1,6 +1,7 @@
 import { BaseModel } from './model.type'
 import { Project } from './project.type'
 import { QuotationProduct } from './quotation-product.type'
+import { User } from './user.type'
 
 export class Quotation extends BaseModel {
   id: string
@@ -12,4 +13,9 @@ export class Quotation extends BaseModel {
   project: Project
 
   quotationProducts: QuotationProduct[]
+
+  approveManager: boolean;
+  approvedBy?: User;
+  approveClient: boolean;
+  approvalAttachment?: string;
 }
