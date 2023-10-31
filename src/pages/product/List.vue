@@ -138,6 +138,12 @@ const columns = [
     isSearchable: true
   },
   {
+    label: 'Publish Price',
+    key: 'publishPrice',
+    isSortable: false,
+    isSearchable: false
+  },
+  {
     label: 'Category',
     key: 'category.name',
     isSortable: false,

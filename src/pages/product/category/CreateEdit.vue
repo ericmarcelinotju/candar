@@ -285,7 +285,7 @@ import { get as getVariantCategories } from '@/api/variant-category'
 
 import { required } from '@/utils/validation'
 import { FormSetting } from '@/typings/form.type'
-import { ProductCategory } from '@/typings/models/product.type'
+import { ProductCategory, ProductContract } from '@/typings/models/product.type'
 import { OptionObject } from '@/typings/option.type'
 import { productCategoryList } from '@/router/routes/product'
 import { useStore } from 'vuex'
@@ -438,7 +438,8 @@ const onSubmit = (form, onFinish) => {
   }
 }
 
-const handleInputPrice = (form: any, current: any) => {
+const handleInputPrice = (form: any, current: ProductContract) => {
+  console.log(form, current)
   let rawResult = 0
   if (!form.publishPrice || !current.discRate) return rawResult
 
@@ -581,7 +582,7 @@ const initForm = () => {
         rules: [required],
         type: 'number',
         disabled: true,
-        formula: (form: any) => {
+        formula: (form) => {
           let rawResult = 0
           if (!form.cost) return rawResult
 
@@ -597,7 +598,7 @@ const initForm = () => {
         rules: [required],
         type: 'number',
         disabled: true,
-        formula: (form: any) => {
+        formula: (form) => {
           let rawResult = 0
           if (!form.cost) return rawResult
 
@@ -613,7 +614,7 @@ const initForm = () => {
         rules: [required],
         type: 'number',
         disabled: true,
-        formula: (form: any) => {
+        formula: (form) => {
           let rawResult = 0
           if (!form.cost || !form.tariffBM) return rawResult
 
@@ -629,7 +630,7 @@ const initForm = () => {
         rules: [required],
         type: 'number',
         disabled: true,
-        formula: (form: any) => {
+        formula: (form) => {
           let rawResult = 0
 
           if (!form.cost || !form.insurance || !form.freight || !form.BMDuty) return rawResult
@@ -646,7 +647,7 @@ const initForm = () => {
         rules: [required],
         type: 'number',
         disabled: true,
-        formula: (form: any) => {
+        formula: (form) => {
           let rawResult = 0
           if (!form.cost || !form.insurance || !form.freight || !form.BMDuty) return rawResult
 
@@ -662,7 +663,7 @@ const initForm = () => {
         rules: [required],
         type: 'number',
         disabled: true,
-        formula: (form: any) => {
+        formula: (form) => {
           let rawResult = 0
 
           if (!form.pph22 || !form.ppn) return rawResult
@@ -687,7 +688,7 @@ const initForm = () => {
         rules: [required],
         type: 'number',
         disabled: true,
-        formula: (form: any) => {
+        formula: (form) => {
           let rawResult = 0
 
           if (!form.pph22 || !form.ppn || !form.others) return rawResult
@@ -704,7 +705,7 @@ const initForm = () => {
         rules: [required],
         type: 'number',
         disabled: true,
-        formula: (form: any) => {
+        formula: (form) => {
           let rawResult = 0
           if (!form.rateCOGS || !form.subtotal) return rawResult
 
@@ -720,12 +721,12 @@ const initForm = () => {
         rules: [required],
         type: 'number',
         disabled: true,
-        formula: (form: any) => {
+        formula: (form) => {
           let rawResult = 0
 
           if (!form.cogs) return rawResult
 
-          rawResult = +((form.cogs / (1 - 0.35)) * 17000).toFixed(2)
+          rawResult = +((form.cogs / (1 - 0.35)) * 1).toFixed(2)
           return roundingTwoDecimal(rawResult)
         },
         col: 6
@@ -737,7 +738,7 @@ const initForm = () => {
         rules: [required],
         type: 'number',
         disabled: true,
-        formula: (form: any) => {
+        formula: (form) => {
           let rawResult = 0
           if (!form.sellPrice) return rawResult
 
