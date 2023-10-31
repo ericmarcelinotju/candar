@@ -14,7 +14,7 @@
       </div>
       <div class="stat-card">
         <div class="stat-label">
-          100
+          {{ almostDueProjects || 0 }}
         </div>
         <hr>
         <div class="flex justify-between items-center p-4">
@@ -38,7 +38,7 @@
     <div class="grid grid-cols-12 gap-6 mt-6">
       <div class="p-6 col-span-8 rounded-md overflow-hidden bg-white shadow">
         <h1 class="text-xl font-bold mb-6">
-          Project Status by Industry
+          Project Status by Source
         </h1>
         <BarChart
           :data="barData"
@@ -92,6 +92,7 @@ import { get as getDashboard } from '@/api/dashboard'
 
 import { snakeToTitle } from '@/utils/string'
 import { Project } from '@/typings/models/project.type'
+import { ProjectByStatus } from '@/typings/models/dashboard.type'
 
 const store = useStore()
 const router = useRouter()
@@ -137,7 +138,7 @@ const projectColumns = [
 const projectItems: Ref<Project[]> = ref([])
 
 const activeProjects: Ref<number> = ref()
-const almostDueProjects: Ref<string> = ref()
+const almostDueProjects: Ref<number> = ref()
 const winProject: Ref<number> = ref()
 const lostProject: Ref<number> = ref()
 
@@ -192,11 +193,16 @@ const initPage = () => {
       projectItems.value = result.data.projects
 
       activeProjects.value = result.data.activeProject
-      winProject.value = result.data.wonProject
-      lostProject.value = result.data.lostProject
+      almostDueProjects.value = result.data.almostDueProject
+      winProject.value = result.data.projectByStatus.find((e: ProjectByStatus) => e.status === 'win')?.count || 0
+      lostProject.value = result.data.projectByStatus.find((e: ProjectByStatus) => e.status === 'lose')?.count || 0
 
-      const { initiateProject, qualificationProject, leadProject, quotationProject } = result.data
-      pieData.value = [initiateProject, qualificationProject, leadProject, quotationProject]
+      const initiateProject = result.data.projectByStatus.find((e: ProjectByStatus) => e.status === 'initiate')
+      const leadProject = result.data.projectByStatus.find((e: ProjectByStatus) => e.status === 'lead')
+      const quotationProject = result.data.projectByStatus.find((e: ProjectByStatus) => e.status === 'quotation')
+      const qualificationProject = result.data.projectByStatus.find((e: ProjectByStatus) => e.status === 'qualification')
+
+      pieData.value = [initiateProject?.count || 0, qualificationProject?.count || 0, leadProject?.count || 0, quotationProject?.count || 0]
     })
     .catch(() => {
       notify('loaded', 'danger')
