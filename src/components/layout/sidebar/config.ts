@@ -55,13 +55,7 @@ export const navigations: Navigation[] = [
       name: 'Variant Category',
       module: 'VARIANT',
       href: '/variant-category'
-    },
-    {
-      name: 'Purchase',
-      module: 'Purchase',
-      href: '/purchase'
-    }
-    ]
+    }]
   },
   {
     name: 'Project',
@@ -76,9 +70,9 @@ export const navigations: Navigation[] = [
     icon: DocumentReportIcon
   },
   {
-    name: 'Sale',
-    module: 'SALE',
-    href: '/sale',
+    name: 'Purchase',
+    module: 'PURCHASE',
+    href: '/purchase',
     icon: ShoppingCartIcon
   },
   {

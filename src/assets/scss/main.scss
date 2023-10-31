@@ -64,7 +64,7 @@ hr {
 .custom-table-row,
 .custom-table-account {
   .action {
-    @apply text-center
+    @apply flex;
   }
 
   a {

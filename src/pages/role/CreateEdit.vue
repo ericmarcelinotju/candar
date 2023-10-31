@@ -144,7 +144,7 @@ onMounted(() => {
   initPage()
   getPermissions()
     .then(res => {
-      permissions.value = res.data.permissions
+      permissions.value = res.data.data
     })
 })
 
@@ -156,6 +156,11 @@ const initForm = () => {
       label: 'Name',
       isRequired: true,
       rules: [required, alpha]
+    },
+    {
+      key: 'isManager',
+      label: 'Manager ?',
+      type: 'checkbox'
     },
     {
       key: 'description',

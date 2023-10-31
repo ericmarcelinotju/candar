@@ -12,8 +12,18 @@
       :initial-data="initialData"
       @submit="onSubmit"
     >
-      <template #products="{ form, formSetting }">
-        <div
+      <template #products="{ form }">
+        <ProductForm
+          v-for="(quotationProduct, index) in form.quotationProducts"
+          :key="quotationProduct.id"
+          v-model="form.quotationProducts[index]"
+          :has-contract="hasContract(form.projectId)"
+          :index="index"
+          :products="products"
+          :tiers="productTiers"
+          @delete="(index) => handleRemoveProduct(form, index)"
+        />
+        <!-- <div
           v-for="(quotationProduct, index) in form.quotationProducts"
           :key="quotationProduct.id"
           class="flex mb-4"
@@ -30,7 +40,7 @@
                 :id="`user-${index}`"
                 v-model="form.quotationProducts[index].productId"
                 class="default-input"
-                :options="(formSetting.options as Option[])"
+                :options="productOptions"
                 @input="(val) => onChangeProduct(val, form, index)"
               />
             </div>
@@ -41,12 +51,13 @@
               >
                 Harga
               </label>
-              <input
-                :id="`price-${index}`"
-                v-model="form.quotationProducts[index].priceNumber"
+              <Dropdown
+                :id="`user-${index}`"
+                v-model="form.quotationProducts[index].tierId"
                 class="default-input"
-                type="number"
-              >
+                :options="(formSetting.options as Option[])"
+                @input="(val) => onChangeProduct(val, form, index)"
+              />
             </div>
             <div class="default-field">
               <label
@@ -64,13 +75,6 @@
             </div>
           </div>
           <div class="flex flex-col gap-4 ml-4">
-            <!-- <button
-              class="default-button flex-1"
-              type="button"
-              @click="handleRemoveProduct(form, index)"
-            >
-              <PencilIcon class="w-4 h-4" />
-            </button> -->
             <button
               class="danger-button flex-1"
               type="button"
@@ -79,7 +83,7 @@
               <TrashIcon class="w-4 h-4" />
             </button>
           </div>
-        </div>
+        </div> -->
         <button
           class="info-button"
           type="button"
@@ -96,17 +100,17 @@
 <script setup lang="ts">
 import { Ref, computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { PlusIcon, TrashIcon } from '@heroicons/vue/solid'
+import { PlusIcon } from '@heroicons/vue/solid'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
-import Dropdown from '@/components/form/dropdown/Dropdown.vue'
 import {
   detail as getQuotation,
   insert as insertQuotation,
   update as updateQuotation
 } from '@/api/quotation'
-import { get as getProject } from '@/api/project'
-import { get as getProduct } from '@/api/product'
+import { get as getProjects } from '@/api/project'
+import { get as getProducts } from '@/api/product'
+import { get as getProductTiers } from '@/api/product-tier'
 import { required } from '@/utils/validation'
 import { FormSetting } from '@/typings/form.type'
 import { Quotation } from '@/typings/models/quotation.type'
@@ -115,6 +119,8 @@ import { Option } from '@/typings/option.type'
 import { Project } from '@/typings/models/project.type'
 import { QuotationProduct } from '@/typings/models/quotation-product.type'
 import { Product } from '@/typings/models/product.type'
+import { ProductTier } from '@/typings/models/product-tier.type'
+import ProductForm from './ProductForm.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -144,20 +150,26 @@ const projectOptions: Ref<Option[]> = computed(() =>
 )
 
 const products: Ref<Product[]> = ref([])
-const productOptions: Ref<Option[]> = computed(() =>
-  products.value.map((product) => ({
-    label: product.name,
-    value: product.id
-  }))
-)
+const productTiers: Ref<ProductTier[]> = ref([])
+
+const hasContract = (projectId) => {
+  const currProject = projects.value.find((project) => project.id === projectId)
+  return currProject ? currProject.client.haveContract : false
+}
 
 const initPage = async () => {
   loading.value = true
   try {
-    await Promise.all([getProject(), getProduct()]).then((res) => {
-      projects.value = res[0].data.data
-      products.value = res[1].data.data
-    })
+    await Promise.all([
+      getProjects(),
+      getProducts(),
+      getProductTiers()
+    ])
+      .then((res) => {
+        projects.value = res[0].data.data
+        products.value = res[1].data.data
+        productTiers.value = res[2].data.data
+      })
 
     if (id) {
       const resp = await getQuotation(id)
@@ -225,11 +237,20 @@ const initForm = () => {
       rules: [required]
     },
     {
-      key: 'date',
-      label: 'Tanggal',
+      key: 'dateFrom',
+      label: 'Tanggal Mulai',
       type: 'date',
       isRequired: true,
-      rules: [required]
+      rules: [required],
+      col: 6
+    },
+    {
+      key: 'dateTo',
+      label: 'Tanggal Selesai',
+      type: 'date',
+      isRequired: true,
+      rules: [required],
+      col: 6
     },
     {
       key: 'projectId',
@@ -241,8 +262,7 @@ const initForm = () => {
     },
     {
       key: 'products',
-      label: 'Produk',
-      options: productOptions.value
+      label: 'Produk'
     }
   ]
 }
@@ -259,11 +279,5 @@ const handleAddProduct = (form) => {
 
 const handleRemoveProduct = (form, index) => {
   form.quotationProducts.splice(index, 1)
-}
-
-const onChangeProduct = (val: string, form: Quotation, index: number) => {
-  const product = products.value.find(product => product.id === val)
-
-  form.quotationProducts[index].priceNumber = product.priceNumber
 }
 </script>
