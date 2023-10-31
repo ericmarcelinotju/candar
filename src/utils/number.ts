@@ -10,7 +10,17 @@ const isNumber = (value) => {
   return !(/\D/.test(value))
 }
 
+const convertFromCurrencyToNumber = (value) => {
+  if (!value) return
+
+  const result = value.replaceAll('.', '').split('Rp')[1].split(',')[0].trim()
+
+  if (!isNumber(result)) return 0
+  return parseInt(result)
+}
+
 export {
   roundingTwoDecimal,
-  isNumber
+  isNumber,
+  convertFromCurrencyToNumber
 }

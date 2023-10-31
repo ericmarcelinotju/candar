@@ -267,7 +267,7 @@
 </template>
 
 <script setup lang="ts" generic="T">
-import { Ref, onMounted, ref, computed, watch } from 'vue'
+import { Ref, onMounted, ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
@@ -439,7 +439,6 @@ const onSubmit = (form, onFinish) => {
 }
 
 const handleInputPrice = (form: any, current: ProductContract) => {
-  console.log(form, current)
   let rawResult = 0
   if (!form.publishPrice || !current.discRate) return rawResult
 
