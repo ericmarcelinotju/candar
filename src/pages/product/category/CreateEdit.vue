@@ -689,10 +689,11 @@ const initForm = () => {
         disabled: true,
         formula: (form) => {
           let rawResult = 0
+          const isOthersEmpty = form.others === ''
 
-          if (!form.pph22 || !form.ppn || !form.others) return rawResult
+          if (!form.pph22 || !form.ppn) return rawResult
 
-          rawResult = +(form.cost + form.insurance + form.freight + form.BMDuty + form.ppn + form.pph22 + form.repack + form.others).toFixed(2)
+          rawResult = +(form.cost + form.insurance + form.freight + form.BMDuty + form.ppn + form.pph22 + form.repack + (!isOthersEmpty ? form.others : 0)).toFixed(2)
           return roundingTwoDecimal(rawResult)
         },
         col: 6
