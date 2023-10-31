@@ -55,6 +55,7 @@
     v-bind="$props"
     v-model="inputVal"
     class="default-input"
+    :disabled="disabled"
     :type="type"
   >
 </template>
@@ -72,10 +73,11 @@ interface Props {
   type?: string
   options?: Option[] | OptionObject[]
   className?: string
-  modelValue?: string | string[] | number
+  modelValue?: string | string[] | number | Date
   objectModelValue?: { id: string, name: string, disabled: boolean }[]
   disabled?: boolean
   index?: number | null
+  formula?: (() => number | string | null) | null
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -84,13 +86,19 @@ const props = withDefaults(defineProps<Props>(), {
   modelValue: '',
   objectModelValue: () => { return [{ id: '', name: '', disabled: false }] },
   options: () => [],
-  index: null
+  index: null,
+  formula: null
 })
 
 const emit = defineEmits(['update:modelValue', 'update:objectModelValue', 'update-options', 'delete-variant'])
 
 const inputVal = computed({
   get () {
+    if (props.formula) {
+      const result = props.formula()
+      emit('update:modelValue', result)
+      return result
+    }
     return props.modelValue
   },
   set (val) {

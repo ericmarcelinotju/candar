@@ -158,8 +158,12 @@
       "client": "Client",
       "clientAddress": "Client Address",
       "clientContact": "Client Contact",
-      "variant":"Variant",
-      "variantOption":"Variant Option"
+      "product":"Produk",
+      "productCategory":"Kategori Produk",
+      "variant":"Variasi",
+      "variantOption":"Pilihan Variasi",
+      "contract": "Kontrak",
+      "purchase":"Pembelian"
 
     }
   }

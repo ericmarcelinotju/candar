@@ -11,7 +11,8 @@ import {
   ShoppingCartIcon,
   UsersIcon,
   DocumentReportIcon,
-  CalendarIcon
+  CalendarIcon,
+  ClipboardListIcon
 } from '@heroicons/vue/outline'
 
 export const navigations: Navigation[] = [
@@ -25,6 +26,11 @@ export const navigations: Navigation[] = [
     name: 'Calendar',
     href: '/calendar',
     icon: CalendarIcon
+  },
+  {
+    name: 'Contract',
+    href: '/contract',
+    icon: ClipboardListIcon
   },
   {
     name: 'Product',
@@ -49,7 +55,13 @@ export const navigations: Navigation[] = [
       name: 'Variant Category',
       module: 'VARIANT',
       href: '/variant-category'
-    }]
+    },
+    {
+      name: 'Purchase',
+      module: 'Purchase',
+      href: '/purchase'
+    }
+    ]
   },
   {
     name: 'Project',

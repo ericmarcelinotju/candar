@@ -176,9 +176,12 @@
       "client": "Client",
       "clientAddress": "Client Address",
       "clientContact": "Client Contact",
+      "product":"Product",
+      "productCategory":"Product Category",
       "variant":"Variant",
-      "variantOption":"Variant Option"
-
+      "variantOption":"Variant Option",
+      "contract": "Contract",
+      "purchase":"Purchase"
     }
   }
 }

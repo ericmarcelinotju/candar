@@ -36,6 +36,7 @@
               :key="column.key"
               class="head"
               :class="column.class"
+              rowspan="3"
               scope="col"
               :title="column.label"
               :width="column.width"

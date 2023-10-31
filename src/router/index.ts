@@ -20,7 +20,9 @@ import {
   productRoutes,
   productCategoryRoutes,
   quotationRoutes,
-  calendarRoute
+  calendarRoute,
+  contractRoutes,
+  purchaseRoutes
 } from './routes'
 
 import DefaultContainer from '@/components/layout/Container.vue'
@@ -50,6 +52,9 @@ const router = createRouter({
         ...Object.values(clientAddressRoutes),
         ...Object.values(clientContactRoutes),
         ...Object.values(divisionRoutes),
+        ...Object.values(purchaseRoutes),
+
+        ...Object.values(contractRoutes),
 
         ...Object.values(projectRoutes),
         ...Object.values(quotationRoutes),
