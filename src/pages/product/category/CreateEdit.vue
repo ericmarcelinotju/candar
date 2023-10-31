@@ -387,29 +387,45 @@ const onSubmit = (form, onFinish) => {
     return e.value
   })
 
+  const tiers: Array<ProductContract & { id: string, name: string, type: string }> = []
+
+  if (form.value?.iregular.length > 0) {
+    form.value.iregular.forEach((e, i) => {
+      let rawResult = +(form.value.publishPrice * (1 - (+e.discRate / 100))).toFixed(2)
+      rawResult = roundingTwoDecimal(rawResult)
+
+      tiers.push({
+        moq: +e.moq,
+        discRate: e.discRate,
+        id: e.id,
+        name: `tier ${i + 1}`,
+        price: rawResult,
+        type: 'iregular'
+      })
+    })
+  }
+
+  if (form.value?.regular.length > 0) {
+    form.value.regular.forEach((e, i) => {
+      let rawResult = +(form.value.publishPrice * (1 - (+e.discRate / 100))).toFixed(2)
+      rawResult = roundingTwoDecimal(rawResult)
+
+      tiers.push({
+        moq: +e.moq,
+        discRate: e.discRate,
+        id: e.id,
+        name: `tier ${i + 1}`,
+        price: rawResult,
+        type: 'regular'
+      })
+    })
+  }
+
   const payload = {
     ...form.value,
     variants,
-    tiers: []
+    tiers
   }
-  payload.iregular.forEach((e, i) => {
-    payload.tiers.push({
-      moq: +e.moq,
-      price: e.price,
-      discRate: e.discRate,
-      name: `tier ${i + 1}`,
-      type: 'regular'
-    })
-  })
-  payload.regular.forEach((e, i) => {
-    payload.tiers.push({
-      moq: +e.moq,
-      price: e.price,
-      discRate: e.discRate,
-      name: `tier ${i + 1}`,
-      type: 'iregular'
-    })
-  })
 
   delete payload?.variant
   delete payload?.iregular
@@ -689,7 +705,7 @@ const initForm = () => {
         disabled: true,
         formula: (form) => {
           let rawResult = 0
-          const isOthersEmpty = form.others === ''
+          const isOthersEmpty = form.others === '' || form.others === undefined
 
           if (!form.pph22 || !form.ppn) return rawResult
 
