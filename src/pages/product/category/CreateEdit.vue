@@ -290,7 +290,7 @@ import { OptionObject } from '@/typings/option.type'
 import { productCategoryList } from '@/router/routes/product'
 import { useStore } from 'vuex'
 import { VariantCategory } from '@/typings/models/variant.type'
-import { roundingTwoDecimal } from '@/utils/number'
+import { roundingTwoDecimal, roundingNearestThousand } from '@/utils/number'
 
 const route = useRoute()
 const router = useRouter()
@@ -456,7 +456,11 @@ const onSubmit = (form, onFinish) => {
 
 const handleInputPrice = (form: any, current: ProductContract) => {
   let rawResult = 0
-  if (!form.publishPrice || !current.discRate) return rawResult
+  const isDiscRateEmpty = current.discRate === undefined || current.discRate === 0
+
+  if (!form.publishPrice) return rawResult
+
+  if (isDiscRateEmpty) return roundingTwoDecimal(form.publishPrice.toFixed(2))
 
   rawResult = +(form.publishPrice * (1 - (+current.discRate / 100))).toFixed(2)
   return roundingTwoDecimal(rawResult)
@@ -759,7 +763,8 @@ const initForm = () => {
           if (!form.sellPrice) return rawResult
 
           rawResult = +(form.sellPrice).toFixed(0)
-          return roundingTwoDecimal(rawResult)
+          const roundedTwoDecimal = roundingTwoDecimal(rawResult)
+          return roundingNearestThousand(roundedTwoDecimal)
         },
         col: 6
       },

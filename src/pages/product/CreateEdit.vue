@@ -274,7 +274,7 @@ import { variantList } from '@/router/routes/variant'
 import { VariantCategory } from '@/typings/models/variant.type'
 import { Option, OptionObject } from '@/typings/option.type'
 import { useStore } from 'vuex'
-import { roundingTwoDecimal, convertFromCurrencyToNumber } from '@/utils/number'
+import { roundingTwoDecimal, convertFromCurrencyToNumber, roundingNearestThousand } from '@/utils/number'
 
 const route = useRoute()
 const router = useRouter()
@@ -359,7 +359,11 @@ const handleOptions = (e: { indexCategory: number, indexVariant: number, index: 
 
 const handleInputPrice = (form: any, current: ProductContract) => {
   let rawResult = 0
-  if (!form.publishPrice || !current.discRate) return rawResult
+  const isDiscRateEmpty = current.discRate === undefined || current.discRate === 0
+
+  if (!form.publishPrice) return rawResult
+
+  if (isDiscRateEmpty) return roundingTwoDecimal(form.publishPrice.toFixed(2))
 
   rawResult = +(form.publishPrice * (1 - (+current.discRate / 100))).toFixed(2)
   return roundingTwoDecimal(rawResult)
@@ -557,12 +561,12 @@ const initForm = () => {
       isRequired: true,
       rules: [required]
     },
-    {
-      key: 'cost',
-      label: 'Cost',
-      isRequired: true,
-      rules: [required]
-    },
+    // {
+    //   key: 'cost',
+    //   label: 'Cost',
+    //   isRequired: true,
+    //   rules: [required]
+    // },
     {
       key: 'price',
       label: 'Price',
@@ -676,6 +680,7 @@ const initForm = () => {
         if (!form.cost || !form.insurance || !form.freight || (!isLocal.value && !form.BMDuty)) return rawResult
 
         rawResult = +((form.cost + form.insurance + form.freight + form.BMDuty) * 0.11).toFixed(2)
+
         return roundingTwoDecimal(rawResult)
       },
       col: 6
@@ -746,6 +751,7 @@ const initForm = () => {
       type: 'number',
       disabled: true,
       formula: (form) => {
+        console.log(form.rateCOGS)
         let rawResult = 0
         if (!form.rateCOGS || !form.subtotal) return rawResult
 
@@ -783,7 +789,8 @@ const initForm = () => {
         if (!form.sellPrice) return rawResult
 
         rawResult = +(form.sellPrice).toFixed(0)
-        return roundingTwoDecimal(rawResult)
+        const roundedTwoDecimal = roundingTwoDecimal(rawResult)
+        return roundingNearestThousand(roundedTwoDecimal)
       },
       col: 6
     },
