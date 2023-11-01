@@ -77,7 +77,7 @@ const tierOptions: Ref<Option[]> = computed(() =>
         tier.type === (props.hasContract ? 'regular' : 'iregular')
     )
     .map((tier) => ({
-      label: `Tier: ${tier.name}  MOQ: ${tier.moq}  Price: ${tier.price}`,
+      label: `${tier.type} Tier: ${tier.name}  MOQ: ${tier.moq}  Price: ${tier.price}`,
       value: tier.id
     }))
 )

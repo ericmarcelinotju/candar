@@ -1,5 +1,19 @@
 <template>
   <div class="col-span-9 p-6">
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <Dropdown
+          v-if="isManager"
+          v-model="filter.userId"
+          class="w-52"
+          :options="userOptions"
+          placeholder="All user"
+        />
+      </div>
+      <div class="font-bold text-lg">
+        01 November 2023 21:26:00
+      </div>
+    </div>
     <div class="grid grid-cols-12 gap-6">
       <div class="stat-card">
         <div class="stat-label">
@@ -19,7 +33,7 @@
         <hr>
         <div class="flex justify-between items-center p-4">
           <span class="font-bold">
-            Almost Due Project
+            Almost Due Project (H-3)
           </span>
         </div>
       </div>
@@ -79,20 +93,22 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, ref, onMounted } from 'vue'
+import { Ref, ref, onMounted, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import BarChart from '@/components/chart/barChart'
 import PieChart from '@/components/chart/pieChart'
 import DefaultTable from '@/components/default/Table.vue'
+import Dropdown from '@/components/form/dropdown/Dropdown.vue'
 import { useNotify } from '@/composables/use-notify'
 import { projectList } from '@/router/routes/project'
-
 import { get as getDashboard } from '@/api/dashboard'
-
+import { get as getUser } from '@/api/user'
 import { snakeToTitle } from '@/utils/string'
 import { Project } from '@/typings/models/project.type'
 import { ProjectByStatus, ProjectBySource, ProjectStatusBySource } from '@/typings/models/dashboard.type'
+import { User } from '@/typings/models/user.type'
+import { Option } from '@/typings/option.type'
 
 const store = useStore()
 const router = useRouter()
@@ -142,30 +158,6 @@ const almostDueProjects: Ref<number> = ref()
 const winProject: Ref<number> = ref()
 const lostProject: Ref<number> = ref()
 
-// const projectItems = [
-//   {
-//     number: 'PRJ001',
-//     name: 'Project 01',
-//     status: 'cold_call',
-//     user: 'Nicholas',
-//     client: 'Nike'
-//   },
-//   {
-//     number: 'PRJ002',
-//     name: 'Project 02',
-//     status: 'cold_call',
-//     user: 'Nicholas',
-//     client: 'Adidas'
-//   },
-//   {
-//     number: 'PRJ003',
-//     name: 'Project 03',
-//     status: 'quotation',
-//     user: 'Nicholas',
-//     client: 'Puma'
-//   }
-// ]
-
 const getTagClass = (status: string) => {
   if (status === 'cold_call') {
     return 'danger-tag'
@@ -187,8 +179,43 @@ const handleEdit = (e: Project) => {
   router.push({ name: projectList.name, params: { project_id: e.id } })
 }
 
+const users: Ref<User[]> = ref([])
+const userOptions: Ref<Option[]> = computed(() => {
+  const options = users.value.map((user) => ({
+    label: user.username,
+    value: user.id
+  }))
+  return [{ label: 'All', value: null }, ...options]
+})
+
+const filter = ref({
+  userId: null
+})
+
+watch(
+  filter,
+  () => {
+    processDashboard()
+  },
+  { deep: true }
+)
+
 const initPage = () => {
-  getDashboard()
+  if (isManager.value && currUser.value.divisionId) {
+    getUser({ divisionId: currUser.value.divisionId } as never).then((res) => {
+      users.value = res.data.data
+    })
+  }
+  processDashboard()
+}
+
+onMounted(() => {
+  initPage()
+})
+
+const processDashboard = () => {
+  const payload = filter.value.userId ? { userId: filter.value.userId } : undefined
+  getDashboard(payload)
     .then((result) => {
       projectItems.value = result.data.projects
 
@@ -224,7 +251,6 @@ const initPage = () => {
       // Filter it by source first
       result.data.projectBySource.forEach((e: ProjectBySource, index: number) => {
         // Populate the rawSourceData and sourceData paralel
-        sourceData.push(new Array(statusList.length).fill(0))
         rawSourceData.push(new Array(statusList.length).fill(0))
         e.status.forEach((e2: ProjectStatusBySource) => {
           const findIndex = statusList.findIndex((e3: string) => {
@@ -235,9 +261,12 @@ const initPage = () => {
       })
 
       // Reconstruct the data so the bar chart can visualize it properly
-      rawSourceData.forEach((e: string[], index: number) => {
-        e.forEach((e2: string, index2: number) => {
-          sourceData[index2][index] = e2
+      rawSourceData.forEach((sources: string[], i: number) => {
+        sources.forEach((count: string, j: number) => {
+          if (!sourceData[j]) {
+            sourceData[j] = []
+          }
+          sourceData[j][i] = count
         })
       })
 
@@ -250,9 +279,8 @@ const initPage = () => {
     })
 }
 
-onMounted(() => {
-  initPage()
-})
+const currUser: Ref<User> = computed(() => store.getters['auth/user'])
+const isManager: Ref<boolean> = computed(() => currUser.value.role.isManager)
 </script>
 
 <style lang="scss" scoped>

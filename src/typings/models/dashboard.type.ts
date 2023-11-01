@@ -10,10 +10,16 @@ export class ProjectStatusBySource {
     status: string
     count: number
 }
+
 export class ProjectBySource {
     source: string
     status: ProjectStatusBySource[]
 }
+
+export class DashboardFilter {
+    userId: string
+}
+
 export class Dashboard {
     activeProject: number
     almostDueProject: number
