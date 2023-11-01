@@ -4,6 +4,12 @@ const roundingTwoDecimal = (value) => {
   return Math.round(value * 100) / 100
 }
 
+const roundingNearestThousand = (value) => {
+  if (!value) return 0
+
+  return Math.round(value / 10000) * 10000
+}
+
 const isNumber = (value) => {
   if (!value) return
 
@@ -21,6 +27,7 @@ const convertFromCurrencyToNumber = (value) => {
 
 export {
   roundingTwoDecimal,
+  roundingNearestThousand,
   isNumber,
   convertFromCurrencyToNumber
 }

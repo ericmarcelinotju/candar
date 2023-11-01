@@ -274,7 +274,7 @@ import { variantList } from '@/router/routes/variant'
 import { VariantCategory } from '@/typings/models/variant.type'
 import { Option, OptionObject } from '@/typings/option.type'
 import { useStore } from 'vuex'
-import { roundingTwoDecimal, convertFromCurrencyToNumber } from '@/utils/number'
+import { roundingTwoDecimal, convertFromCurrencyToNumber, roundingNearestThousand } from '@/utils/number'
 
 const route = useRoute()
 const router = useRouter()
@@ -359,7 +359,11 @@ const handleOptions = (e: { indexCategory: number, indexVariant: number, index: 
 
 const handleInputPrice = (form: any, current: ProductContract) => {
   let rawResult = 0
-  if (!form.publishPrice || !current.discRate) return rawResult
+  const isDiscRateEmpty = current.discRate === undefined || current.discRate === 0
+
+  if (!form.publishPrice) return rawResult
+
+  if (isDiscRateEmpty) return roundingTwoDecimal(form.publishPrice.toFixed(2))
 
   rawResult = +(form.publishPrice * (1 - (+current.discRate / 100))).toFixed(2)
   return roundingTwoDecimal(rawResult)
@@ -421,6 +425,7 @@ const initPage = () => {
       initialData.value = res.data
       res.data.tiers.forEach((e) => {
         initialData.value[e.type].push({
+          id: e.id,
           moq: e.moq,
           discRate: e.discRate,
           price: 0
@@ -440,10 +445,45 @@ const onSubmit = (form, onFinish) => {
     return e.value
   })
 
+  const tiers: Array<ProductContract & { id: string, name: string, type: string }> = []
+
+  if (form.value?.iregular.length > 0) {
+    form.value.iregular.forEach((e, i) => {
+      let rawResult = +(form.value.publishPrice * (1 - (+e.discRate / 100))).toFixed(2)
+      rawResult = roundingTwoDecimal(rawResult)
+
+      tiers.push({
+        moq: +e.moq,
+        discRate: e.discRate,
+        id: e.id,
+        name: `tier ${i + 1}`,
+        price: rawResult,
+        type: 'iregular'
+      })
+    })
+  }
+
+  if (form.value?.regular.length > 0) {
+    form.value.regular.forEach((e, i) => {
+      let rawResult = +(form.value.publishPrice * (1 - (+e.discRate / 100))).toFixed(2)
+      rawResult = roundingTwoDecimal(rawResult)
+
+      tiers.push({
+        moq: +e.moq,
+        discRate: e.discRate,
+        id: e.id,
+        name: `tier ${i + 1}`,
+        price: rawResult,
+        type: 'regular'
+      })
+    })
+  }
+
   const payload = {
     ...initialData.value,
     ...form.value,
-    variants
+    variants,
+    tiers
   }
 
   delete payload.id
@@ -521,12 +561,12 @@ const initForm = () => {
       isRequired: true,
       rules: [required]
     },
-    {
-      key: 'cost',
-      label: 'Cost',
-      isRequired: true,
-      rules: [required]
-    },
+    // {
+    //   key: 'cost',
+    //   label: 'Cost',
+    //   isRequired: true,
+    //   rules: [required]
+    // },
     {
       key: 'price',
       label: 'Price',
@@ -618,9 +658,11 @@ const initForm = () => {
       disabled: true,
       formula: (form) => {
         let rawResult = 0
-        if (!form.cost || (!form.tariffBM && !isLocal.value)) return rawResult
+        if (!form.cost || (!isLocal.value && !form.tariffBM)) return rawResult
 
-        rawResult = +(form.cost * ((!isLocal.value ? form.tariffBM : 0) / 100)).toFixed(2)
+        if (!isLocal.value) (rawResult = +(form.cost * ((form.tariffBM) / 100)).toFixed(2))
+        else (rawResult = 0)
+
         return roundingTwoDecimal(rawResult)
       },
       col: 6
@@ -635,9 +677,10 @@ const initForm = () => {
       formula: (form) => {
         let rawResult = 0
 
-        if (!form.cost || !form.insurance || !form.freight || !form.BMDuty) return rawResult
+        if (!form.cost || !form.insurance || !form.freight || (!isLocal.value && !form.BMDuty)) return rawResult
 
         rawResult = +((form.cost + form.insurance + form.freight + form.BMDuty) * 0.11).toFixed(2)
+
         return roundingTwoDecimal(rawResult)
       },
       col: 6
@@ -651,7 +694,7 @@ const initForm = () => {
       disabled: true,
       formula: (form) => {
         let rawResult = 0
-        if (!form.cost || !form.insurance || !form.freight || !form.BMDuty) return rawResult
+        if (!form.cost || !form.insurance || !form.freight || (!isLocal.value && !form.BMDuty)) return rawResult
 
         rawResult = +((form.cost + form.insurance + form.freight + form.BMDuty) * 0.025).toFixed(2)
         return roundingTwoDecimal(rawResult)
@@ -679,7 +722,6 @@ const initForm = () => {
       key: 'others',
       label: 'Others',
       isRequired: false,
-      rules: [required],
       type: 'number',
       col: 6
     },
@@ -692,10 +734,11 @@ const initForm = () => {
       disabled: true,
       formula: (form) => {
         let rawResult = 0
+        const isOthersEmpty = form.others === '' || form.others === undefined
 
-        if (!form.pph22 || !form.ppn || !form.others) return rawResult
+        if (!form.pph22 || !form.ppn) return rawResult
 
-        rawResult = +(form.cost + form.insurance + form.freight + form.BMDuty + form.ppn + form.pph22 + form.repack + form.others).toFixed(2)
+        rawResult = +(form.cost + form.insurance + form.freight + form.BMDuty + form.ppn + form.pph22 + form.repack + (!isOthersEmpty ? form.others : 0)).toFixed(2)
         return roundingTwoDecimal(rawResult)
       },
       col: 6
@@ -708,6 +751,7 @@ const initForm = () => {
       type: 'number',
       disabled: true,
       formula: (form) => {
+        console.log(form.rateCOGS)
         let rawResult = 0
         if (!form.rateCOGS || !form.subtotal) return rawResult
 
@@ -745,7 +789,8 @@ const initForm = () => {
         if (!form.sellPrice) return rawResult
 
         rawResult = +(form.sellPrice).toFixed(0)
-        return roundingTwoDecimal(rawResult)
+        const roundedTwoDecimal = roundingTwoDecimal(rawResult)
+        return roundingNearestThousand(roundedTwoDecimal)
       },
       col: 6
     },
