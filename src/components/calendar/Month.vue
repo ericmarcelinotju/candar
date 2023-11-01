@@ -1,20 +1,17 @@
 <template>
-  <div class="wrapper bg-white rounded shadow w-full ">
+  <div class="wrapper bg-white rounded shadow w-full">
     <div class="header flex justify-between items-center border-b p-4">
+      <div v-if="$slots.default">
+        <slot />
+      </div>
       <div>
-        <button
-          class="default-button mr-4 !px-2"
-          @click="handlePrevMonth"
-        >
+        <button class="default-button mr-4 !px-2" @click="handlePrevMonth">
           <ChevronLeftIcon class="w-4 h-4" />
         </button>
         <span class="text-lg font-bold">
           {{ dayjsDate.format('MMMM') }} {{ dayjsDate.get('year') }}
         </span>
-        <button
-          class="default-button ml-4 !px-2"
-          @click="handleNextMonth"
-        >
+        <button class="default-button ml-4 !px-2" @click="handleNextMonth">
           <ChevronRightIcon class="w-4 h-4" />
         </button>
       </div>
@@ -22,47 +19,89 @@
     <table class="w-full">
       <thead>
         <tr>
-          <th class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs">
-            <span class="xl:block lg:block md:block sm:block hidden">Sunday</span>
-            <span class="xl:hidden lg:hidden md:hidden sm:hidden block">Sun</span>
+          <th
+            class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs"
+          >
+            <span class="xl:block lg:block md:block sm:block hidden">
+              Sunday
+            </span>
+            <span class="xl:hidden lg:hidden md:hidden sm:hidden block">
+              Sun
+            </span>
           </th>
-          <th class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs">
-            <span class="xl:block lg:block md:block sm:block hidden">Monday</span>
-            <span class="xl:hidden lg:hidden md:hidden sm:hidden block">Mon</span>
+          <th
+            class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs"
+          >
+            <span class="xl:block lg:block md:block sm:block hidden">
+              Monday
+            </span>
+            <span class="xl:hidden lg:hidden md:hidden sm:hidden block">
+              Mon
+            </span>
           </th>
-          <th class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs">
-            <span class="xl:block lg:block md:block sm:block hidden">Tuesday</span>
-            <span class="xl:hidden lg:hidden md:hidden sm:hidden block">Tue</span>
+          <th
+            class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs"
+          >
+            <span class="xl:block lg:block md:block sm:block hidden">
+              Tuesday
+            </span>
+            <span class="xl:hidden lg:hidden md:hidden sm:hidden block">
+              Tue
+            </span>
           </th>
-          <th class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs">
-            <span class="xl:block lg:block md:block sm:block hidden">Wednesday</span>
-            <span class="xl:hidden lg:hidden md:hidden sm:hidden block">Wed</span>
+          <th
+            class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs"
+          >
+            <span class="xl:block lg:block md:block sm:block hidden">
+              Wednesday
+            </span>
+            <span class="xl:hidden lg:hidden md:hidden sm:hidden block">
+              Wed
+            </span>
           </th>
-          <th class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs">
-            <span class="xl:block lg:block md:block sm:block hidden">Thursday</span>
-            <span class="xl:hidden lg:hidden md:hidden sm:hidden block">Thu</span>
+          <th
+            class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs"
+          >
+            <span class="xl:block lg:block md:block sm:block hidden">
+              Thursday
+            </span>
+            <span class="xl:hidden lg:hidden md:hidden sm:hidden block">
+              Thu
+            </span>
           </th>
-          <th class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs">
-            <span class="xl:block lg:block md:block sm:block hidden">Friday</span>
-            <span class="xl:hidden lg:hidden md:hidden sm:hidden block">Fri</span>
+          <th
+            class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs"
+          >
+            <span class="xl:block lg:block md:block sm:block hidden">
+              Friday
+            </span>
+            <span class="xl:hidden lg:hidden md:hidden sm:hidden block">
+              Fri
+            </span>
           </th>
-          <th class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs">
-            <span class="xl:block lg:block md:block sm:block hidden">Saturday</span>
-            <span class="xl:hidden lg:hidden md:hidden sm:hidden block">Sat</span>
+          <th
+            class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs"
+          >
+            <span class="xl:block lg:block md:block sm:block hidden">
+              Saturday
+            </span>
+            <span class="xl:hidden lg:hidden md:hidden sm:hidden block">
+              Sat
+            </span>
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="(week, i) in calendar"
-          :key="i"
-          class="text-center h-20"
-        >
+        <tr v-for="(week, i) in calendar" :key="i" class="text-center h-20">
           <td
             v-for="(day, j) in week"
             :key="j"
             class="border p-4 h-10 sm:h-20 md:h-40 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 overflow-auto transition cursor-pointer duration-500 ease"
-            :class="isThisMonth(day) ? 'hover:bg-grey-soft' : 'bg-grey-soft hover:bg-slate-50'"
+            :class="
+              isThisMonth(day)
+                ? 'hover:bg-grey-soft'
+                : 'bg-grey-soft hover:bg-slate-50'
+            "
             @click="handleDayClick(day)"
           >
             <div class="flex flex-col h-full w-full overflow-hidden">
@@ -71,7 +110,8 @@
                   class="flex items-center justify-center w-7 h-7 text-sm float-right xl:float-left rounded-full bg-clip-padding"
                   :class="[
                     day.isToday() ? '!text-white bg-primary' : 'text-grey-dark',
-                    selectedDate.isSame(day, 'day') && 'border border-2 border-primary-soft'
+                    selectedDate.isSame(day, 'day') &&
+                      'border border-2 border-primary-soft'
                   ]"
                 >
                   {{ day.format('DD') }}
@@ -115,7 +155,7 @@ dayjs.extend(isToday)
 
 interface Props {
   date?: Date
-  events: {[key: string]: ProjectTask[]}
+  events: { [key: string]: ProjectTask[] }
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -130,13 +170,21 @@ const dayjsDate: Ref<dayjs.Dayjs> = computed(() => dayjs(activeDate.value))
 
 const selectedDate: Ref<dayjs.Dayjs> = ref(dayjs(activeDate.value))
 
-const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+const days = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday'
+]
 
 const calendar: Ref<dayjs.Dayjs[][]> = computed(() => {
   const startOfMonth = dayjsDate.value.startOf('month')
   const startOfWeek = startOfMonth.startOf('week')
 
-  const result:dayjs.Dayjs[][] = []
+  const result: dayjs.Dayjs[][] = []
   for (let i = 0; i < 6; i++) {
     result[i] = []
     for (let j = 0; j < days.length; j++) {

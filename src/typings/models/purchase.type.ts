@@ -1,14 +1,19 @@
 import { BaseModel } from './model.type'
+import { Product } from './product.type'
 
 export class PurchaseProduct extends BaseModel {
-  productId:string
-  price: number
+  id: string
   quantity: number
+  productId: string
+  product: Product
+  price: number
+  priceDisplay: string
 }
 
 export class Purchase extends BaseModel {
   code: string
   note: string
   vendor: string
-  purchaseProducts : PurchaseProduct[]
+  date: Date
+  purchaseProducts: PurchaseProduct[]
 }

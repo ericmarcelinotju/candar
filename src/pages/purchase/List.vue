@@ -2,11 +2,13 @@
   <DefaultPage :title="$t('app.columns.purchase')">
     <DefaultTable
       :columns="columns"
-      :has-delete="false"
-      :has-edit="false"
+      :has-delete="hasPermission('DELETE')"
+      :has-edit="hasPermission('PUT')"
       :items="items"
       :loading="loading"
       :total="itemsTotal"
+      @delete="handleDelete"
+      @edit="handleEdit"
       @search="handleSearch"
     />
     <template #action>
@@ -35,11 +37,11 @@ import { Ref, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { PlusIcon } from '@heroicons/vue/solid'
 import DefaultTable from '@/components/default/Table.vue'
-import { get as getPurchaseList } from '@/api/purchase'
+import { get as getPurchases, del as deletePurchase } from '@/api/purchase'
 import { useNotify } from '@/composables/use-notify'
-import { purchaseCreate } from '@/router/routes/purchase'
+import { purchaseCreate, purchaseEdit } from '@/router/routes/purchase'
 import { useStore } from 'vuex'
-import { ProductCategory } from '@/typings/models/product.type'
+import { Purchase } from '@/typings/models/purchase.type'
 
 const router = useRouter()
 const store = useStore()
@@ -49,12 +51,12 @@ const { notify } = useNotify('variant-option')
 const loading = ref(false)
 let stateParams = reactive({})
 
-const items: Ref<ProductCategory[]> = ref([])
+const items: Ref<Purchase[]> = ref([])
 const itemsTotal = ref(0)
 const handleSearch = (params) => {
   stateParams = { ...params }
   loading.value = true
-  getPurchaseList(params)
+  getPurchases(params)
     .then((res) => {
       items.value = res.data.data
       itemsTotal.value = res.data.total_item
@@ -66,6 +68,35 @@ const handleSearch = (params) => {
 
 const handleCreate = () => {
   router.push(purchaseCreate)
+}
+
+const handleEdit = ({ id }) => {
+  router.push({ ...purchaseEdit, params: { id } })
+}
+
+// Delete client
+const loadingDelete = ref(false)
+const visibleDeleteConfirmationModal = ref(false)
+const deleteItem: Ref<Purchase> = ref()
+const handleDelete = (data) => {
+  visibleDeleteConfirmationModal.value = true
+  deleteItem.value = data
+}
+const confirmDelete = () => {
+  const { id } = deleteItem.value
+  loadingDelete.value = true
+  deletePurchase(id)
+    .then(() => {
+      handleSearch(stateParams)
+      notify('deleted')
+    })
+    .catch(() => {
+      notify('deleted', 'danger')
+    })
+    .finally(() => {
+      loadingDelete.value = false
+      visibleDeleteConfirmationModal.value = false
+    })
 }
 
 // Table columns setting
@@ -104,5 +135,4 @@ const columns = [
 const hasPermission = (method, module = 'USER') => {
   return store.getters['auth/hasPermission'](module, method)
 }
-
 </script>

@@ -1,9 +1,6 @@
 <template>
   <DefaultPage :title="$t('app.columns.quotation')">
-    <div
-      v-if="loading"
-      class="w-full h-full flex justify-center items-center"
-    >
+    <div v-if="loading" class="w-full h-full flex justify-center items-center">
       <Loading class="h-12 w-12" />
     </div>
     <DefaultCreateEdit
@@ -23,67 +20,6 @@
           :tiers="productTiers"
           @delete="(index) => handleRemoveProduct(form, index)"
         />
-        <!-- <div
-          v-for="(quotationProduct, index) in form.quotationProducts"
-          :key="quotationProduct.id"
-          class="flex mb-4"
-        >
-          <div class="flex flex-col flex-1 gap-4 border rounded-md p-4">
-            <div class="default-field">
-              <label
-                class="default-label"
-                :for="`user-${index}`"
-              >
-                Produk<sup>*</sup>
-              </label>
-              <Dropdown
-                :id="`user-${index}`"
-                v-model="form.quotationProducts[index].productId"
-                class="default-input"
-                :options="productOptions"
-                @input="(val) => onChangeProduct(val, form, index)"
-              />
-            </div>
-            <div class="default-field">
-              <label
-                class="default-label"
-                :for="`price-${index}`"
-              >
-                Harga
-              </label>
-              <Dropdown
-                :id="`user-${index}`"
-                v-model="form.quotationProducts[index].tierId"
-                class="default-input"
-                :options="(formSetting.options as Option[])"
-                @input="(val) => onChangeProduct(val, form, index)"
-              />
-            </div>
-            <div class="default-field">
-              <label
-                class="default-label"
-                :for="`quantity-${index}`"
-              >
-                Kuantitas
-              </label>
-              <input
-                :id="`quantity-${index}`"
-                v-model="form.quotationProducts[index].quantity"
-                class="default-input"
-                type="number"
-              >
-            </div>
-          </div>
-          <div class="flex flex-col gap-4 ml-4">
-            <button
-              class="danger-button flex-1"
-              type="button"
-              @click="handleRemoveProduct(form, index)"
-            >
-              <TrashIcon class="w-4 h-4" />
-            </button>
-          </div>
-        </div> -->
         <button
           class="info-button"
           type="button"
@@ -113,11 +49,10 @@ import { get as getProducts } from '@/api/product'
 import { get as getProductTiers } from '@/api/product-tier'
 import { required } from '@/utils/validation'
 import { FormSetting } from '@/typings/form.type'
-import { Quotation } from '@/typings/models/quotation.type'
+import { Quotation, QuotationProduct } from '@/typings/models/quotation.type'
 import { quotationList } from '@/router/routes/quotation'
 import { Option } from '@/typings/option.type'
 import { Project } from '@/typings/models/project.type'
-import { QuotationProduct } from '@/typings/models/quotation-product.type'
 import { Product } from '@/typings/models/product.type'
 import { ProductTier } from '@/typings/models/product-tier.type'
 import ProductForm from './ProductForm.vue'
@@ -160,16 +95,13 @@ const hasContract = (projectId) => {
 const initPage = async () => {
   loading.value = true
   try {
-    await Promise.all([
-      getProjects(),
-      getProducts(),
-      getProductTiers()
-    ])
-      .then((res) => {
+    await Promise.all([getProjects(), getProducts(), getProductTiers()]).then(
+      (res) => {
         projects.value = res[0].data.data
         products.value = res[1].data.data
         productTiers.value = res[2].data.data
-      })
+      }
+    )
 
     if (id) {
       const resp = await getQuotation(id)
@@ -184,7 +116,8 @@ const initPage = async () => {
     }
 
     initForm()
-  } catch {
+  } catch (err) {
+    console.error(err)
     notify('loaded', 'danger')
   } finally {
     loading.value = false
@@ -194,7 +127,7 @@ const initPage = async () => {
 const onSubmit = (form: Ref<Quotation>, onFinish: () => void) => {
   const payload = {
     ...form.value,
-    quotationProducts: form.value.quotationProducts.map(f => ({
+    quotationProducts: form.value.quotationProducts.map((f) => ({
       ...f,
       price: f.priceNumber
     }))
@@ -206,7 +139,7 @@ const onSubmit = (form: Ref<Quotation>, onFinish: () => void) => {
         router.push(quotationList)
         notify('updated')
       })
-      .catch(err => {
+      .catch((err) => {
         notify('updated', 'danger', err.message)
       })
       .finally(onFinish)
@@ -216,7 +149,7 @@ const onSubmit = (form: Ref<Quotation>, onFinish: () => void) => {
         router.push(quotationList)
         notify('inserted')
       })
-      .catch(err => {
+      .catch((err) => {
         notify('inserted', 'danger', err.message)
       })
       .finally(onFinish)
