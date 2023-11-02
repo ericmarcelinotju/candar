@@ -1,12 +1,15 @@
 <template>
   <div class="col-span-9 p-6">
-    <CalendarMonth :events="mappedEvents" @click:event="handleEventClick">
+    <CalendarMonth
+      :events="mappedEvents"
+      @click:event="handleEventClick"
+    >
       <Dropdown
         v-if="isManager"
-        :options="userOptions"
-        class="w-52"
-        placeholder="All user"
         v-model="filter.userId"
+        class="w-52"
+        :options="userOptions"
+        placeholder="All user"
       />
     </CalendarMonth>
   </div>
@@ -35,14 +38,14 @@ const projectTasks: Ref<ProjectTask[]> = ref()
 const mappedEvents: Ref<{ [key: string]: ProjectTask[] }> = computed(() =>
   projectTasks.value
     ? projectTasks.value.reduce((obj, item) => {
-        const key = dayjs(item.date).format('DDMMYYYY')
-        if (!obj[key]) {
-          obj[key] = [item]
-        } else {
-          obj[key].push(item)
-        }
-        return obj
-      }, {})
+      const key = dayjs(item.date).format('DDMMYYYY')
+      if (!obj[key]) {
+        obj[key] = [item]
+      } else {
+        obj[key].push(item)
+      }
+      return obj
+    }, {})
     : {}
 )
 
@@ -88,7 +91,7 @@ watch(
   filter,
   () => {
     if (filter.value.userId) {
-      getProjectTasks({ userId: currUser.value.id } as never).then((res) => {
+      getProjectTasks({ userId: filter.value.userId } as never).then((res) => {
         projectTasks.value = res.data.data
       })
     } else {

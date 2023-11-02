@@ -11,7 +11,7 @@
         />
       </div>
       <div class="font-bold text-lg">
-        01 November 2023 21:26:00
+        {{ time }}
       </div>
     </div>
     <div class="grid grid-cols-12 gap-6">
@@ -93,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, ref, onMounted, computed, watch } from 'vue'
+import { Ref, ref, onMounted, computed, watch, onBeforeUnmount } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import BarChart from '@/components/chart/barChart'
@@ -211,6 +211,7 @@ const initPage = () => {
 
 onMounted(() => {
   initPage()
+  initTime()
 })
 
 const processDashboard = () => {
@@ -281,6 +282,26 @@ const processDashboard = () => {
 
 const currUser: Ref<User> = computed(() => store.getters['auth/user'])
 const isManager: Ref<boolean> = computed(() => currUser.value.role.isManager)
+
+const interval = ref(null)
+const time = ref('')
+
+onBeforeUnmount(() => {
+  clearInterval(interval.value)
+})
+
+const initTime = () => {
+  // update the time every second
+  interval.value = setInterval(() => {
+    // Concise way to format time according to system locale.
+    // In my case this returns "3:48:00 am"
+    time.value = Intl.DateTimeFormat(navigator.language, {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric'
+    }).format()
+  }, 1000)
+}
 </script>
 
 <style lang="scss" scoped>
