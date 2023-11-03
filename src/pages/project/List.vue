@@ -16,6 +16,12 @@
       </template>
     </DefaultTable> -->
     <!-- <div class="mt-4 grid grid-cols-4 gap-6"> -->
+    <div class="ml-3 mt-4 flex gap-2">
+      <Switch
+        v-model="isClosedProjectsShown"
+        label="Show closed projects"
+      />
+    </div>
     <div
       class="mt-4 grid"
       :class="[
@@ -203,14 +209,6 @@
           <PlusIcon class="w-4 h-4 mr-1" />
           {{ $t('app.create') }}
         </button>
-        <div class="flex flex-col">
-          <p class="text-sm font-semibold mb-2 text-primary">
-            Show closed projects
-          </p>
-          <Switch
-            v-model="isClosedProjectsShown"
-          />
-        </div>
       </div>
     </template>
     <template #search>
