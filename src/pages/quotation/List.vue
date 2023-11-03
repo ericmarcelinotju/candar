@@ -14,57 +14,65 @@
       <template #project_id="{ item }">
         {{ item.project.code }}
       </template>
-      <template #action="{ item }">
-        <template v-if="isManager">
-          <button
-            v-if="!item.approveManager"
-            class="info-button mr-3 !py-1"
+      <template #status="{ item }">
+        <template v-if="item.status == 'draft'">
+          <span
+            v-if="isManager"
+            class="default-tag mr-3 !py-1"
             type="button"
-            @click="handleApproveManager(item)"
+          >
+            Draft
+          </span>
+          <button
+            v-else
+            class="default-button mr-3 !py-1 !px-2 text-xs"
+            type="button"
+            @click="handleSend(item)"
+          >
+            Send for Approval
+          </button>
+        </template>
+        <template v-else-if="item.status == 'sent'">
+          <button
+            v-if="isManager"
+            class="warning-button mr-3 !py-1 !px-2 text-xs"
+            type="button"
+            @click="handleApprove(item)"
           >
             Approve
           </button>
-          <button
-            v-else-if="!item.approveClient"
-            class="warning-button mr-3 !py-1"
+          <span
+            v-else
+            class="warning-tag mr-3 !py-1"
             type="button"
           >
-            Need Approval
-          </button>
+            Waiting for Approval
+          </span>
+        </template>
+        <template v-else-if="item.status == 'approved'">
+          <span
+            v-if="isManager"
+            class="info-tag mr-3 !py-1"
+          >
+            Waiting for Acceptance
+          </span>
           <button
             v-else
-            class="success-button mr-3 !py-1"
+            class="info-button mr-3 !py-1 !px-2 text-xs"
             type="button"
-            @click="handleViewApproval(item)"
+            @click="handleAccept(item)"
           >
-            Approved
+            Upload Proof
           </button>
         </template>
-        <template v-else>
-          <button
-            v-if="!item.approveManager"
-            class="warning-button mr-3 !py-1"
-            type="button"
-          >
-            Need Approval
-          </button>
-          <button
-            v-else-if="!item.approveClient"
-            class="info-button mr-3 !py-1"
-            type="button"
-            @click="handleApproveClient(item)"
-          >
-            Approve
-          </button>
-          <button
-            v-else
-            class="success-button mr-3 !py-1"
-            type="button"
-            @click="handleViewApproval(item)"
-          >
-            Approved
-          </button>
-        </template>
+        <button
+          v-if="item.status == 'accepted'"
+          class="success-button mr-3 !py-1 !px-2 text-xs"
+          type="button"
+          @click="handleViewApproval(item)"
+        >
+          Accepted
+        </button>
       </template>
     </DefaultTable>
     <template #action>
@@ -93,19 +101,31 @@
         @confirm="confirmDelete"
       />
       <DefaultModal
-        v-model="visibleApproveManagerConfirmationModal"
-        :loading="loadingApproveManager"
+        v-model="visibleSendConfirmationModal"
+        description="Make sure the quotation is correct as this action may cannot be undone."
+        :loading="loadingSend"
+        title="Send Quotation for Approval?"
         type="info"
-        @confirm="confirmApproveManager"
+        @confirm="confirmSend"
       />
       <DefaultModal
-        v-model="visibleApproveClientConfirmationModal"
-        :loading="loadingApproveClient"
+        v-model="visibleApproveConfirmationModal"
+        description="Make sure the quotation is correct as this action may cannot be undone."
+        :loading="loadingApprove"
+        title="Approve Quotation?"
         type="info"
-        @confirm="confirmApproveClient"
+        @confirm="confirmApprove"
+      />
+      <DefaultModal
+        v-model="visibleAcceptConfirmationModal"
+        description="Make sure the attachment is correct as this action may cannot be undone."
+        :loading="loadingAccept"
+        title="Accept Quotation?"
+        type="info"
+        @confirm="confirmAccept"
       >
         <FileInput
-          v-model="approveClientItem.approvalAttachment"
+          v-model="acceptItem.approvalAttachment"
           class="mt-3"
         />
       </DefaultModal>
@@ -125,7 +145,8 @@
           <div>Attachment :</div>
           <a
             class="info-button"
-            :href="viewApprovalItem.approvalAttachment"
+            download
+            :href="`${config.apiAddress}\\${viewApprovalItem.approvalAttachment}`"
             target="_blank"
           >
             Download
@@ -141,9 +162,16 @@ import { Ref, computed, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { PlusIcon } from '@heroicons/vue/solid'
+import { config } from '@/config'
 import DefaultTable from '@/components/default/Table.vue'
 import FileInput from '@/components/form/File.vue'
-import { get as getQuotations, del as deleteQuotation, approveManager, approveClient } from '@/api/quotation'
+import {
+  get as getQuotations,
+  del as deleteQuotation,
+  send as sendQuotation,
+  approve as approveQuotation,
+  accept as acceptQuotation
+} from '@/api/quotation'
 import { get as getProjects } from '@/api/project'
 import { useNotify } from '@/composables/use-notify'
 import { Quotation } from '@/typings/models/quotation.type'
@@ -151,16 +179,12 @@ import { quotationCreate, quotationEdit } from '@/router/routes/quotation'
 import { TableColumn } from '@/typings/table.type'
 import { Project } from '@/typings/models/project.type'
 import { Option } from '@/typings/option.type'
-import { downloadBlob } from '@/utils'
 
 const router = useRouter()
 const store = useStore()
 const { notify } = useNotify('variant')
 
-const isManager = computed(() => {
-  const user = store.getters['auth/user']
-  return user.role.isManager
-})
+const isManager = computed(() => store.getters['auth/isManager'])
 
 const loading = ref(false)
 let stateParams = reactive({})
@@ -229,18 +253,43 @@ const confirmDelete = () => {
     })
 }
 
-// Approve by manager
-const loadingApproveManager = ref(false)
-const visibleApproveManagerConfirmationModal = ref(false)
-const approveManagerItem: Ref<Quotation> = ref()
-const handleApproveManager = (data) => {
-  visibleApproveManagerConfirmationModal.value = true
-  approveManagerItem.value = data
+// Send to be approved
+const loadingSend = ref(false)
+const visibleSendConfirmationModal = ref(false)
+const sendItem: Ref<Quotation> = ref()
+const handleSend = (data: Quotation) => {
+  visibleSendConfirmationModal.value = true
+  sendItem.value = data
 }
-const confirmApproveManager = () => {
-  const { id } = approveManagerItem.value
-  loadingApproveManager.value = true
-  approveManager(id)
+const confirmSend = () => {
+  const { id } = sendItem.value
+  loadingSend.value = true
+  sendQuotation(id)
+    .then(() => {
+      handleSearch(stateParams)
+      notify('sent')
+    })
+    .catch(() => {
+      notify('sent', 'danger')
+    })
+    .finally(() => {
+      loadingSend.value = false
+      visibleSendConfirmationModal.value = false
+    })
+}
+
+// Approve by manager
+const loadingApprove = ref(false)
+const visibleApproveConfirmationModal = ref(false)
+const approveItem: Ref<Quotation> = ref()
+const handleApprove = (data) => {
+  visibleApproveConfirmationModal.value = true
+  approveItem.value = data
+}
+const confirmApprove = () => {
+  const { id } = approveItem.value
+  loadingApprove.value = true
+  approveQuotation(id)
     .then(() => {
       handleSearch(stateParams)
       notify('approved')
@@ -249,27 +298,27 @@ const confirmApproveManager = () => {
       notify('approved', 'danger')
     })
     .finally(() => {
-      loadingApproveManager.value = false
-      visibleApproveManagerConfirmationModal.value = false
+      loadingApprove.value = false
+      visibleApproveConfirmationModal.value = false
     })
 }
 
-// Approve by client
-const loadingApproveClient = ref(false)
-const visibleApproveClientConfirmationModal = ref(false)
-const approveClientItem: Ref<Quotation> = ref()
-const handleApproveClient = (data) => {
-  visibleApproveClientConfirmationModal.value = true
-  approveClientItem.value = data
+// Accept by client
+const loadingAccept = ref(false)
+const visibleAcceptConfirmationModal = ref(false)
+const acceptItem: Ref<Quotation> = ref()
+const handleAccept = (data) => {
+  visibleAcceptConfirmationModal.value = true
+  acceptItem.value = data
 }
-const confirmApproveClient = () => {
-  const { id } = approveClientItem.value
-  loadingApproveClient.value = true
+const confirmAccept = () => {
+  const { id } = acceptItem.value
+  loadingAccept.value = true
 
   const payload = new FormData()
-  payload.append('attachment', approveClientItem.value.approvalAttachment)
+  payload.append('attachment', acceptItem.value.approvalAttachment)
 
-  approveClient(id, payload)
+  acceptQuotation(id, payload)
     .then(() => {
       handleSearch(stateParams)
       notify('approved')
@@ -278,8 +327,8 @@ const confirmApproveClient = () => {
       notify('approved', 'danger')
     })
     .finally(() => {
-      loadingApproveClient.value = false
-      visibleApproveClientConfirmationModal.value = false
+      loadingAccept.value = false
+      visibleAcceptConfirmationModal.value = false
     })
 }
 
@@ -326,6 +375,18 @@ const initColumns = () => {
       isSearchable: true,
       searchType: 'dropdown',
       searchOptions: projectOptions.value
+    },
+    {
+      label: 'Status',
+      key: 'status',
+      isSearchable: true,
+      searchType: 'dropdown',
+      searchOptions: [
+        { label: 'Draft', value: 'draft' },
+        { label: 'Sent', value: 'sent' },
+        { label: 'Approved', value: 'approved' },
+        { label: 'Accepted', value: 'accept' }
+      ]
     }
   ]
 }

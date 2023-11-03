@@ -34,7 +34,7 @@
         </div>
 
         <div
-          class="group-hover:block hidden absolute top-0 right-0 ml-1 py-[0.2rem] px-2 text-white bg-info-dark rounded-xl cursor-pointer font-bold"
+          class="group-hover:block hidden absolute top-0 right-0 ml-1 leading-[22px] pb-[0.2rem] px-2 text-white bg-info-dark rounded-xl cursor-pointer font-bold"
           @click="removeAttendee(attendee)"
         >
           x
@@ -45,11 +45,10 @@
         class="relative"
       >
         <PopoverButton>
-          <InfoButton info="Add Assignee">
+          <InfoButton info="Add Attendees">
             <button
               class="rounded-full border border-dashed border-grey p-1"
               type="button"
-              @click="() => handleOpenAssignee()"
             >
               <UserAddIcon class="w-4 h-4 text-grey" />
             </button>
@@ -80,15 +79,15 @@
       </Popover>
 
       <div
-        v-if="taskPayload.type"
+        v-if="hasType"
         class="group relative success-tag !rounded-xl !p-0 h-[1.6rem]"
       >
-        <div class="px-3">
-          {{ taskPayload.type }}
+        <div class="px-3 whitespace-nowrap">
+          {{ snakeToTitle(taskPayload.type) }}
         </div>
 
         <div
-          class="group-hover:block hidden absolute top-0 right-0 ml-1 py-[0.2rem] px-2 text-white bg-success-dark rounded-xl cursor-pointer font-bold"
+          class="group-hover:block hidden absolute top-0 right-0 ml-1 leading-[22px] pb-[0.2rem] px-2 text-white bg-success-dark rounded-xl cursor-pointer font-bold"
           @click="removeType"
         >
           x
@@ -96,7 +95,7 @@
       </div>
 
       <Popover
-        v-if="!hasType"
+        v-else
         class="relative"
       >
         <PopoverButton>
@@ -267,7 +266,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, Ref, watch } from 'vue'
+import { computed, onMounted, ref, Ref, watch } from 'vue'
 import { watchDebounced } from '@vueuse/core'
 import dayjs from 'dayjs'
 import Datepicker from '@vuepic/vue-datepicker'
@@ -277,7 +276,7 @@ import { CalendarIcon, UserAddIcon, PaperClipIcon, PhotographIcon, DotsHorizonta
 import { Option } from '@/typings/option.type'
 import { useNotify } from '@/composables/use-notify'
 
-import { get as getAttendee } from '@/api/task-attendee'
+import { get as getAttendees } from '@/api/task-attendee'
 import { Project } from '@/typings/models/project.type'
 import { ProjectTask } from '@/typings/models/project-task.type'
 
@@ -285,6 +284,7 @@ import { insert as insertProjectTask, update as updateProjectTask, del as delete
 import InfoButton from '@/components/helper/InfoButton.vue'
 import Dropdown from '@/components/form/dropdown/Dropdown.vue'
 import { jsonToFormData } from '@/utils'
+import { snakeToTitle } from '@/utils/string'
 
 const defaultTaskPayload = {
   id: null,
@@ -354,19 +354,10 @@ const submitTask = () => {
       })
   }
 }
-
-const hasType = computed(() => taskPayload.value.type)
-
-const removeType = () => (taskPayload.value.type = null)
-
-watch(() => taskPayload.value.type, (val) => {
-  console.log(val)
-})
-
 watchDebounced(
   taskPayload,
   () => {
-    // Only auto submit if update\
+    // Only auto submit if update
     if (taskPayload.value.id) {
       submitTask()
     }
@@ -377,6 +368,14 @@ watchDebounced(
     maxWait: 1000
   }
 )
+
+// Type
+const hasType = computed(() => taskPayload.value.type)
+const removeType = () => (taskPayload.value.type = null)
+const typeOptions: Ref<Option[]> = ref([
+  { label: 'Meeting', value: 'meeting' },
+  { label: 'Cold Call', value: 'cold_call' }
+])
 
 const detailTask = () => {
   emit('detail', props.task)
@@ -394,12 +393,11 @@ const deleteTask = () => {
     })
 }
 
+// Picture
 const inputPicture = ref(null)
-
 const handlePicture = () => {
   inputPicture.value.click()
 }
-
 const onPictureChange = (e) => {
   const files = e.target.files || e.dataTransfer.files
   if (!files.length) return
@@ -407,12 +405,11 @@ const onPictureChange = (e) => {
   taskPayload.value.picture = files[0]
 }
 
+// Attachment
 const inputAttachment = ref(null)
-
 const handleAttachment = () => {
   inputAttachment.value.click()
 }
-
 const onAttachmentChange = (e) => {
   const files = e.target.files || e.dataTransfer.files
   if (!files.length) return
@@ -420,21 +417,18 @@ const onAttachmentChange = (e) => {
   taskPayload.value.attachment = files[0]
 }
 
-const typeOptions: Ref<Option[]> = ref([
-  { label: 'Meeting', value: 'meeting' },
-  { label: 'Cold Call', value: 'cold call' }
-])
-
+// Attendees
 const attendees: Ref<string[]> = ref([])
 const attendeeOptions = computed(() => attendees.value?.filter(option => taskPayload.value?.attendees.indexOf(option) === -1))
-
-const handleOpenAssignee = () => {
-  getAttendee()
+onMounted(() => {
+  getAttendeesOption()
+})
+const getAttendeesOption = () => {
+  getAttendees()
     .then(res => {
       attendees.value = [...res.data?.attendees]
     })
 }
-
 const addAttendee = (close, attendee) => {
   if (!taskPayload.value.attendees || taskPayload.value.attendees.length <= 0) (taskPayload.value.attendees = [])
 
@@ -443,7 +437,6 @@ const addAttendee = (close, attendee) => {
   }
   close()
 }
-
 const removeAttendee = (attendee) => {
   taskPayload.value.attendees.splice(taskPayload.value.attendees?.indexOf(attendee), 1)
 }

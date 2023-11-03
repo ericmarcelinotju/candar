@@ -281,7 +281,7 @@ const processDashboard = () => {
 }
 
 const currUser: Ref<User> = computed(() => store.getters['auth/user'])
-const isManager: Ref<boolean> = computed(() => currUser.value.role.isManager)
+const isManager: Ref<boolean> = computed(() => store.getters['auth/isManager'])
 
 const interval = ref(null)
 const time = ref('')

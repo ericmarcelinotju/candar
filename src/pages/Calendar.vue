@@ -59,7 +59,7 @@ const userOptions: Ref<Option[]> = computed(() => {
 })
 
 const currUser: Ref<User> = computed(() => store.getters['auth/user'])
-const isManager: Ref<boolean> = computed(() => currUser.value.role.isManager)
+const isManager: Ref<boolean> = computed(() => store.getters['auth/isManager'])
 
 const initPage = () => {
   if (isManager.value && currUser.value.divisionId) {

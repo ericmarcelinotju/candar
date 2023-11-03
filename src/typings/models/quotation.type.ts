@@ -13,6 +13,8 @@ export class QuotationProduct extends BaseModel {
   priceNumber: number
 }
 
+type QuotationStatus = 'draft' | 'sent' | 'approved' | 'accepted'
+
 export class Quotation extends BaseModel {
   id: string
   code: string
@@ -24,8 +26,8 @@ export class Quotation extends BaseModel {
 
   quotationProducts: QuotationProduct[]
 
-  approveManager: boolean
+  status: QuotationStatus
+
   approvedBy?: User
-  approveClient: boolean
   approvalAttachment?: string
 }

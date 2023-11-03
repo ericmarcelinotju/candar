@@ -16,19 +16,37 @@
       "
     >
       <span class="flex flex-wrap items-center space-x-2">
-        <CloudUploadIcon class="text-gray-600 w-6 h-6" />
-        <span class="font-medium text-gray-600">
-          <p class="leading-7">
-            {{ label || 'Drop files to Attach, or' }}
-            <span class="text-blue-600 underline">browse</span>
-          </p>
-          <span
-            v-if="info"
-            class="font-normal w-full text-sm"
-          >
-            {{ info }}
+        <template v-if="fileExist">
+          <DocumentIcon class="text-gray-600 w-6 h-6" />
+          <span class="font-medium text-gray-600">
+            <p class="leading-7">
+              Uploaded <b>{{ (modelValue as File).name }}</b>, or
+              <span class="text-blue-600 underline">change</span>
+            </p>
+            <span
+              v-if="info"
+              class="font-normal w-full text-sm"
+            >
+              {{ info }}
+            </span>
           </span>
-        </span>
+        </template>
+        <template v-else>
+          <CloudUploadIcon class="text-gray-600 w-6 h-6" />
+          <span class="font-medium text-gray-600">
+            <p class="leading-7">
+              {{ label || 'Drop files to Attach, or' }}
+              <span class="text-blue-600 underline">browse</span>
+            </p>
+            <span
+              v-if="info"
+              class="font-normal w-full text-sm"
+            >
+              {{ info }}
+            </span>
+          </span>
+        </template>
+
       </span>
       <input
         :id="id"
@@ -43,7 +61,8 @@
 </template>
 
 <script setup lang="ts">
-import { CloudUploadIcon } from '@heroicons/vue/outline'
+import { CloudUploadIcon, DocumentIcon } from '@heroicons/vue/outline'
+import { computed } from 'vue'
 
 interface Props {
   id?: string
@@ -51,13 +70,20 @@ interface Props {
   label?: string
   accept?: string
   info?: string
+  modelValue?: File | string
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
-const emit = defineEmits(['change'])
+const emit = defineEmits(['change', 'update:modelValue'])
 
 const onFileChange = (e) => {
-  emit('change', e)
+  const files = e.target.files || e.dataTransfer.files
+  if (!files.length) return
+
+  emit('update:modelValue', files[0])
+  emit('change', files[0])
 }
+
+const fileExist = computed(() => props.modelValue && props.modelValue instanceof File)
 </script>

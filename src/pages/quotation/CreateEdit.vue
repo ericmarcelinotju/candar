@@ -1,6 +1,9 @@
 <template>
   <DefaultPage :title="$t('app.columns.quotation')">
-    <div v-if="loading" class="w-full h-full flex justify-center items-center">
+    <div
+      v-if="loading"
+      class="w-full h-full flex justify-center items-center"
+    >
       <Loading class="h-12 w-12" />
     </div>
     <DefaultCreateEdit
@@ -29,7 +32,52 @@
           Add Product
         </button>
       </template>
+      <template #action>
+        <button
+          v-if="isEdit && initialData.status == 'draft' && !isManager"
+          class="info-button float-left"
+          type="button"
+          @click="handleSend"
+        >
+          <Loading v-if="loadingSend" />
+          Send for Approval
+        </button>
+        <button
+          v-if="isEdit && initialData.status == 'sent' && isManager"
+          class="info-button float-left"
+          type="button"
+          @click="handleApprove"
+        >
+          <Loading v-if="loadingApprove" />
+          Approve
+        </button>
+        <!-- <button
+          v-if="isEdit && initialData.status == 'approved' && isManager"
+          class="info-button float-left"
+          type="button"
+          @click="handleAccept"
+        >
+          <Loading v-if="loadingAccept" />
+          Approve
+        </button> -->
+      </template>
     </DefaultCreateEdit>
+    <DefaultModal
+      v-model="visibleSendConfirmationModal"
+      description="Make sure the quotation is correct as this action may cannot be undone."
+      :loading="loadingSend"
+      title="Send Quotation for Approval?"
+      type="info"
+      @confirm="confirmSend"
+    />
+    <DefaultModal
+      v-model="visibleApproveConfirmationModal"
+      description="Make sure the quotation is correct as this action may cannot be undone."
+      :loading="loadingApprove"
+      title="Approve Quotation?"
+      type="info"
+      @confirm="confirmApprove"
+    />
   </DefaultPage>
 </template>
 
@@ -40,8 +88,10 @@ import { PlusIcon } from '@heroicons/vue/solid'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
 import {
+  approve as approveQuotation,
   detail as getQuotation,
   insert as insertQuotation,
+  send as sendQuotation,
   update as updateQuotation
 } from '@/api/quotation'
 import { get as getProjects } from '@/api/project'
@@ -56,11 +106,15 @@ import { Project } from '@/typings/models/project.type'
 import { Product } from '@/typings/models/product.type'
 import { ProductTier } from '@/typings/models/product-tier.type'
 import ProductForm from './ProductForm.vue'
+import { useStore } from 'vuex'
 
 const route = useRoute()
 const router = useRouter()
+const store = useStore()
 
 const { notify } = useNotify('quotation')
+
+const isManager = computed(() => store.getters['auth/isManager'])
 
 const initialData: Ref<Quotation> = ref(new Quotation())
 
@@ -70,6 +124,7 @@ let id = ''
 if (typeof route.params.id === 'string') {
   id = route.params.id
 }
+const isEdit = computed(() => !!id)
 
 let projectId = ''
 if (typeof route.params.project_id === 'string') {
@@ -212,5 +267,52 @@ const handleAddProduct = (form) => {
 
 const handleRemoveProduct = (form, index) => {
   form.quotationProducts.splice(index, 1)
+}
+
+// Send to be approved
+const loadingSend = ref(false)
+const visibleSendConfirmationModal = ref(false)
+const handleSend = () => {
+  visibleSendConfirmationModal.value = true
+}
+const confirmSend = () => {
+  loadingSend.value = true
+  sendQuotation(id)
+    .then(() => {
+      router.push(quotationList)
+      notify('sent')
+    })
+    .catch(() => {
+      notify('sent', 'danger')
+    })
+    .finally(() => {
+      loadingSend.value = false
+      visibleSendConfirmationModal.value = false
+    })
+}
+
+// Approve by manager
+const loadingApprove = ref(false)
+const visibleApproveConfirmationModal = ref(false)
+const approveItem: Ref<Quotation> = ref()
+const handleApprove = (data) => {
+  visibleApproveConfirmationModal.value = true
+  approveItem.value = data
+}
+const confirmApprove = () => {
+  const { id } = approveItem.value
+  loadingApprove.value = true
+  approveQuotation(id)
+    .then(() => {
+      router.push(quotationList)
+      notify('approved')
+    })
+    .catch(() => {
+      notify('approved', 'danger')
+    })
+    .finally(() => {
+      loadingApprove.value = false
+      visibleApproveConfirmationModal.value = false
+    })
 }
 </script>
