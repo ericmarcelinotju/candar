@@ -40,7 +40,7 @@
             leave-to-class="transform opacity-0 scale-95"
           >
             <MenuItems
-              class="origin-top-right absolute right-0 mt-4 w-52 z-10 rounded-md shadow-lg bg-info ring-1 ring-grey-dark focus:outline-none"
+              class="overflow-y-scroll max-h-[50vh] origin-top-right absolute right-0 mt-4 w-52 z-10 rounded-md shadow-lg bg-info ring-1 ring-grey-dark focus:outline-none"
             >
               <MenuItem v-if="notifications.length <= 0">
                 <span
@@ -66,7 +66,7 @@
                   <div
                     class="text-black text-sm whitespace-nowrap text-ellipsis overflow-hidden"
                   >
-                    {{ notification.subject }}
+                    {{ notification.message }}
                   </div>
                 </a>
               </MenuItem>
@@ -153,26 +153,7 @@ const user = computed(() => store.getters['auth/user'])
 const hasClicked = computed(() => store.getters['auth/hasClicked'])
 const clickNotif = () => store.commit('auth/setClickNotif')
 
-const notifications = computed(() => [
-  {
-    id: 1,
-    title: 'Notification',
-    subject: 'There is a new notification',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis consequat ultrices. Aliquam suscipit ligula eu nisi lacinia, in ullamcorper risus laoreet. Nunc hendrerit sem sed neque finibus convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque maximus arcu at lacus congue sollicitudin. Aliquam ut lacus quis dolor luctus dictum. Fusce ut vehicula nulla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Morbi id orci risus. Nam erat sapien, faucibus ut leo in, efficitur rhoncus ante. Mauris et porta risus. Curabitur efficitur semper blandit.'
-  },
-  {
-    id: 1,
-    title: 'Notification',
-    subject: 'There is a new notification',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis consequat ultrices. Aliquam suscipit ligula eu nisi lacinia, in ullamcorper risus laoreet. Nunc hendrerit sem sed neque finibus convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque maximus arcu at lacus congue sollicitudin. Aliquam ut lacus quis dolor luctus dictum. Fusce ut vehicula nulla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Morbi id orci risus. Nam erat sapien, faucibus ut leo in, efficitur rhoncus ante. Mauris et porta risus. Curabitur efficitur semper blandit.'
-  },
-  {
-    id: 1,
-    title: 'Notification',
-    subject: 'There is a new notification',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis consequat ultrices. Aliquam suscipit ligula eu nisi lacinia, in ullamcorper risus laoreet. Nunc hendrerit sem sed neque finibus convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque maximus arcu at lacus congue sollicitudin. Aliquam ut lacus quis dolor luctus dictum. Fusce ut vehicula nulla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Morbi id orci risus. Nam erat sapien, faucibus ut leo in, efficitur rhoncus ante. Mauris et porta risus. Curabitur efficitur semper blandit.'
-  }
-])
+const notifications = computed(() => store.getters['notifications/getNotification'])
 
 const handleClickNotif = () => {
   clickNotif()

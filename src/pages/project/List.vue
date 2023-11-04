@@ -341,7 +341,7 @@ const handleSearch = (params) => {
     .then((res) => {
       // Dont Forget to Erase this code #ERASE_CODE
       res.data.data.map(res => {
-        res.dueDate = ''
+        res.expiredAt = ''
         return res
       })
       items.value = res.data.data
@@ -445,7 +445,7 @@ const projectsInitiate = computed({
     for (let i = 0; i < val.length; i++) {
       if (val[i].status !== 'initiate') {
         val[i].status = 'initiate'
-        val[i].dueDate = val[i]?.dueDate && new Date(val[i].dueDate)
+        val[i].expiredAt = val[i]?.expiredAt && new Date(val[i].expiredAt)
 
         updateProject(val[i].id, val[i]).catch((err) => {
           notify('update', 'danger', err.message)
@@ -460,7 +460,7 @@ const projectsQualification = computed({
     for (let i = 0; i < val.length; i++) {
       if (val[i].status !== 'qualification') {
         val[i].status = 'qualification'
-        val[i].dueDate = val[i]?.dueDate && new Date(val[i].dueDate)
+        val[i].expiredAt = val[i]?.expiredAt && new Date(val[i].expiredAt)
 
         updateProject(val[i].id, val[i]).catch((err) => {
           notify('update', 'danger', err.message)
@@ -476,7 +476,7 @@ const projectsLead = computed({
     for (let i = 0; i < val.length; i++) {
       if (val[i].status !== 'lead') {
         val[i].status = 'lead'
-        val[i].dueDate = val[i]?.dueDate && new Date(val[i].dueDate)
+        val[i].expiredAt = val[i]?.expiredAt && new Date(val[i].expiredAt)
 
         updateProject(val[i].id, val[i]).catch((err) => {
           notify('update', 'danger', err.message)
@@ -492,7 +492,7 @@ const projectsQuotation = computed({
     for (let i = 0; i < val.length; i++) {
       if (val[i].status !== 'quotation') {
         val[i].status = 'quotation'
-        val[i].dueDate = val[i]?.dueDate && new Date(val[i].dueDate)
+        val[i].expiredAt = val[i]?.expiredAt && new Date(val[i].expiredAt)
 
         updateProject(val[i].id, val[i]).catch((err) => {
           notify('update', 'danger', err.message)
@@ -508,7 +508,7 @@ const projectsWin = computed({
     for (let i = 0; i < val.length; i++) {
       if (val[i].status !== 'win') {
         val[i].status = 'win'
-        val[i].dueDate = val[i]?.dueDate && new Date(val[i].dueDate)
+        val[i].expiredAt = val[i]?.expiredAt && new Date(val[i].expiredAt)
 
         updateProject(val[i].id, val[i]).catch((err) => {
           notify('update', 'danger', err.message)
@@ -524,7 +524,7 @@ const projectsLose = computed({
     for (let i = 0; i < val.length; i++) {
       if (val[i].status !== 'lose') {
         val[i].status = 'lose'
-        val[i].dueDate = val[i]?.dueDate && new Date(val[i].dueDate)
+        val[i].expiredAt = val[i]?.expiredAt && new Date(val[i].expiredAt)
 
         updateProject(val[i].id, val[i]).catch((err) => {
           notify('update', 'danger', err.message)

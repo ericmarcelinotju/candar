@@ -4,6 +4,7 @@ import { config } from '@/config'
 import main from './main'
 import auth from './modules/auth'
 import columns from './modules/columns'
+import notifications from './modules/notifications'
 
 // TODO :: use pinia
 
@@ -16,7 +17,8 @@ const vuexLocal = new VuexPersistence({
 
 const modules = {
   auth,
-  columns
+  columns,
+  notifications
 }
 
 export default createStore({

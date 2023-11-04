@@ -5,7 +5,11 @@
     >
       <div class="mx-auto w-full max-w-sm lg:w-96">
         <div>
-          <img alt="Workflow" class="h-32 w-auto" src="@/assets/logo.svg" />
+          <img
+            alt="Workflow"
+            class="h-32 w-auto"
+            src="@/assets/logo.svg"
+          >
           <h2 class="mt-6 text-3xl font-extrabold text-gray-900">
             Sign in to your account
           </h2>
@@ -30,7 +34,10 @@
               @submit.prevent="handleLogin"
             >
               <div>
-                <label class="default-label" for="username"> Username </label>
+                <label
+                  class="default-label"
+                  for="username"
+                > Username </label>
                 <div class="mt-1">
                   <input
                     id="username"
@@ -40,12 +47,15 @@
                     name="username"
                     required
                     type="text"
-                  />
+                  >
                 </div>
               </div>
 
               <div class="space-y-1">
-                <label class="default-label" for="password"> Password </label>
+                <label
+                  class="default-label"
+                  for="password"
+                > Password </label>
                 <div class="mt-1">
                   <input
                     id="password"
@@ -54,7 +64,7 @@
                     name="password"
                     required
                     type="password"
-                  />
+                  >
                 </div>
               </div>
 
@@ -66,7 +76,7 @@
                     class="default-checkbox"
                     name="remember-me"
                     type="checkbox"
-                  />
+                  >
                   <label
                     class="ml-2 block text-sm text-gray-900"
                     for="remember-me"
@@ -86,12 +96,18 @@
               </div>
 
               <div>
-                <button class="w-full info-button" type="submit">
+                <button
+                  class="w-full info-button"
+                  type="submit"
+                >
                   Sign in
                 </button>
               </div>
 
-              <div v-if="error" class="font-bold text-sm text-[#ff0000] mb-4">
+              <div
+                v-if="error"
+                class="font-bold text-sm text-[#ff0000] mb-4"
+              >
                 {{ error }}
               </div>
             </form>
@@ -104,7 +120,7 @@
         alt=""
         class="absolute inset-0 h-full w-full object-cover"
         src="@/assets/img/login-background.jpg"
-      />
+      >
     </div>
   </div>
 </template>
@@ -130,8 +146,7 @@ const params = reactive({ ...user })
 const error = ref(null)
 
 const handleLogin = () => {
-  store
-    .dispatch('auth/login', { ...params })
+  store.dispatch('auth/login', { ...params })
     .then(() => {
       router.push(dashboardRoute)
     })

@@ -220,7 +220,7 @@
                 DUE DATE
               </p>
               <Datepicker
-                v-model="project.dueDate"
+                v-model="project.expiredAt"
                 auto-apply
                 :clearable="false"
                 :enable-time-picker="false"
@@ -228,12 +228,12 @@
                 <template #trigger>
                   <div class="hover:bg-gray-200 p-1 transition duration-300 rounded-md -translate-x-1">
                     <InfoButton
-                      v-if="project.dueDate"
-                      :info="formatDate(project.dueDate)"
+                      v-if="project.expiredAt"
+                      :info="formatDate(project.expiredAt)"
                     >
                       <!-- <p>{{ project.createdAt }}</p> -->
                       <p class="text-xs font-medium">
-                        {{ formatDate(project.dueDate) }}
+                        {{ formatDate(project.expiredAt) }}
                       </p>
                     </InfoButton>
                     <InfoButton
@@ -399,8 +399,8 @@ watchDebounced(
       payload.user_id = payload.user?.id
     }
 
-    if (project.value?.dueDate) {
-      payload.dueDate = new Date(project.value?.dueDate)
+    if (project.value?.expiredAt) {
+      payload.expiredAt = new Date(project.value?.expiredAt)
     }
 
     updateProject(payload.id, payload)
