@@ -12,33 +12,51 @@
         :form-settings="formSettings"
         :initial-data="initialData"
         @submit="onSubmit"
-      />
+      >
+        <template #products="{ form }">
+          <ProductForm
+            v-for="(purchaseProduct, index) in form.purchaseProducts"
+            :key="purchaseProduct.id"
+            v-model="form.purchaseProducts[index]"
+            :index="index"
+            :products="products"
+            @delete="(index) => handleRemoveProduct(form, index)"
+          />
+          <button
+            class="info-button"
+            type="button"
+            @click="handleAddProduct(form)"
+          >
+            <PlusIcon class="w-4 h-4 mr-2" />
+            Add Product
+          </button>
+        </template>
+      </DefaultCreateEdit>
     </DefaultPage>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Ref, computed, onMounted, ref } from 'vue'
+import { Ref, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { PlusIcon } from '@heroicons/vue/solid'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
-import {
-  detail as getPurchase,
-  insert as insertPurchase
-} from '@/api/purchase'
+import { detail as getPurchase, insert as insertPurchase } from '@/api/purchase'
+import { get as getProducts } from '@/api/product'
 import { required } from '@/utils/validation'
 import { FormSetting } from '@/typings/form.type'
-import { useStore } from 'vuex'
-import { Purchase } from '@/typings/models/purchase.type'
+import { Purchase, PurchaseProduct } from '@/typings/models/purchase.type'
 import { purchaseList } from '@/router/routes/purchase'
+import { Product } from '@/typings/models/product.type'
+import ProductForm from './ProductForm.vue'
 
 const route = useRoute()
 const router = useRouter()
-const store = useStore()
 
 const { notify } = useNotify('purchase')
 
-const initialData: Ref<Purchase> = ref()
+const initialData: Ref<Purchase> = ref(new Purchase())
 const loading: Ref<boolean> = ref(false)
 
 let id = ''
@@ -62,8 +80,35 @@ const onSubmit = (form, onFinish) => {
     .finally(onFinish)
 }
 
+const products: Ref<Product[]> = ref([])
+
+const initPage = async () => {
+  loading.value = true
+  try {
+    await getProducts().then((res) => {
+      products.value = res.data.data
+    })
+    if (id) {
+      const resp = await getPurchase(id)
+      initialData.value = resp.data
+    } else {
+      console.log(initialData.value)
+      handleAddProduct(initialData.value)
+    }
+
+    initialData.value.date = new Date()
+
+    initForm()
+  } catch (err) {
+    console.error(err)
+    notify('loaded', 'danger')
+  } finally {
+    loading.value = false
+  }
+}
+
 onMounted(() => {
-  initForm()
+  initPage()
 })
 
 const formSettings: Ref<FormSetting[]> = ref([])
@@ -74,12 +119,43 @@ const initForm = () => {
       label: 'Code',
       isRequired: true,
       rules: [required]
+    },
+    {
+      key: 'vendor',
+      label: 'Vendor',
+      isRequired: true,
+      rules: [required]
+    },
+    {
+      key: 'date',
+      label: 'Date',
+      isRequired: true,
+      type: 'date',
+      rules: [required]
+    },
+    {
+      key: 'note',
+      label: 'Note',
+      type: 'textarea'
+    },
+    {
+      key: 'products',
+      label: 'Produk'
     }
-
   ]
 }
-const hasPermission = (method, module = 'USER') => {
-  return store.getters['auth/hasPermission'](module, method)
-}
 initForm()
+
+const handleAddProduct = (form: Purchase) => {
+  if (!form.purchaseProducts) {
+    form.purchaseProducts = []
+  }
+  const purchaseProduct = new PurchaseProduct()
+  purchaseProduct.quantity = 1
+  form.purchaseProducts.push(purchaseProduct)
+}
+
+const handleRemoveProduct = (form: Purchase, index: number) => {
+  form.purchaseProducts.splice(index, 1)
+}
 </script>

@@ -1,9 +1,6 @@
 <template>
   <DefaultPage :title="$t('app.columns.user')">
-    <div
-      v-if="loading"
-      class="w-full h-full flex justify-center items-center"
-    >
+    <div v-if="loading" class="w-full h-full flex justify-center items-center">
       <Loading class="h-12 w-12" />
     </div>
     <DefaultCreateEdit
@@ -27,12 +24,14 @@ import {
   update as updateUser
 } from '@/api/user'
 import { get as getRoles } from '@/api/role'
+import { get as getDivisions } from '@/api/division'
 import { required, alpha } from '@/utils/validation'
 import { FormSetting } from '@/typings/form.type'
 import { User } from '@/typings/models/user.type'
 import { Role } from '@/typings/models/role.type'
 import { userList } from '@/router/routes/user'
 import { Option } from '@/typings/option.type'
+import { Division } from '@/typings/models/division.type'
 
 const route = useRoute()
 const router = useRouter()
@@ -49,13 +48,23 @@ if (typeof route.params.id === 'string') {
 }
 
 const roles: Ref<Role[]> = ref([])
-const roleOptions: Ref<Option[]> = computed(() => roles.value.map(role => ({ label: role.name, value: role.id })))
+const roleOptions: Ref<Option[]> = computed(() =>
+  roles.value.map((role) => ({ label: role.name, value: role.id }))
+)
+
+const divisions: Ref<Division[]> = ref([])
+const divisionOptions: Ref<Option[]> = computed(() =>
+  divisions.value.map((division) => ({
+    label: division.name,
+    value: division.id
+  }))
+)
 
 const initPage = () => {
   if (!id) return
   loading.value = true
   getUser(id)
-    .then(res => {
+    .then((res) => {
       initialData.value = res.data
     })
     .catch(() => {
@@ -96,13 +105,12 @@ const hasPermission = (method, module = 'USER') => {
 
 onMounted(() => {
   initPage()
-  if (hasPermission('GET', 'ROLE')) {
-    getRoles()
-      .then(res => {
-        roles.value = res.data.roles
-        initForm()
-      })
-  }
+
+  Promise.all([getRoles(), getDivisions()]).then((res) => {
+    roles.value = res[0].data.data
+    divisions.value = res[1].data.data
+    initForm()
+  })
 })
 
 const formSettings: Ref<FormSetting[]> = ref([])
@@ -124,21 +132,25 @@ const initForm = () => {
     {
       key: 'password',
       label: 'Password',
-      isRequired: true,
       type: 'password'
     },
     {
       key: 'confirm_password',
       label: 'Confirm Password',
-      isRequired: true,
       type: 'password'
     },
     {
-      key: 'role_id',
+      key: 'roleId',
       label: 'Role',
       isRequired: true,
       type: 'dropdown',
       options: roleOptions.value
+    },
+    {
+      key: 'divisionId',
+      label: 'Division',
+      type: 'dropdown',
+      options: divisionOptions.value
     }
   ]
 }

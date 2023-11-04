@@ -31,19 +31,56 @@
                 {{ projectTask.isFinish ? 'DONE' : 'PENDING' }}
               </label>
             </div>
-            <InfoButton
+            <div
               v-if="hasType"
-              info="Task Type"
+              class="group relative success-tag !rounded-xl !p-0 h-[1.6rem]"
             >
-              <div
-
-                class="group relative success-tag !rounded-lg !p-0 h-[1.6rem] hover:cursor-pointer mb-1"
-              >
-                <div class="px-3">
-                  {{ projectTask.type }}
-                </div>
+              <div class="px-3 whitespace-nowrap">
+                {{ snakeToTitle(projectTask.type) }}
               </div>
-            </InfoButton>
+
+              <div
+                class="group-hover:block hidden absolute top-0 right-0 ml-1 leading-[22px] pb-[0.2rem] px-2 text-white bg-success-dark rounded-xl cursor-pointer font-bold"
+                @click="removeType"
+              >
+                x
+              </div>
+            </div>
+
+            <Popover
+              v-else
+              class="relative"
+            >
+              <PopoverButton>
+                <InfoButton info="Set Type">
+                  <button
+                    class="rounded-full border border-dashed border-grey p-1"
+                    type="button"
+                  >
+                    <TagIcon class="w-4 h-4 text-grey" />
+                  </button>
+                </InfoButton>
+              </PopoverButton>
+
+              <transition
+                enter-active-class="transition duration-200 ease-out"
+                enter-from-class="translate-y-1 opacity-0"
+                enter-to-class="translate-y-0 opacity-100"
+                leave-active-class="transition duration-150 ease-in"
+                leave-from-class="translate-y-0 opacity-100"
+                leave-to-class="translate-y-1 opacity-0"
+              >
+                <PopoverPanel
+                  class="absolute bg-white left-0 z-10 mt-2 min-w-[180px] max-w-sm -translate-x-1/2 transform px-4 sm:px-0"
+                >
+                  <Dropdown
+                    v-model="projectTask.type"
+                    class="default-input"
+                    :options="typeOptions"
+                  />
+                </PopoverPanel>
+              </transition>
+            </Popover>
           </div>
           <div class="-ml-3">
             <input
@@ -67,7 +104,7 @@
             <div class="flex gap-2">
               <Popover class="relative">
                 <PopoverButton>
-                  <InfoButton info="Add Assignee">
+                  <InfoButton info="Add Attendees">
                     <button
                       class="rounded-full border border-dashed border-grey p-1"
                       type="button"
@@ -129,7 +166,7 @@
                 accept="image/*"
                 style="display: none"
                 type="file"
-                @change="onPictureChange"
+                @change="(e) => onFileChange(e, onPictureChange)"
               >
               <div
                 v-if="tempPicture || projectTask.picture"
@@ -168,18 +205,35 @@
               Attachment
             </p>
             <div>
-              <p
-                v-if="projectTask.attachment"
-                class="mt-3 text-sm border border-transparent hover:border-grey p-1 rounded-md cursor-pointer"
+              <input
+                ref="inputAttachment"
+                style="display: none"
+                type="file"
+                @change="(e) => onFileChange(e, onAttachmentChange)"
               >
-                <DocumentIcon class="w-3 h-3 inline mb-[0.15rem]" />
+              <a
+                v-if="projectTask.attachment"
+                class="group block mt-3 text-sm border border-transparent hover:border-grey p-1 rounded-md cursor-pointer"
+                download
+                :href="`${config.apiAddress}\\${projectTask.attachment}`"
+                target="_blank"
+              >
+                <DocumentIcon class="w-4 h-4 inline mb-[0.15rem]" />
                 {{ getAttachmentName(projectTask.attachment) }}
-              </p>
+
+                <PencilAltIcon
+                  class="hidden group-hover:block w-3 h-3 m-1 float-right"
+                  @click.stop.prevent="handleAttachment"
+                />
+              </a>
               <p
                 v-else
                 class="mt-3 text-sm"
               >
-                <FileInput @change="onAttachmentChange" />
+                <FileInput
+                  ref="inputAttachment"
+                  @change="onAttachmentChange"
+                />
               </p>
             </div>
           </div>
@@ -190,20 +244,24 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, computed, ref, watch } from 'vue'
+import { Ref, computed, onMounted, ref, watch } from 'vue'
 import { watchDebounced } from '@vueuse/core'
 import Multiselect from 'vue-multiselect'
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
-import { UserAddIcon, PencilAltIcon } from '@heroicons/vue/solid'
+import { UserAddIcon, PencilAltIcon, TagIcon } from '@heroicons/vue/solid'
 import { DocumentIcon } from '@heroicons/vue/outline'
 
 import { config } from '@/config'
 import { update as updateProjectTask, detail as getProjectTask } from '@/api/project-task'
 import { ProjectTask } from '@/typings/models/project-task.type'
+import { get as getAttendees } from '@/api/task-attendee'
 import { useNotify } from '@/composables/use-notify'
 import FileInput from '@/components/form/File.vue'
 import InfoButton from '@/components/helper/InfoButton.vue'
 import { jsonToFormData } from '@/utils'
+import { Option } from '@/typings/option.type'
+import Dropdown from '@/components/form/dropdown/Dropdown.vue'
+import { snakeToTitle } from '@/utils/string'
 
 interface Props {
   data: ProjectTask
@@ -235,7 +293,6 @@ watch(
   },
   { immediate: true }
 )
-
 const saveLoading = ref(false)
 watchDebounced(
   projectTask,
@@ -262,45 +319,69 @@ watchDebounced(
   }
 )
 
+// Type
 const hasType = computed(() => projectTask.value.type)
+const removeType = () => (projectTask.value.type = null)
+const typeOptions: Ref<Option[]> = ref([
+  { label: 'Meeting', value: 'meeting' },
+  { label: 'Cold Call', value: 'cold_call' }
+])
 
-const attendeeOptions = computed(() => ['budi', 'bambang', 'udin'].filter(option => projectTask.value.attendees.indexOf(option) === -1))
-
+// Attendees
+const attendees: Ref<string[]> = ref([])
+const attendeeOptions = computed(() => attendees.value?.filter(option => projectTask.value?.attendees.indexOf(option) === -1))
+onMounted(() => {
+  getAttendeesOption()
+})
+const getAttendeesOption = () => {
+  getAttendees()
+    .then(res => {
+      attendees.value = [...res.data?.attendees]
+    })
+}
 const addAttendee = (close, attendee) => {
   if (projectTask.value.attendees?.indexOf(attendee) === -1) {
     projectTask.value.attendees.push(attendee)
   }
   close()
 }
-
 const removeAttendee = (attendee) => {
   projectTask.value.attendees.splice(projectTask.value.attendees?.indexOf(attendee), 1)
 }
 
+// Picture
 const inputPicture = ref(null)
 const tempPicture = ref('')
 const handlePicture = () => {
   inputPicture.value.click()
 }
-const onPictureChange = (e) => {
-  const files = e.target.files || e.dataTransfer.files
-  if (!files.length) return
-
-  const url = URL.createObjectURL(files[0])
+const onPictureChange = (file) => {
+  const url = URL.createObjectURL(file)
 
   tempPicture.value = url
-  projectTask.value.picture = files[0]
+  projectTask.value.picture = file
 }
 
-const getAttachmentName = (attachment) => {
-  const strs = attachment.split('\\')
-  return strs[strs.length - 1]
+// Attachment
+const inputAttachment = ref(null)
+const handleAttachment = () => {
+  inputAttachment.value.click()
+}
+const getAttachmentName = (attachment: File | string) => {
+  if (typeof attachment === 'string') {
+    const strs = attachment.split('\\')
+    return strs[strs.length - 1]
+  }
+
+  return attachment.name
+}
+const onAttachmentChange = (file) => {
+  projectTask.value.attachment = file
 }
 
-const onAttachmentChange = (e) => {
+const onFileChange = (e, cb) => {
   const files = e.target.files || e.dataTransfer.files
   if (!files.length) return
-
-  projectTask.value.attachment = files[0]
+  cb(files[0])
 }
 </script>

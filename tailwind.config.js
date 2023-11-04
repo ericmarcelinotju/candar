@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        offwhite: '#fefefe',
         'black-dark': '#1F1F1F',
         black: '#363636',
         'black-soft': '#4A4A4A',
@@ -13,10 +14,10 @@ module.exports = {
         'success-dark': '#4EC092',
         success: '#5BCD9F',
         'success-soft': '#5BCD9FAA',
-        'warning-dark': '#C0B54E',
-        warning: '#CDC25B',
-        'warning-soft': '#CDC25BAA',
-        'info-dark': '#AFD2FF',
+        'warning-dark': '#e0d341',
+        warning: '#f0e462',
+        'warning-soft': '#f7ed77AA',
+        'info-dark': '#3289FF',
         info: '#C8DFFF',
         'info-soft': '#B8DFFFAA',
         'danger-dark': '#C04F79',

@@ -23,12 +23,16 @@ const del = (id: string): Promise<BaseResponse<null>> => {
   return axios.delete(`/quotation/${id}`)
 }
 
-const approveManager = (id: string): Promise<BaseResponse<null>> => {
-  return axios.post(`/quotation/${id}/approve-manager`)
+const send = (id: string): Promise<BaseResponse<null>> => {
+  return axios.post(`/quotation/${id}/send`)
 }
 
-const approveClient = (id: string, data: FormData): Promise<BaseResponse<null>> => {
-  return axios.post(`/quotation/${id}/approve-client`, data)
+const approve = (id: string): Promise<BaseResponse<null>> => {
+  return axios.post(`/quotation/${id}/approve`)
+}
+
+const accept = (id: string, data: FormData): Promise<BaseResponse<null>> => {
+  return axios.post(`/quotation/${id}/accept`, data)
 }
 
 export {
@@ -37,6 +41,7 @@ export {
   insert,
   update,
   del,
-  approveManager,
-  approveClient
+  send,
+  approve,
+  accept
 }

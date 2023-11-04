@@ -36,26 +36,28 @@ export const navigations: Navigation[] = [
     name: 'Product',
     module: 'PRODUCT',
     icon: ShoppingBagIcon,
-    children: [{
-      name: 'Product',
-      module: 'PRODUCT',
-      href: '/product'
-    },
-    {
-      name: 'Product Category',
-      module: 'PRODUCT',
-      href: '/product-category'
-    },
-    {
-      name: 'Variant',
-      module: 'VARIANT',
-      href: '/variant'
-    },
-    {
-      name: 'Variant Category',
-      module: 'VARIANT',
-      href: '/variant-category'
-    }]
+    children: [
+      {
+        name: 'Variant Category',
+        module: 'VARIANT',
+        href: '/variant-category'
+      },
+      {
+        name: 'Variant',
+        module: 'VARIANT',
+        href: '/variant'
+      },
+      {
+        name: 'Product Category',
+        module: 'PRODUCT',
+        href: '/product-category'
+      },
+      {
+        name: 'Product',
+        module: 'PRODUCT',
+        href: '/product'
+      }
+    ]
   },
   {
     name: 'Project',

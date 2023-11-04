@@ -14,6 +14,9 @@
       <template #role="{ item }">
         <span>{{ item.role.name }}</span>
       </template>
+      <template #division="{ item }">
+        <span>{{ item.division?.name }}</span>
+      </template>
       <!-- <template #last_login="{ item }">
         <span>{{ item.last_login }}</span>
       </template> -->
@@ -26,7 +29,7 @@
         @click="handleCreate"
       >
         <PlusIcon class="w-4 h-4 mr-1" />
-        {{ $t("app.create") }}
+        {{ $t('app.create') }}
       </button>
       <button>
         <CogIcon
@@ -71,11 +74,8 @@
             :checked="!field.hidden"
             class="default-checkbox"
             type="checkbox"
-          >
-          <label
-            class="default-label"
-            :for="field.key"
-          >
+          />
+          <label class="default-label" :for="field.key">
             {{ field.label }}
           </label>
         </div>
@@ -86,7 +86,7 @@
           type="button"
           @click="setDefaultFields"
         >
-          {{ $t("app.set_default") }}
+          {{ $t('app.set_default') }}
         </button>
       </template>
     </DefaultModal>
@@ -118,7 +118,7 @@ const handleSearch = (params) => {
   stateParams = { ...params }
   loading.value = true
   getUsers(params)
-    .then(res => {
+    .then((res) => {
       // TODO :: Filter by level
       // const currUser = store.getters['auth/user']
       // items.value = res.data.users.filter(user => user.role.level >= currUser.level)
@@ -165,11 +165,13 @@ const confirmDelete = () => {
 
 const initSearchOptions = () => {
   if (hasPermission('GET', 'ROLE')) {
-    getRoles()
-      .then(res => {
-        const roleColumn = columns.find(column => column.key === 'role_id')
-        roleColumn.options = res.data.data.map(role => ({ label: role.name, value: role.id }))
-      })
+    getRoles().then((res) => {
+      const roleColumn = columns.find((column) => column.key === 'role_id')
+      roleColumn.options = res.data.data.map((role) => ({
+        label: role.name,
+        value: role.id
+      }))
+    })
   }
 }
 

@@ -12,11 +12,11 @@
       </div>
       <div class="default-field">
         <label class="default-label" for="price"> Harga </label>
-        <Dropdown
+        <input
           id="price"
-          v-model="inputVal.tierId"
+          v-model="inputVal.price"
           class="default-input"
-          :options="tierOptions"
+          type="number"
         />
       </div>
       <div class="default-field">
@@ -45,17 +45,14 @@
 import { Ref, computed } from 'vue'
 import { TrashIcon } from '@heroicons/vue/solid'
 import Dropdown from '@/components/form/dropdown/Dropdown.vue'
-import { QuotationProduct } from '@/typings/models/quotation.type'
+import { PurchaseProduct } from '@/typings/models/purchase.type'
 import { Product } from '@/typings/models/product.type'
-import { ProductTier } from '@/typings/models/product-tier.type'
 import { Option } from '@/typings/option.type'
 
 interface Props {
   index: number
   products: Product[]
-  tiers: ProductTier[]
-  hasContract: boolean
-  modelValue: QuotationProduct
+  modelValue: PurchaseProduct
 }
 
 const props = defineProps<Props>()
@@ -67,19 +64,6 @@ const productOptions: Ref<Option[]> = computed(() =>
     label: `${product.name} : ${product.code}`,
     value: product.id
   }))
-)
-
-const tierOptions: Ref<Option[]> = computed(() =>
-  props.tiers
-    .filter(
-      (tier) =>
-        tier.productId === inputVal.value.productId &&
-        tier.type === (props.hasContract ? 'regular' : 'iregular')
-    )
-    .map((tier) => ({
-      label: `${tier.type} Tier: ${tier.name}  MOQ: ${tier.moq}  Price: ${tier.price}`,
-      value: tier.id
-    }))
 )
 
 const inputVal = computed({

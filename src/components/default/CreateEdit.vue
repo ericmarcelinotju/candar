@@ -78,6 +78,7 @@
         <Loading v-if="loading" />
         {{ $t('app.save') }}
       </button>
+      <slot name="action" />
     </div>
   </form>
 </template>

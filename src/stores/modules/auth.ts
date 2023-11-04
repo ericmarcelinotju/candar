@@ -18,7 +18,10 @@ const getters = {
   user (state: State): User {
     return state.user
   },
-  isLoggedIn (state: State) {
+  isManager (state: State): boolean {
+    return state.user?.role?.isManager
+  },
+  isLoggedIn (state: State): boolean {
     return !!state.user
   },
   hasClicked (state: State) {

@@ -24,15 +24,15 @@ const defaultUserColumns: TableColumn[] = [
   },
   {
     label: 'Role',
-    key: 'role_id',
+    key: 'roleId',
     isHidden: true,
     isSearchable: true,
     options: [],
     type: 'dropdown'
   },
   {
-    label: 'Last Login',
-    key: 'last_login'
+    label: 'Division',
+    key: 'division'
   }
 ]
 
@@ -107,34 +107,34 @@ const state = () => ({
 })
 
 const getters = {
-  user (state) {
+  user(state) {
     return state.userColumns || []
   },
-  device (state) {
+  device(state) {
     return state.deviceColumns || []
   },
-  deviceType (state) {
+  deviceType(state) {
     return state.deviceTypeColumns || []
   }
 }
 
 const mutations = {
-  setUser (state, value) {
+  setUser(state, value) {
     state.userColumns = [...value]
   },
-  setDefaultUser (state) {
+  setDefaultUser(state) {
     state.userColumns = defaultUserColumns
   },
-  setDevice (state, value) {
+  setDevice(state, value) {
     state.deviceColumns = [...value]
   },
-  setDefaultDevice (state) {
+  setDefaultDevice(state) {
     state.deviceColumns = defaultDeviceColumns
   },
-  setDeviceType (state, value) {
+  setDeviceType(state, value) {
     state.deviceTypeColumns = [...value]
   },
-  setDefaultDeviceType (state) {
+  setDefaultDeviceType(state) {
     state.deviceTypeColumns = defaultDeviceTypeColumns
   }
 }

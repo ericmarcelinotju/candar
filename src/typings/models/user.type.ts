@@ -1,3 +1,4 @@
+import { Division } from './division.type'
 import { BaseModel } from './model.type'
 import { Role } from './role.type'
 
@@ -11,7 +12,10 @@ export class User extends BaseModel {
   lastLogin: Date
 
   role: Role
-  roleName: string
+  roleId: string
+
+  division: Division
+  divisionId: string
 
   notification: boolean
 }

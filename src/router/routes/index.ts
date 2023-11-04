@@ -3,16 +3,38 @@ import { forgotPassword, login, logout, resetPassword } from './auth'
 import { userCreate, userEdit, userList } from './user'
 import { roleCreate, roleEdit, roleList } from './role'
 import { permissionCreate, permissionEdit, permissionList } from './permission'
-import { clientAddressCreate, clientAddressEdit, clientContactCreate, clientContactEdit, clientCreate, clientEdit, clientList } from './client'
+import {
+  clientAddressCreate,
+  clientAddressEdit,
+  clientContactCreate,
+  clientContactEdit,
+  clientCreate,
+  clientEdit,
+  clientList
+} from './client'
 import { divisionCreate, divisionEdit, divisionList } from './division'
 import { projectCreate, projectEdit, projectList } from './project'
 import { logList } from './log'
 import { forbiddenRoute, notFoundRoute } from './error'
-import { variantCategoryCreate, variantCategoryEdit, variantCategoryList, variantCreate, variantEdit, variantList } from './variant'
-import { productCategoryCreate, productCategoryEdit, productCategoryList, productCreate, productEdit, productList } from './product'
+import {
+  variantCategoryCreate,
+  variantCategoryEdit,
+  variantCategoryList,
+  variantCreate,
+  variantEdit,
+  variantList
+} from './variant'
+import {
+  productCategoryCreate,
+  productCategoryEdit,
+  productCategoryList,
+  productCreate,
+  productEdit,
+  productList
+} from './product'
 import { quotationCreate, quotationEdit, quotationList } from './quotation'
 import { contractCreate, contractEdit, contractList } from './contract'
-import { purchaseCreate, purchaseList } from './purchase'
+import { purchaseCreate, purchaseEdit, purchaseList } from './purchase'
 
 export const dashboardRoute: RouteRecordRaw = {
   path: '/dashboard',
@@ -139,7 +161,8 @@ export const clientContactRoutes: Record<string, RouteRecordRaw> = {
 
 export const purchaseRoutes: Record<string, RouteRecordRaw> = {
   list: purchaseList,
-  create: purchaseCreate
+  create: purchaseCreate,
+  edit: purchaseEdit
 }
 
 export const projectRoutes: Record<string, RouteRecordRaw> = {

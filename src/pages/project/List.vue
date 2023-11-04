@@ -16,6 +16,12 @@
       </template>
     </DefaultTable> -->
     <!-- <div class="mt-4 grid grid-cols-4 gap-6"> -->
+    <div class="ml-3 mt-4 flex gap-2">
+      <Switch
+        v-model="isClosedProjectsShown"
+        label="Show closed projects"
+      />
+    </div>
     <div
       class="mt-4 grid"
       :class="[
@@ -203,14 +209,6 @@
           <PlusIcon class="w-4 h-4 mr-1" />
           {{ $t('app.create') }}
         </button>
-        <div class="flex flex-col">
-          <p class="text-sm font-semibold mb-2 text-primary">
-            Show closed projects
-          </p>
-          <Switch
-            v-model="isClosedProjectsShown"
-          />
-        </div>
       </div>
     </template>
     <template #search>
@@ -443,11 +441,13 @@ const projectsInitiate = computed({
   get: () => [...items.value.filter((item) => item.status === 'initiate')],
   set: (val) => {
     for (let i = 0; i < val.length; i++) {
-      if (val[i].status !== 'initiate') {
+      const currStatus = val[i].status
+      if (currStatus !== 'initiate') {
         val[i].status = 'initiate'
         val[i].expiredAt = val[i]?.expiredAt && new Date(val[i].expiredAt)
 
         updateProject(val[i].id, val[i]).catch((err) => {
+          val[i].status = currStatus
           notify('update', 'danger', err.message)
         })
       }
@@ -458,11 +458,13 @@ const projectsQualification = computed({
   get: () => [...items.value.filter((item) => item.status === 'qualification')],
   set: (val) => {
     for (let i = 0; i < val.length; i++) {
-      if (val[i].status !== 'qualification') {
+      const currStatus = val[i].status
+      if (currStatus !== 'qualification') {
         val[i].status = 'qualification'
         val[i].expiredAt = val[i]?.expiredAt && new Date(val[i].expiredAt)
 
         updateProject(val[i].id, val[i]).catch((err) => {
+          val[i].status = currStatus
           notify('update', 'danger', err.message)
         })
       }
@@ -474,11 +476,13 @@ const projectsLead = computed({
   get: () => [...items.value.filter((item) => item.status === 'lead')],
   set: (val) => {
     for (let i = 0; i < val.length; i++) {
-      if (val[i].status !== 'lead') {
+      const currStatus = val[i].status
+      if (currStatus !== 'lead') {
         val[i].status = 'lead'
         val[i].expiredAt = val[i]?.expiredAt && new Date(val[i].expiredAt)
 
         updateProject(val[i].id, val[i]).catch((err) => {
+          val[i].status = currStatus
           notify('update', 'danger', err.message)
         })
       }
@@ -490,11 +494,13 @@ const projectsQuotation = computed({
   get: () => [...items.value.filter((item) => item.status === 'quotation')],
   set: (val) => {
     for (let i = 0; i < val.length; i++) {
-      if (val[i].status !== 'quotation') {
+      const currStatus = val[i].status
+      if (currStatus !== 'quotation') {
         val[i].status = 'quotation'
         val[i].expiredAt = val[i]?.expiredAt && new Date(val[i].expiredAt)
 
         updateProject(val[i].id, val[i]).catch((err) => {
+          val[i].status = currStatus
           notify('update', 'danger', err.message)
         })
       }

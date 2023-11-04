@@ -3,7 +3,9 @@ import { serializeQueryParams } from '@/utils'
 import { BaseResponse, ListResponse } from '@/typings/response.type'
 import { Purchase } from '@/typings/models/purchase.type'
 
-const get = (filter?: Purchase): Promise<BaseResponse<ListResponse<Purchase>>> => {
+const get = (
+  filter?: Purchase
+): Promise<BaseResponse<ListResponse<Purchase>>> => {
   return axios.get(`/purchase${serializeQueryParams(filter)}`)
 }
 
@@ -15,8 +17,12 @@ const insert = (data: Purchase): Promise<BaseResponse<null>> => {
   return axios.post('/purchase', data)
 }
 
-export {
-  get,
-  detail,
-  insert
+const update = (id: string, data: Purchase): Promise<BaseResponse<null>> => {
+  return axios.put(`/purchase/${id}`, data)
 }
+
+const del = (id: string): Promise<BaseResponse<null>> => {
+  return axios.delete(`/purchase/${id}`)
+}
+
+export { get, detail, insert, update, del }
