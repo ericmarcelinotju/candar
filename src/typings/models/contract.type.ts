@@ -14,4 +14,6 @@ export class Contract extends BaseModel {
 
   clientId: string
   client: Client
+
+  attachment: string
 }

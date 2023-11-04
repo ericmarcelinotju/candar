@@ -12,6 +12,29 @@
       :initial-data="initialData"
       @submit="onSubmit"
     >
+      <template #attachment="{ form, formSetting }">
+        <label
+          class="default-label"
+          :for="formSetting.key"
+        >
+          Attachment<sup v-if="formSetting.isRequired">*</sup>
+        </label>
+        <div>
+          <p
+            v-if="form.attachment"
+            class="mt-3 text-sm border border-transparent hover:border-grey p-1 rounded-md cursor-pointer"
+          >
+            <DocumentIcon class="w-3 h-3 inline mb-[0.15rem]" />
+            {{ getAttachmentName(form.attachment) }}
+          </p>
+          <!-- v-else -->
+          <p
+            class="mt-3 text-sm"
+          >
+            <FileInput @change="(e) => onAttachmentChange(e, form)" />
+          </p>
+        </div>
+      </template>
       <template #clientId="{ form, formSetting }">
         <label
           class="default-label"
@@ -54,6 +77,9 @@ import { Ref, computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
+
+import { DocumentIcon } from '@heroicons/vue/outline'
+
 import {
   get as getContractList,
   detail as getContract,
@@ -61,12 +87,16 @@ import {
   update as updateContract
 } from '@/api/contract'
 import { get as getClient } from '@/api/client'
+
 import { required } from '@/utils/validation'
 import { FormSetting } from '@/typings/form.type'
 import { Contract } from '@/typings/models/contract.type'
 import { contractList } from '@/router/routes/contract'
 import { Option } from '@/typings/option.type'
 import { Client } from '@/typings/models/client.type'
+import { jsonToFormData } from '@/utils'
+
+import FileInput from '@/components/form/File.vue'
 import Input from '@/components/form/Input.vue'
 
 const route = useRoute()
@@ -138,9 +168,9 @@ const initPage = async () => {
 }
 
 const onSubmit = (form: Ref<Contract>, onFinish: () => void) => {
-  const payload = {
+  const payload = jsonToFormData({
     ...form.value
-  } as Contract
+  })
 
   if (id) {
     return updateContract(id, payload)
@@ -232,8 +262,27 @@ const initForm = () => {
       label: 'Content',
       isRequired: true,
       rules: [required]
+    },
+    {
+      key: 'attachment',
+      label: 'Attachment',
+      isRequired: false
     }
   ]
+}
+
+const getAttachmentName = (attachment) => {
+  if (!id) return attachment.name
+
+  const strs = attachment.split('\\')
+  return strs[strs.length - 1]
+}
+
+const onAttachmentChange = (e, form) => {
+  const files = e.target.files || e.dataTransfer.files
+  if (!files.length) return
+
+  form.attachment = files[0]
 }
 
 const haveContract = (form): boolean => {
