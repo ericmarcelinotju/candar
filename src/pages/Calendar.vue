@@ -29,8 +29,6 @@ import { projectList } from '@/router/routes/project'
 import { User } from '@/typings/models/user.type'
 import { Option } from '@/typings/option.type'
 
-// TODO :: supervisor calendar
-
 const router = useRouter()
 const store = useStore()
 

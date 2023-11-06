@@ -67,7 +67,7 @@ const handleSearch = (params) => {
   getVariantCategories(params)
     .then((res) => {
       items.value = res.data.data
-      itemsTotal.value = res.data.total_item
+      itemsTotal.value = res.data.totalItem
     })
     .finally(() => {
       loading.value = false

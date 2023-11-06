@@ -123,7 +123,7 @@ const handleSearch = (params) => {
       // const currUser = store.getters['auth/user']
       // items.value = res.data.users.filter(user => user.role.level >= currUser.level)
       items.value = res.data.data
-      itemsTotal.value = res.data.total_item
+      itemsTotal.value = res.data.totalItem
     })
     .finally(() => {
       loading.value = false

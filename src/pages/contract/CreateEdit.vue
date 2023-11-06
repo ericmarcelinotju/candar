@@ -20,18 +20,35 @@
           Attachment<sup v-if="formSetting.isRequired">*</sup>
         </label>
         <div>
-          <p
+          <input
+            ref="inputAttachment"
+            style="display: none"
+            type="file"
+            @change="(e) => onFileChange(e, form, onAttachmentChange)"
+          >
+          <a
             v-if="form.attachment"
-            class="mt-3 text-sm border border-transparent hover:border-grey p-1 rounded-md cursor-pointer"
+            class="group block text-sm border border-transparent hover:border-grey p-1 rounded-md cursor-pointer"
+            download
+            :href="`${config.apiAddress}\\${form.attachment}`"
+            target="_blank"
           >
-            <DocumentIcon class="w-3 h-3 inline mb-[0.15rem]" />
+            <DocumentIcon class="w-4 h-4 inline mb-[0.15rem]" />
             {{ getAttachmentName(form.attachment) }}
-          </p>
-          <!-- v-else -->
+
+            <PencilAltIcon
+              class="hidden group-hover:block w-3 h-3 m-1 float-right"
+              @click.stop.prevent="handleAttachment"
+            />
+          </a>
           <p
-            class="mt-3 text-sm"
+            v-else
+            class="text-sm"
           >
-            <FileInput @change="(e) => onAttachmentChange(e, form)" />
+            <FileInput
+              ref="inputAttachment"
+              @change="(file) => onAttachmentChange(file, form)"
+            />
           </p>
         </div>
       </template>
@@ -78,7 +95,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
 
-import { DocumentIcon } from '@heroicons/vue/outline'
+import { DocumentIcon, PencilAltIcon } from '@heroicons/vue/outline'
 
 import {
   get as getContractList,
@@ -98,6 +115,7 @@ import { jsonToFormData } from '@/utils'
 
 import FileInput from '@/components/form/File.vue'
 import Input from '@/components/form/Input.vue'
+import { config } from '@/config'
 
 const route = useRoute()
 const router = useRouter()
@@ -271,18 +289,27 @@ const initForm = () => {
   ]
 }
 
-const getAttachmentName = (attachment) => {
-  if (!id) return attachment.name
+// Attachment
+const inputAttachment = ref(null)
+const handleAttachment = () => {
+  inputAttachment.value.click()
+}
+const getAttachmentName = (attachment: File | string) => {
+  if (typeof attachment === 'string') {
+    const strs = attachment.split('\\')
+    return strs[strs.length - 1]
+  }
 
-  const strs = attachment.split('\\')
-  return strs[strs.length - 1]
+  return attachment.name
+}
+const onAttachmentChange = (file, form) => {
+  form.attachment = file
 }
 
-const onAttachmentChange = (e, form) => {
+const onFileChange = (e, form, cb) => {
   const files = e.target.files || e.dataTransfer.files
   if (!files.length) return
-
-  form.attachment = files[0]
+  cb(files[0], form)
 }
 
 const haveContract = (form): boolean => {

@@ -8,14 +8,20 @@
       class="flex gap-1 mb-2"
     >
       <div
-        v-if="isAlmostExpired"
+        v-if="isExpired"
         class="danger-tag"
       >
-        Antention Needed
+        Expired
+      </div>
+      <div
+        v-else-if="isAlmostExpired"
+        class="warning-tag"
+      >
+        Attention
       </div>
       <div
         v-if="isNeedQuotation"
-        class="warning-tag"
+        class="info-tag"
       >
         Quotation Needed
       </div>
@@ -46,7 +52,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { Project } from '@/typings/models/project.type'
 import { useProject } from '@/composables/use-project'
 import { PencilIcon } from '@heroicons/vue/solid'
@@ -63,18 +68,11 @@ const onClick = () => {
   emit('click', props.data)
 }
 
-const avatar = computed(() => {
-  return props.data?.user?.avatar
-})
-
-const userInitial = computed(() => {
-  return props.data?.user?.username[0]
-})
-
 const {
-  // avatar,
-  // userInitial,
+  avatar,
+  userInitial,
   isAlmostExpired,
+  isExpired,
   isNeedQuotation,
   isQuoted,
   taskProgress,

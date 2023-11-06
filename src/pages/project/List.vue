@@ -337,13 +337,8 @@ const handleSearch = (params) => {
   loading.value = true
   getProjects(params)
     .then((res) => {
-      // Dont Forget to Erase this code #ERASE_CODE
-      res.data.data.map(res => {
-        res.expiredAt = ''
-        return res
-      })
       items.value = res.data.data
-      itemsTotal.value = res.data.total_item
+      itemsTotal.value = res.data.totalItem
     })
     .finally(() => {
       loading.value = false
@@ -444,7 +439,6 @@ const projectsInitiate = computed({
       const currStatus = val[i].status
       if (currStatus !== 'initiate') {
         val[i].status = 'initiate'
-        val[i].expiredAt = val[i]?.expiredAt && new Date(val[i].expiredAt)
 
         updateProject(val[i].id, val[i]).catch((err) => {
           val[i].status = currStatus
@@ -461,7 +455,6 @@ const projectsQualification = computed({
       const currStatus = val[i].status
       if (currStatus !== 'qualification') {
         val[i].status = 'qualification'
-        val[i].expiredAt = val[i]?.expiredAt && new Date(val[i].expiredAt)
 
         updateProject(val[i].id, val[i]).catch((err) => {
           val[i].status = currStatus
@@ -479,7 +472,6 @@ const projectsLead = computed({
       const currStatus = val[i].status
       if (currStatus !== 'lead') {
         val[i].status = 'lead'
-        val[i].expiredAt = val[i]?.expiredAt && new Date(val[i].expiredAt)
 
         updateProject(val[i].id, val[i]).catch((err) => {
           val[i].status = currStatus
@@ -497,7 +489,6 @@ const projectsQuotation = computed({
       const currStatus = val[i].status
       if (currStatus !== 'quotation') {
         val[i].status = 'quotation'
-        val[i].expiredAt = val[i]?.expiredAt && new Date(val[i].expiredAt)
 
         updateProject(val[i].id, val[i]).catch((err) => {
           val[i].status = currStatus
@@ -508,37 +499,9 @@ const projectsQuotation = computed({
   }
 })
 
-const projectsWin = computed({
-  get: () => [...items.value.filter((item) => item.status === 'win')],
-  set: (val) => {
-    for (let i = 0; i < val.length; i++) {
-      if (val[i].status !== 'win') {
-        val[i].status = 'win'
-        val[i].expiredAt = val[i]?.expiredAt && new Date(val[i].expiredAt)
+const projectsWin = computed(() => [...items.value.filter((item) => item.status === 'win')])
 
-        updateProject(val[i].id, val[i]).catch((err) => {
-          notify('update', 'danger', err.message)
-        })
-      }
-    }
-  }
-})
-
-const projectsLose = computed({
-  get: () => [...items.value.filter((item) => item.status === 'lose')],
-  set: (val) => {
-    for (let i = 0; i < val.length; i++) {
-      if (val[i].status !== 'lose') {
-        val[i].status = 'lose'
-        val[i].expiredAt = val[i]?.expiredAt && new Date(val[i].expiredAt)
-
-        updateProject(val[i].id, val[i]).catch((err) => {
-          notify('update', 'danger', err.message)
-        })
-      }
-    }
-  }
-})
+const projectsLose = computed(() => [...items.value.filter((item) => item.status === 'lose')])
 
 const dragOptions = ref({
   animation: 200,

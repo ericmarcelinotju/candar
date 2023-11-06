@@ -1,6 +1,6 @@
 
 export class BaseResponse<T> {
-  app_version: string;
+  appVersion: string;
   code: number;
   data: T;
   status: string | number
@@ -8,7 +8,7 @@ export class BaseResponse<T> {
 
 export class ListResponse<T> {
   data: T[]
-  total_item: number
-  total_page: number
-  current_page: number
+  totalItem: number
+  totalPage: number
+  currentPage: number
 }

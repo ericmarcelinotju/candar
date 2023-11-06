@@ -4,7 +4,10 @@
       v-if="loading"
       class="h-12 w-12 mx-auto"
     />
-    <div v-else>
+    <fieldset
+      v-else
+      :disabled="!isEditable"
+    >
       <Loading
         v-if="saveLoading"
         class="absolute bottom-0 right-3 h-6 w-6"
@@ -15,10 +18,22 @@
       <div class="mt-3 flex gap-3">
         <div class="flex-[1_1_11%] px-3">
           <div class="flex flex-row justify-between gap-2 mb-2">
-            <div class="flex flex-row gap-2">
+            <div class="flex flex-row gap-2 items-center">
+              <div
+                v-if="isExpired"
+                class="danger-tag"
+              >
+                Expired
+              </div>
+              <div
+                v-else-if="isAlmostExpired"
+                class="warning-tag"
+              >
+                Almost Expired
+              </div>
               <div
                 v-if="isNeedQuotation"
-                class="warning-tag cursor-pointer hover:bg-warning-dark"
+                class="info-tag cursor-pointer hover:bg-info-dark"
                 @click="handleQuotation"
               >
                 <PlusIcon class="w-3 h-3 mr-1" />
@@ -30,12 +45,6 @@
                 @click="handleQuoted"
               >
                 Quoted
-              </div>
-              <div
-                v-if="isAlmostExpired"
-                class="danger-tag"
-              >
-                Antention Needed
               </div>
               <Popover
                 v-slot="{ open }"
@@ -56,12 +65,6 @@
                       {{ userInitial }}
                     </div>
                   </div>
-                  <!-- <button
-                    class="rounded-full border border-dashed border-grey p-1"
-                    type="button"
-                  >
-                    <UserAddIcon class="w-4 h-4 text-grey" />
-                  </button> -->
                 </PopoverButton>
                 <transition
                   enter-active-class="transition duration-200 ease-out"
@@ -216,6 +219,7 @@
             <div class="w-[0.05rem] bg-grey" />
 
             <div class="pt-2 px-2">
+              <!-- TODO :: Only manager can update -->
               <p class="text-grey-dark">
                 DUE DATE
               </p>
@@ -229,7 +233,7 @@
                   <div class="hover:bg-gray-200 p-1 transition duration-300 rounded-md -translate-x-1">
                     <InfoButton
                       v-if="project.expiredAt"
-                      :info="formatDate(project.expiredAt)"
+                      info="Change due date"
                     >
                       <!-- <p>{{ project.createdAt }}</p> -->
                       <p class="text-xs font-medium">
@@ -283,13 +287,13 @@
                 :key="update.id"
                 class="mt-1"
               >
-                <b>{{ update.user.username }}</b> changed status to <b>{{ update.status }}</b>
+                <b>{{ update.user?.username || 'system' }}</b> changed the status to <b>{{ update.status }}</b>
               </p>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </fieldset>
     <DefaultModal
       v-model="visibleCloseConfirmationModal"
       description=""
@@ -396,7 +400,7 @@ watchDebounced(
     const payload = { ...project.value }
 
     if (payload.user?.id) {
-      payload.user_id = payload.user?.id
+      payload.userId = payload.user?.id
     }
 
     if (project.value?.expiredAt) {
@@ -516,20 +520,13 @@ const handleQuoted = () => {
   router.push({ ...quotationList, query: { project_id: project.value.id } })
 }
 
-const avatar = computed(() => {
-  return project.value.user?.avatar
-})
-
-const userInitial = computed(() => {
-  return project.value.user?.username[0]
-})
-
 const {
-  // avatar,
-  // userInitial,
+  avatar,
+  userInitial,
   isAlmostExpired,
   isNeedQuotation,
   isQuoted,
-  hasTag
+  isExpired,
+  isEditable
 } = useProject(props.data)
 </script>
