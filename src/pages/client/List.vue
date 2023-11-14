@@ -114,14 +114,38 @@ const columns = [
     isHidden: true
   },
   {
+    label: 'Code',
+    key: 'code',
+    isSortable: true,
+    isSearchable: true
+  },
+  {
     label: 'Name',
     key: 'name',
     isSortable: true,
     isSearchable: true
   },
   {
+    label: 'Email',
+    key: 'email',
+    isSortable: true,
+    isSearchable: true
+  },
+  {
+    label: 'Phone Number',
+    key: 'phoneNumber',
+    isSortable: true,
+    isSearchable: true
+  },
+  {
     label: 'Company Type',
-    key: 'company_type',
+    key: 'companyType',
+    isSortable: true,
+    isSearchable: true
+  },
+  {
+    label: 'Purchase Type',
+    key: 'purchaseType',
     isSortable: true,
     isSearchable: true
   }

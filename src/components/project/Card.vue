@@ -11,38 +11,30 @@
         v-if="isExpired"
         class="danger-tag"
       >
-        Expired
+        {{ $t('project.expired') }}
       </div>
       <div
         v-else-if="isAlmostExpired"
         class="warning-tag"
       >
-        Attention
+        {{ $t('project.attention') }}
       </div>
       <div
         v-if="isNeedQuotation"
         class="info-tag"
       >
-        Quotation Needed
+        {{ $t('project.need_quotation') }}
       </div>
       <div
         v-if="isQuoted"
         class="success-tag"
       >
-        Quoted
+        {{ $t('project.quoted') }}
       </div>
     </div>
     <div>{{ data.name }}</div>
     <div class="flex justify-end mt-2">
-      <div v-if="avatar">
-        <img :src="avatar">
-      </div>
-      <div
-        v-else
-        class="info-tag !rounded-full capitalize"
-      >
-        {{ userInitial }}
-      </div>
+      <UserAvatar :user="data.user" />
     </div>
     <div class="task-status">
       {{ taskProgress }}
@@ -52,9 +44,10 @@
 </template>
 
 <script setup lang="ts">
+import { PencilIcon } from '@heroicons/vue/solid'
 import { Project } from '@/typings/models/project.type'
 import { useProject } from '@/composables/use-project'
-import { PencilIcon } from '@heroicons/vue/solid'
+import UserAvatar from '@/components/UserAvatar.vue'
 
 interface Props {
   index: number
@@ -69,8 +62,6 @@ const onClick = () => {
 }
 
 const {
-  avatar,
-  userInitial,
   isAlmostExpired,
   isExpired,
   isNeedQuotation,

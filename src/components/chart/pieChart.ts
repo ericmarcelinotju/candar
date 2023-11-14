@@ -30,6 +30,10 @@ export default defineComponent({
       type: Array,
       default: () => [40, 20, 80, 10]
     },
+    colors: {
+      type: Array,
+      default: () => ['#CD4766', '#4766CD', '#65CC46', '#47A9CD']
+    },
     width: {
       type: Number,
       default: 400
@@ -57,7 +61,7 @@ export default defineComponent({
         labels: props.labels,
         datasets: [
           {
-            backgroundColor: ['#CD4766', '#4766CD', '#65CC46', '#47A9CD'],
+            backgroundColor: props.colors,
             data: props.data
           }
         ]

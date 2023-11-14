@@ -16,9 +16,9 @@
         <div class="grid grid-cols-5 gap-4 mt-6">
           <div />
           <div
-            v-for="method in ['GET', 'POST', 'PUT', 'DELETE']"
+            v-for="method in ['View', 'Create', 'Edit', 'Delete']"
             :key="method"
-            class="text-center mr-4"
+            class="text-left mr-4"
           >
             {{ method }}
           </div>
@@ -28,13 +28,13 @@
           :key="index"
           class="grid grid-cols-5 gap-4 mt-2 pb-1 border-b border-gray-300"
         >
-          <h5>
+          <h5 class="capitalize">
             {{ module.name }}
           </h5>
           <div
             v-for="method in ['GET', 'POST', 'PUT', 'DELETE']"
             :key="method"
-            class="default-label text-center"
+            class="default-label"
           >
             <input
               v-if="module.permissions[method]"

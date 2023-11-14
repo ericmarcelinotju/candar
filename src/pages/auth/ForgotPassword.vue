@@ -7,7 +7,7 @@
     >
     <div class="mx-auto w-full max-w-sm lg:w-96 z-10">
       <h2 class="mt-6 text-3xl text-center">
-        Reset Password
+        {{ $t('app.reset') }} {{ $t('global.password') }}
       </h2>
 
       <div class="mt-8">
@@ -53,7 +53,7 @@
                 class="font-medium cursor-pointer"
                 @click="handleLogin"
               >
-                &lt; back to login
+                &lt; {{ $t('tip.back_to_login') }}
               </a>
             </div>
           </div>
@@ -63,7 +63,7 @@
               class="info-button submit"
               type="submit"
             >
-              Submit
+              {{ $t('app.submit') }}
             </button>
           </div>
         </form>

@@ -105,8 +105,8 @@
               :key="`iregular-${index}`"
               class="flex mb-4 bg-white"
             >
-              <div class="flex flex-col flex-1 gap-4 border rounded-md p-4">
-                <div class="flex flex-col">
+              <div class="grid grid-cols-2 flex-1 gap-4 border rounded-md p-4">
+                <div class="col-span-2">
                   <label
                     class="default-label"
                   >
@@ -119,7 +119,7 @@
                     class="default-label"
                     :for="`price-${index}`"
                   >
-                    M.O.Q
+                    MOQ
                   </label>
                   <input
                     :id="`price-${index}`"
@@ -142,7 +142,7 @@
                     type="number"
                   >
                 </div>
-                <div class="default-field">
+                <div class="default-field col-span-2">
                   <label
                     class="default-label"
                     :for="`quantity-${index}`"
@@ -189,8 +189,8 @@
               :key="`regular-${index}`"
               class="flex mb-4 bg-white"
             >
-              <div class="flex flex-col flex-1 gap-4 border rounded-md p-4">
-                <div class="flex flex-col">
+              <div class="grid grid-cols-2 flex-1 gap-4 border rounded-md p-4">
+                <div class="col-span-2">
                   <label
                     class="default-label"
                   >
@@ -203,7 +203,7 @@
                     class="default-label"
                     :for="`price-${index}`"
                   >
-                    M.O.Q
+                    MOQ
                   </label>
                   <input
                     :id="`price-${index}`"
@@ -226,7 +226,7 @@
                     type="number"
                   >
                 </div>
-                <div class="default-field">
+                <div class="default-field col-span-2">
                   <label
                     class="default-label"
                     :for="`quantity-${index}`"

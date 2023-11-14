@@ -57,7 +57,7 @@ export default defineComponent({
   },
   setup (props) {
     const chartData = computed(() => {
-      const backgroundColors = ['#CD5B8A', '#CDC25B', '#B8DFFF', '#5BCD9F']
+      const backgroundColors = ['#CD5B8A', '#f0e462', '#B8DFFF', '#5BCD9F', '#3789ff']
       const datasets = props.data.map((data, i) => ({
         label: props.dataLabels[i],
         backgroundColor: backgroundColors[i],

@@ -28,26 +28,56 @@
     "apilogik": "Apilogik",
     "url": "URL",
     "key": "Key",
-    "password": "Password"
+    "password": "Password",
+    "remember_me": "Remember Me",
+    "sign_in": "Sign in",
+    "forgot_password": "Forgot Password"
   },
   "module": {
-    "article": "Article",
     "user": "User",
+    "users": "Users",
     "role": "Role",
+    "roles": "Roles",
     "permission": "Permission",
-    "device": "Device",
-    "deviceType": "Device Type",
-    "location": "Location",
-    "inspection": "Inspection"
+    "permissions": "Permissions",
+    "project": "Deal",
+    "projects": "Deals",
+    "quotation": "Quotation",
+    "quotations": "Quotations",
+    "purchase": "Purchase",
+    "purchases": "Purchases"
+  },
+  "project": {
+    "initiate": "Initiate",
+    "qualification": "Qualification",
+    "lead": "Lead",
+    "quotation": "Quotation",
+    "win": "Win",
+    "lose": "Lose",
+    "expired": "Expired",
+    "attention": "Attention",
+    "need_quotation": "Need Quotation",
+    "quoted": "Quoted",
+    "active_project": "Active Deals",
+    "almost_due_project": "Almost Due Deals (H-3)",
+    "win_project": "Deals Won",
+    "lose_project": "Deals Lost",
+    "status_by_source": "Deal Status by Source",
+    "status": "Deal Status",
+    "me": "My Deals"
   },
   "error": {
     "required": "This field is required",
     "email": "Invalid email format",
     "phone": "Invalid phone number format"
   },
-  "tips": {
-    "include_recording": "If enabled, only CDR records with recording files will be displayed (if a CDR's recording file was deleted or lost due to storage issue, the CDR record will also be displayed but you will not be able to operate on the Recording Options).<br>If disabled, all CDR records will be displayed. This option is disabled by default.",
-    "number_fuzzy_search": "Search for the fuzzy equivalent for the phone number. For example, enter <b>501</b> in <b>Call From</b> and do not enable fuzzy search, you will only get CDR exactly related to Number 501. If fuzzy search is enabled, CDR related to any number including 501, like 5501 will display."
+  "tip": {
+    "show_close_project": "Show closed deals.",
+    "sign_in": "Sign in to your account.",
+    "back_to_login": "back to login",
+    "forgot_password": "Forgot your password?",
+    "change_expired_at": "Change due date",
+    "set_expired_at": "Set due date"
   },
   "app": {
     "create": "Create",
@@ -127,7 +157,8 @@
       "log": "Log",
       "status": "Status",
       "time": "Time",
-      "created_at": "Time",
+      "created_at": "Created",
+      "expired_at": "Due Date",
       "id": "ID",
       "title": "Title",
       "level": "Level",
@@ -163,6 +194,7 @@
       "logo": "Logo",
       "document": "Document",
       "select": "Select",
+      "source": "Source",
       "noreply": "No Reply",
       "smtp": "SMTP",
       "sftp": "SFTP",
@@ -176,12 +208,13 @@
       "client": "Client",
       "clientAddress": "Client Address",
       "clientContact": "Client Contact",
-      "product":"Product",
-      "productCategory":"Product Category",
-      "variant":"Variant",
-      "variantOption":"Variant Option",
+      "product": "Product",
+      "productCategory": "Product Category",
+      "variant": "Variant",
+      "variantOption": "Variant Option",
       "contract": "Contract",
-      "purchase":"Purchase"
+      "purchase": "Purchase",
+      "assign_to": "Assign To"
     }
   }
 }

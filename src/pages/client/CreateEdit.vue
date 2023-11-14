@@ -14,8 +14,14 @@
         @submit="onSubmit"
       />
     </DefaultPage>
-    <AddressList :items="addresses" />
-    <ContactList :items="contacts" />
+    <AddressList
+      v-if="isEdit"
+      :items="addresses"
+    />
+    <ContactList
+      v-if="isEdit"
+      :items="contacts"
+    />
   </div>
 </template>
 
@@ -49,6 +55,8 @@ let id = ''
 if (typeof route.params.id === 'string') {
   id = route.params.id
 }
+
+const isEdit = computed(() => !!route.params.id)
 
 const initOptions = async () => {
   initForm()
@@ -118,7 +126,7 @@ const initForm = () => {
       rules: [required]
     },
     {
-      key: 'company_type',
+      key: 'companyType',
       label: 'Company Type',
       isRequired: true,
       type: 'dropdown',
@@ -126,7 +134,7 @@ const initForm = () => {
       options: companyTypes
     },
     {
-      key: 'purchase_type',
+      key: 'purchaseType',
       label: 'Purchase Type',
       isRequired: true,
       type: 'dropdown',
@@ -139,7 +147,7 @@ const initForm = () => {
       type: 'number'
     },
     {
-      key: 'phone_number',
+      key: 'phoneNumber',
       label: 'Phone Number',
       col: 6
     },

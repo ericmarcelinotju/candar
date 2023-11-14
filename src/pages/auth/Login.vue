@@ -11,18 +11,8 @@
             src="@/assets/logo.svg"
           >
           <h2 class="mt-6 text-3xl font-extrabold text-gray-900">
-            Sign in to your account
+            {{ $t('tip.sign_in') }}
           </h2>
-          <!-- <p class="mt-2 text-sm text-gray-600">
-            Or
-            {{ " " }}
-            <a
-              class="font-medium text-green-600 hover:text-green-500"
-              href="#"
-            >
-              contact us for account creation
-            </a>
-          </p> -->
         </div>
 
         <div class="mt-8">
@@ -37,7 +27,9 @@
                 <label
                   class="default-label"
                   for="username"
-                > Username </label>
+                >
+                  {{ $t('app.columns.username') }}
+                </label>
                 <div class="mt-1">
                   <input
                     id="username"
@@ -55,7 +47,9 @@
                 <label
                   class="default-label"
                   for="password"
-                > Password </label>
+                >
+                  {{ $t('app.columns.password') }}
+                </label>
                 <div class="mt-1">
                   <input
                     id="password"
@@ -81,7 +75,7 @@
                     class="ml-2 block text-sm text-gray-900"
                     for="remember-me"
                   >
-                    Remember me
+                    {{ $t('global.remember_me') }}
                   </label>
                 </div>
 
@@ -90,7 +84,7 @@
                     class="font-semibold text-primary hover:text-primary-dark cursor-pointer"
                     @click="handleForgotPassword"
                   >
-                    Forgot your password?
+                    {{ $t('tip.forgot_password') }}
                   </a>
                 </div>
               </div>
@@ -100,7 +94,7 @@
                   class="w-full info-button"
                   type="submit"
                 >
-                  Sign in
+                  {{ $t('global.sign_in') }}
                 </button>
               </div>
 

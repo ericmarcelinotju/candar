@@ -1,11 +1,11 @@
 export const projectList = {
-  path: '/project',
-  name: 'project',
+  path: '/deal',
+  name: 'deal',
   component: () =>
     import(/* webpackChunkName: 'p-project-list' */ '@/pages/project/List.vue'),
   meta: {
     auth: true,
-    title: 'Project'
+    title: 'Deal'
   }
 }
 
@@ -15,21 +15,21 @@ const projectCreateEdit = () =>
   )
 
 export const projectCreate = {
-  path: '/project/create',
-  name: 'project-create',
+  path: '/deal/create',
+  name: 'deal-create',
   component: projectCreateEdit,
   meta: {
     auth: true,
-    title: 'Project Create'
+    title: 'Create Deal'
   }
 }
 
 export const projectEdit = {
-  path: '/project/edit/:id',
-  name: 'project-edit',
+  path: '/deal/edit/:id',
+  name: 'deal-edit',
   component: projectCreateEdit,
   meta: {
     auth: true,
-    title: 'Project Edit'
+    title: 'Edit Deal'
   }
 }

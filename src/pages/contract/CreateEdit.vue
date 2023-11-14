@@ -133,8 +133,8 @@ if (typeof route.params.id === 'string') {
 }
 
 let clientId = ''
-if (typeof route.params.client_id === 'string') {
-  clientId = route.params.client_id
+if (typeof route.params.clientId === 'string') {
+  clientId = route.params.clientId
 }
 
 type ClientOption = Option & { haveContract: boolean }

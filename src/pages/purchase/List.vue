@@ -3,12 +3,11 @@
     <DefaultTable
       :columns="columns"
       :has-delete="hasPermission('DELETE')"
-      :has-edit="hasPermission('PUT')"
+      :has-edit="false"
       :items="items"
       :loading="loading"
       :total="itemsTotal"
       @delete="handleDelete"
-      @edit="handleEdit"
       @search="handleSearch"
     />
     <template #action>
@@ -27,6 +26,14 @@
         :columns="columns"
         :loading="loading"
         @search="handleSearch"
+      />
+    </template>
+    <template #dialog>
+      <DefaultModal
+        v-model="visibleDeleteConfirmationModal"
+        :loading="loadingDelete"
+        type="danger"
+        @confirm="confirmDelete"
       />
     </template>
   </DefaultPage>
@@ -68,10 +75,6 @@ const handleSearch = (params) => {
 
 const handleCreate = () => {
   router.push(purchaseCreate)
-}
-
-const handleEdit = ({ id }) => {
-  router.push({ ...purchaseEdit, params: { id } })
 }
 
 // Delete client

@@ -1,5 +1,5 @@
 <template>
-  <DefaultPage :title="$t('app.module.project')">
+  <DefaultPage :title="$t('module.project')">
     <!-- <DefaultTable
       :columns="columns"
       :has-delete="hasPermission('DELETE')"
@@ -15,11 +15,10 @@
         <p v-html="item.content" />
       </template>
     </DefaultTable> -->
-    <!-- <div class="mt-4 grid grid-cols-4 gap-6"> -->
     <div class="ml-3 mt-4 flex gap-2">
       <Switch
         v-model="isClosedProjectsShown"
-        label="Show closed projects"
+        :label="$t('tip.show_close_project')"
       />
     </div>
     <div
@@ -31,7 +30,7 @@
     >
       <div class="project-list">
         <h3 class="font-semibold ml-2">
-          Cold Call
+          {{ $t('project.initiate') }}
         </h3>
         <Draggable
           v-model="projectsInitiate"
@@ -59,7 +58,7 @@
 
       <div class="project-list">
         <h3 class="font-semibold ml-2">
-          Qualification
+          {{ $t('project.qualification') }}
         </h3>
         <Draggable
           v-model="projectsQualification"
@@ -87,7 +86,7 @@
 
       <div class="project-list">
         <h3 class="font-semibold ml-2">
-          Lead
+          {{ $t('project.lead') }}
         </h3>
         <Draggable
           v-model="projectsLead"
@@ -115,7 +114,7 @@
 
       <div class="project-list">
         <h3 class="font-semibold ml-2">
-          Quotation
+          {{ $t('project.quotation') }}
         </h3>
         <Draggable
           v-model="projectsQuotation"
@@ -143,7 +142,7 @@
       <template v-if="isClosedProjectsShown">
         <div class="project-list">
           <h3 class="font-semibold ml-2">
-            Win
+            {{ $t('project.win') }}
           </h3>
           <Draggable
             v-model="projectsWin"
@@ -170,7 +169,7 @@
         </div>
         <div class="project-list">
           <h3 class="font-semibold ml-2">
-            Lose
+            {{ $t('project.lose') }}
           </h3>
           <Draggable
             v-model="projectsLose"

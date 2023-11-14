@@ -22,7 +22,7 @@
         <hr>
         <div class="flex justify-between items-center p-4">
           <span class="font-bold">
-            Active Projects
+            {{ $t('project.active_project') }}
           </span>
         </div>
       </div>
@@ -33,7 +33,7 @@
         <hr>
         <div class="flex justify-between items-center p-4">
           <span class="font-bold">
-            Almost Due Project (H-3)
+            {{ $t('project.almost_due_project') }}
           </span>
         </div>
       </div>
@@ -44,7 +44,7 @@
         <hr>
         <div class="flex justify-between items-center p-4">
           <span class="font-bold">
-            Projects Win / Projects Lost
+            {{ $t('project.win_project') }} / {{ $t('project.lose_project') }}
           </span>
         </div>
       </div>
@@ -52,28 +52,30 @@
     <div class="grid grid-cols-12 gap-6 mt-6">
       <div class="p-6 col-span-8 rounded-md overflow-hidden bg-white shadow">
         <h1 class="text-xl font-bold mb-6">
-          Project Status by Source
+          {{ $t('project.status_by_source') }}
         </h1>
         <BarChart
-          :data="barData"
-          :data-labels="barDataLabels"
-          :labels="barLabels"
+          :colors="statusBySourceBarChart.colors"
+          :data="statusBySourceBarChart.data"
+          :data-labels="statusBySourceBarChart.dataLabels"
+          :labels="statusBySourceBarChart.labels"
         />
       </div>
       <div class="p-6 col-span-4 rounded-md overflow-hidden bg-white shadow">
         <h1 class="text-xl font-bold mb-6">
-          Project Status
+          {{ $t('project.status') }}
         </h1>
         <PieChart
-          :data="pieData"
-          :labels="pieLabels"
+          :colors="statusPieChart.colors"
+          :data="statusPieChart.data"
+          :labels="statusPieChart.labels"
         />
       </div>
     </div>
 
     <div class="mt-6 p-6 rounded-md overflow-hidden bg-white shadow">
       <h1 class="text-xl font-bold mb-2">
-        My Projects
+        {{ $t('project.me') }}
       </h1>
       <DefaultTable
         :columns="projectColumns"
@@ -87,6 +89,12 @@
         <template #status="{ item }">
           <span :class="getTagClass(item.status)">{{ snakeToTitle(item.status) }}</span>
         </template>
+        <template #user="{ item }">
+          <UserAvatar :user="item.user" />
+        </template>
+        <template #client="{ item }">
+          {{ item.client?.name }}
+        </template>
       </DefaultTable>
     </div>
   </div>
@@ -96,6 +104,7 @@
 import { Ref, ref, onMounted, computed, watch, onBeforeUnmount } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import BarChart from '@/components/chart/barChart'
 import PieChart from '@/components/chart/pieChart'
 import DefaultTable from '@/components/default/Table.vue'
@@ -105,49 +114,55 @@ import { projectList } from '@/router/routes/project'
 import { get as getDashboard } from '@/api/dashboard'
 import { get as getUser } from '@/api/user'
 import { snakeToTitle } from '@/utils/string'
-import { Project } from '@/typings/models/project.type'
+import { Project, getProjectStatusColor } from '@/typings/models/project.type'
 import { ProjectByStatus, ProjectBySource, ProjectStatusBySource } from '@/typings/models/dashboard.type'
 import { User } from '@/typings/models/user.type'
 import { Option } from '@/typings/option.type'
+import UserAvatar from '@/components/UserAvatar.vue'
 
+const { t } = useI18n()
 const store = useStore()
 const router = useRouter()
 const { notify } = useNotify('dashboard')
 
-const barData = ref([])
-const barDataLabels = ref([])
-const barLabels = ref([])
+const statusBySourceBarChart = ref({
+  data: [],
+  dataLabels: [],
+  labels: [],
+  colors: []
+})
 
-const pieData = ref([0, 0, 0, 0])
-const pieLabels = ref(['Inititate', 'Qualification', 'Lead', 'Quotation'])
+const statusPieChart = ref({
+  data: [],
+  labels: [],
+  colors: []
+})
 
 const projectColumns = [
   {
-    label: 'ID',
+    label: t('app.columns.id'),
     key: 'id',
     isHidden: true
   },
   {
-    label: 'Code',
-    key: 'code',
-    isSearchable: true,
-    isSortable: true
+    label: t('app.columns.code'),
+    key: 'code'
   },
   {
-    label: 'Name',
+    label: t('app.columns.name'),
     key: 'name'
   },
   {
-    label: 'Status',
+    label: t('app.columns.status'),
     key: 'status'
   },
   {
-    label: 'User',
-    key: 'user.username'
+    label: t('app.columns.user'),
+    key: 'user'
   },
   {
-    label: 'Client',
-    key: 'client.name'
+    label: t('app.columns.client'),
+    key: 'client'
   }
 ]
 
@@ -159,7 +174,7 @@ const winProject: Ref<number> = ref()
 const lostProject: Ref<number> = ref()
 
 const getTagClass = (status: string) => {
-  if (status === 'cold_call') {
+  if (status === 'initiate') {
     return 'danger-tag'
   } else if (status === 'qualification') {
     return 'warning-tag'
@@ -220,18 +235,58 @@ const processDashboard = () => {
     .then((result) => {
       projectItems.value = result.data.projects
 
+      const statusData = []
+      const statusLabels = []
+      const statusColors = []
+      result.data.projectByStatus.forEach(item => {
+        statusData.push(item.count)
+        statusLabels.push(item.status)
+        statusColors.push(getProjectStatusColor(item.status))
+      })
+      statusPieChart.value = {
+        data: statusData,
+        labels: statusLabels,
+        colors: statusColors
+      }
+
+      // const statusBySourceData = new Map()
+      // const statusSourceDataLabelSet = new Set()
+      // const statusSourceLabels = []
+      // result.data.projectBySource.forEach(sourceItem => {
+      //   sourceItem.status.forEach(item => {
+      //     statusSourceDataLabelSet.add(item.status)
+      //     if (!statusBySourceData.has(item.status)) {
+      //       statusBySourceData.set(item.status, new Map())
+      //     }
+      //     const dataByStatus = statusBySourceData.get(item.status)
+      //     dataByStatus.set(sourceItem.source)
+      //     statusBySourceData.set(item.status, dataByStatus)
+      //   })
+      //   statusSourceLabels.push(sourceItem.source)
+      // })
+
+      // const statusSourceDataLabels = Array.from(statusSourceDataLabelSet)
+
+      // const test = []
+      // statusSourceDataLabels.forEach((status) => {
+      //   const asd = []
+      //   statusSourceDataLabels
+      // })
+      // statusBySourceBarChart.value = {
+      //   data: Array.from(statusBySourceData.values()),
+      //   dataLabels: Array.from(statusBySourceData.keys()),
+      //   labels: statusSourceLabels,
+      //   colors: statusBySourceColors
+      // }
+
       activeProjects.value = result.data.activeProject
       almostDueProjects.value = result.data.almostDueProject
       winProject.value = result.data.projectByStatus.find((e: ProjectByStatus) => e.status === 'win')?.count || 0
       lostProject.value = result.data.projectByStatus.find((e: ProjectByStatus) => e.status === 'lose')?.count || 0
 
-      const initiateProject = result.data.projectByStatus.find((e: ProjectByStatus) => e.status === 'initiate')
-      const leadProject = result.data.projectByStatus.find((e: ProjectByStatus) => e.status === 'lead')
-      const quotationProject = result.data.projectByStatus.find((e: ProjectByStatus) => e.status === 'quotation')
-      const qualificationProject = result.data.projectByStatus.find((e: ProjectByStatus) => e.status === 'qualification')
-
       const sources = []
       const statusList = []
+      const colorList = []
 
       // First filter the status and store it on statusList variable
       result.data.projectBySource.forEach((e: ProjectBySource) => {
@@ -239,12 +294,14 @@ const processDashboard = () => {
         e.status.forEach((e2: ProjectStatusBySource) => {
           if (!statusList.some((e3) => e2?.status.toLowerCase() === e3.toLowerCase())) {
             statusList.push(e2?.status[0].toUpperCase() + e2?.status.slice(1))
+            colorList.push(getProjectStatusColor(e2?.status))
           }
         })
       })
 
-      barLabels.value = [...sources]
-      barDataLabels.value = [...statusList]
+      statusBySourceBarChart.value.labels = [...sources]
+      statusBySourceBarChart.value.dataLabels = [...statusList]
+      statusBySourceBarChart.value.colors = [...colorList]
 
       const rawSourceData = []
       const sourceData = []
@@ -271,9 +328,7 @@ const processDashboard = () => {
         })
       })
 
-      barData.value = [...sourceData]
-
-      pieData.value = [initiateProject?.count || 0, qualificationProject?.count || 0, leadProject?.count || 0, quotationProject?.count || 0]
+      statusBySourceBarChart.value.data = [...sourceData]
     })
     .catch(() => {
       notify('loaded', 'danger')

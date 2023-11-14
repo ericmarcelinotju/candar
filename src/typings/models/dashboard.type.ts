@@ -1,13 +1,13 @@
-import { Project } from '@/typings/models/project.type'
+import { Project, ProjectStatus } from '@/typings/models/project.type'
 
 export class ProjectByStatus {
     count: number
-    status: string
+    status: ProjectStatus
 }
 
 export class ProjectStatusBySource {
     source: string
-    status: string
+    status: ProjectStatus
     count: number
 }
 
