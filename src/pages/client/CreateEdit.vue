@@ -28,6 +28,7 @@
 <script setup lang="ts">
 import { Ref, computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
 import AddressList from './address/List.vue'
@@ -43,6 +44,7 @@ import { Client } from '@/typings/models/client.type'
 import { clientList } from '@/router/routes/client'
 import { companyTypes, purchaseTypes } from './options'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 
@@ -115,19 +117,19 @@ const initForm = () => {
   formSettings.value = [
     {
       key: 'code',
-      label: 'Code',
+      label: t('app.columns.code'),
       isRequired: true,
       rules: [required]
     },
     {
       key: 'name',
-      label: 'Name',
+      label: t('app.columns.name'),
       isRequired: true,
       rules: [required]
     },
     {
       key: 'companyType',
-      label: 'Company Type',
+      label: t('app.columns.company_type'),
       isRequired: true,
       type: 'dropdown',
       col: 6,
@@ -135,7 +137,7 @@ const initForm = () => {
     },
     {
       key: 'purchaseType',
-      label: 'Purchase Type',
+      label: t('app.columns.purchase_type'),
       isRequired: true,
       type: 'dropdown',
       col: 6,
@@ -143,22 +145,22 @@ const initForm = () => {
     },
     {
       key: 'credit',
-      label: 'Credit',
+      label: t('app.columns.credit'),
       type: 'number'
     },
     {
       key: 'phoneNumber',
-      label: 'Phone Number',
+      label: t('app.columns.phone_number'),
       col: 6
     },
     {
       key: 'email',
-      label: 'Email',
+      label: t('app.columns.email'),
       col: 6
     },
     {
       key: 'website',
-      label: 'Website'
+      label: t('app.columns.website')
     }
   ]
 }

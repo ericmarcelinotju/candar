@@ -1,5 +1,5 @@
 <template>
-  <DefaultPage :title="$t('app.columns.purchase')">
+  <DefaultPage :title="$t('module.purchase')">
     <DefaultTable
       :columns="columns"
       :has-delete="hasPermission('DELETE')"
@@ -42,13 +42,16 @@
 <script setup lang="ts">
 import { Ref, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { PlusIcon } from '@heroicons/vue/solid'
-import DefaultTable from '@/components/default/Table.vue'
-import { get as getPurchases, del as deletePurchase } from '@/api/purchase'
-import { useNotify } from '@/composables/use-notify'
-import { purchaseCreate, purchaseEdit } from '@/router/routes/purchase'
+import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import { PlusIcon } from '@heroicons/vue/solid'
+import { get as getPurchases, del as deletePurchase } from '@/api/purchase'
+import DefaultTable from '@/components/default/Table.vue'
+import { useNotify } from '@/composables/use-notify'
+import { purchaseCreate } from '@/router/routes/purchase'
 import { Purchase } from '@/typings/models/purchase.type'
+
+const { t } = useI18n()
 
 const router = useRouter()
 const store = useStore()
@@ -105,31 +108,31 @@ const confirmDelete = () => {
 // Table columns setting
 const columns = [
   {
-    label: 'ID',
+    label: t('app.columns.id'),
     key: 'id',
     isHidden: true
   },
   {
-    label: 'Date',
+    label: t('app.columns.date'),
     key: 'date',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Code',
+    label: t('app.columns.code'),
     key: 'code',
     isSortable: true,
     isSearchable: true
   },
 
   {
-    label: 'Vendor',
+    label: t('app.columns.vendor'),
     key: 'vendor',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Note',
+    label: t('app.columns.note'),
     key: 'note',
     isSortable: true,
     isSearchable: true

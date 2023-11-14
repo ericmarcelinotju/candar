@@ -1,6 +1,6 @@
 <template>
   <div>
-    <DefaultPage :title="$t('app.columns.variantOption')">
+    <DefaultPage :title="$t('app.columns.variant_category')">
       <div
         v-if="loading"
         class="w-full h-full flex justify-center items-center"
@@ -18,8 +18,10 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, computed, onMounted, ref } from 'vue'
+import { Ref, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
 import {
@@ -30,11 +32,10 @@ import {
 
 import { required } from '@/utils/validation'
 import { FormSetting } from '@/typings/form.type'
-import { Variant, VariantCategory } from '@/typings/models/variant.type'
-import { variantCategoryList, variantList } from '@/router/routes/variant'
-import { Option } from '@/typings/option.type'
-import { useStore } from 'vuex'
+import { Variant } from '@/typings/models/variant.type'
+import { variantCategoryList } from '@/router/routes/variant'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const store = useStore()
@@ -105,7 +106,7 @@ const initForm = () => {
   formSettings.value = [
     {
       key: 'name',
-      label: 'Name',
+      label: t('app.columns.name'),
       isRequired: true,
       rules: [required]
     }

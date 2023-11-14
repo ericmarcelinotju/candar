@@ -44,6 +44,7 @@
 import { Ref, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import { PlusIcon } from '@heroicons/vue/solid'
 import {
   get as getPermission,
@@ -54,30 +55,31 @@ import { useNotify } from '@/composables/use-notify'
 import { Permission } from '@/typings/models/permission.type'
 import { permissionCreate, permissionEdit } from '@/router/routes/permission'
 
+const { t } = useI18n()
 const router = useRouter()
 const store = useStore()
 const { notify } = useNotify('permission')
 
 const columns = [
   {
-    label: 'ID',
+    label: t('app.columns.id'),
     key: 'id',
     isHidden: true
   },
   {
-    label: 'Module',
+    label: t('app.columns.module'),
     key: 'module',
     isSearchable: true,
     isSortable: true
   },
   {
-    label: 'Method',
+    label: t('app.columns.method'),
     key: 'method',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Description',
+    label: t('app.columns.description'),
     key: 'description'
   }
 ]

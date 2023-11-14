@@ -18,6 +18,7 @@
 <script setup lang="ts">
 import { Ref, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
 import {
@@ -30,6 +31,7 @@ import { FormSetting } from '@/typings/form.type'
 import { Division } from '@/typings/models/division.type'
 import { divisionList } from '@/router/routes/division'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 
@@ -96,13 +98,13 @@ const initForm = () => {
   formSettings.value = [
     {
       key: 'code',
-      label: 'Code',
+      label: t('app.columns.code'),
       isRequired: true,
       rules: [required]
     },
     {
       key: 'name',
-      label: 'Name',
+      label: t('app.columns.name'),
       isRequired: true,
       rules: [required]
     }

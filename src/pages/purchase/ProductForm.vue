@@ -2,31 +2,46 @@
   <form class="flex mb-4">
     <div class="flex flex-col flex-1 gap-4 border rounded-md p-4">
       <div class="default-field">
-        <label class="default-label" for="user"> Produk<sup>*</sup> </label>
+        <label
+          class="default-label"
+          for="product"
+        >
+          {{ $t('app.columns.product') }}<sup>*</sup>
+        </label>
         <Dropdown
-          id="user"
+          id="product"
           v-model="inputVal.productId"
           class="default-input"
           :options="productOptions"
         />
       </div>
       <div class="default-field">
-        <label class="default-label" for="price"> Harga </label>
+        <label
+          class="default-label"
+          for="price"
+        >
+          {{ $t('app.columns.price') }}
+        </label>
         <input
           id="price"
           v-model="inputVal.price"
           class="default-input"
           type="number"
-        />
+        >
       </div>
       <div class="default-field">
-        <label class="default-label" for="quantity"> Kuantitas </label>
+        <label
+          class="default-label"
+          for="quantity"
+        >
+          {{ $t('app.columns.quantity') }}
+        </label>
         <input
           id="quantity"
           v-model="inputVal.quantity"
           class="default-input"
           type="number"
-        />
+        >
       </div>
     </div>
     <div class="flex flex-col gap-4 ml-4">
@@ -67,10 +82,10 @@ const productOptions: Ref<Option[]> = computed(() =>
 )
 
 const inputVal = computed({
-  get() {
+  get () {
     return props.modelValue
   },
-  set(val) {
+  set (val) {
     emit('update:modelValue', val)
   }
 })

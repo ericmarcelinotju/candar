@@ -1,7 +1,7 @@
 <template>
   <DefaultPage
     class="!pt-0"
-    :title="$t('app.columns.clientContact')"
+    :title="$t('app.columns.client_contact')"
   >
     <DefaultTable
       :columns="columns"
@@ -46,11 +46,13 @@ import { del as deleteClient } from '@/api/client-address'
 import { useNotify } from '@/composables/use-notify'
 import { ClientContact } from '@/typings/models/client.type'
 import { clientContactCreate, clientContactEdit } from '@/router/routes/client'
+import { useI18n } from 'vue-i18n'
 
 interface Props {
   items: ClientContact[]
 }
 
+const { t } = useI18n()
 const props = defineProps<Props>()
 
 const router = useRouter()
@@ -98,36 +100,36 @@ const confirmDelete = () => {
 // Table columns setting
 const columns = [
   {
-    label: 'ID',
+    label: t('app.column.id'),
     key: 'id',
     isHidden: true
   },
   {
-    label: 'Name',
+    label: t('app.column.name'),
     key: 'name',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Division',
+    label: t('app.column.division'),
     key: 'division',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Email',
+    label: t('app.column.email'),
     key: 'email',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Phone Number',
+    label: t('app.column.phone_number'),
     key: 'phone_number',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Email',
+    label: t('app.column.email'),
     key: 'email',
     isSortable: true,
     isSearchable: true

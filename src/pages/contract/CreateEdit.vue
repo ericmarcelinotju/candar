@@ -1,5 +1,5 @@
 <template>
-  <DefaultPage :title="$t('app.columns.contract')">
+  <DefaultPage :title="$t('module.contract')">
     <div
       v-if="loading"
       class="w-full h-full flex justify-center items-center"
@@ -17,7 +17,7 @@
           class="default-label"
           :for="formSetting.key"
         >
-          Attachment<sup v-if="formSetting.isRequired">*</sup>
+          {{ $t('global.attachment') }}<sup v-if="formSetting.isRequired">*</sup>
         </label>
         <div>
           <input
@@ -57,7 +57,7 @@
           class="default-label"
           :for="formSetting.key"
         >
-          Client<sup v-if="formSetting.isRequired">*</sup>
+          {{ $t('module.client') }}<sup v-if="formSetting.isRequired">*</sup>
         </label>
         <Input
           :id="formSetting.key"
@@ -75,7 +75,7 @@
           <label
             class="default-label"
           >
-            Contract
+            {{ $t('module.contract') }}
           </label>
           <Input
             :id="form.id"
@@ -92,11 +92,11 @@
 <script setup lang="ts">
 import { Ref, computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { config } from '@/config'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
-
 import { DocumentIcon, PencilAltIcon } from '@heroicons/vue/outline'
-
 import {
   get as getContractList,
   detail as getContract,
@@ -104,7 +104,6 @@ import {
   update as updateContract
 } from '@/api/contract'
 import { get as getClient } from '@/api/client'
-
 import { required } from '@/utils/validation'
 import { FormSetting } from '@/typings/form.type'
 import { Contract } from '@/typings/models/contract.type'
@@ -115,8 +114,8 @@ import { jsonToFormData } from '@/utils'
 
 import FileInput from '@/components/form/File.vue'
 import Input from '@/components/form/Input.vue'
-import { config } from '@/config'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 
@@ -240,13 +239,13 @@ const initForm = () => {
   formSettings.value = [
     {
       key: 'code',
-      label: 'Kode',
+      label: t('app.columns.code'),
       isRequired: true,
       rules: [required]
     },
     {
       key: 'dateFrom',
-      label: 'Tanggal Kontrak Dimulai',
+      label: t('app.columns.date_from'),
       type: 'date',
       isRequired: true,
       rules: [required],
@@ -254,7 +253,7 @@ const initForm = () => {
     },
     {
       key: 'dateTo',
-      label: 'Tanggal Kontrak Selesai',
+      label: t('app.columns.date_to'),
       type: 'date',
       isRequired: true,
       rules: [required],
@@ -262,7 +261,7 @@ const initForm = () => {
     },
     {
       key: 'clientId',
-      label: 'Client',
+      label: t('app.columns.client'),
       type: 'dropdown',
       isRequired: true,
       rules: [required],
@@ -270,14 +269,14 @@ const initForm = () => {
     },
     {
       key: 'contract',
-      label: 'Contract',
+      label: t('app.columns.contract'),
       type: 'dropdown',
       isRequired: false,
       options: contracts.value
     },
     {
       key: 'content',
-      label: 'Content',
+      label: t('app.columns.content'),
       isRequired: true,
       rules: [required]
     },

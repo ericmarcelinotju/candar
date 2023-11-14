@@ -74,8 +74,11 @@
             :checked="!field.hidden"
             class="default-checkbox"
             type="checkbox"
-          />
-          <label class="default-label" :for="field.key">
+          >
+          <label
+            class="default-label"
+            :for="field.key"
+          >
             {{ field.label }}
           </label>
         </div>

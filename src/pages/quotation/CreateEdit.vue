@@ -1,5 +1,5 @@
 <template>
-  <DefaultPage :title="$t('app.columns.quotation')">
+  <DefaultPage :title="$t('module.quotation')">
     <div
       v-if="loading"
       class="w-full h-full flex justify-center items-center"
@@ -29,7 +29,7 @@
           @click="handleAddProduct(form)"
         >
           <PlusIcon class="w-4 h-4 mr-2" />
-          Add Product
+          {{ $t('quotation.add_product') }}
         </button>
       </template>
       <template #action>
@@ -40,7 +40,7 @@
           @click="handleSend"
         >
           <Loading v-if="loadingSend" />
-          Send for Approval
+          {{ $t('quotation.send') }}
         </button>
         <button
           v-if="isEdit && initialData.status == 'sent' && isManager"
@@ -49,7 +49,7 @@
           @click="handleApprove"
         >
           <Loading v-if="loadingApprove" />
-          Approve
+          {{ $t('quotation.approve') }}
         </button>
         <!-- <button
           v-if="isEdit && initialData.status == 'approved' && isManager"
@@ -64,17 +64,17 @@
     </DefaultCreateEdit>
     <DefaultModal
       v-model="visibleSendConfirmationModal"
-      description="Make sure the quotation is correct as this action may cannot be undone."
+      :description="$t('tip.confirm_quotation')"
       :loading="loadingSend"
-      title="Send Quotation for Approval?"
+      :title="$t('quotation.send_title')"
       type="info"
       @confirm="confirmSend"
     />
     <DefaultModal
       v-model="visibleApproveConfirmationModal"
-      description="Make sure the quotation is correct as this action may cannot be undone."
+      :description="$t('tip.confirm_quotation')"
       :loading="loadingApprove"
-      title="Approve Quotation?"
+      :title="$t('quotation.approve_title')"
       type="info"
       @confirm="confirmApprove"
     />
@@ -84,6 +84,8 @@
 <script setup lang="ts">
 import { Ref, computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import { PlusIcon } from '@heroicons/vue/solid'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
@@ -106,8 +108,8 @@ import { Project } from '@/typings/models/project.type'
 import { Product } from '@/typings/models/product.type'
 import { ProductTier } from '@/typings/models/product-tier.type'
 import ProductForm from './ProductForm.vue'
-import { useStore } from 'vuex'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const store = useStore()
@@ -220,13 +222,13 @@ const initForm = () => {
   formSettings.value = [
     {
       key: 'code',
-      label: 'Kode',
+      label: t('app.columns.code'),
       isRequired: true,
       rules: [required]
     },
     {
       key: 'dateFrom',
-      label: 'Tanggal Mulai',
+      label: t('app.columns.date_from'),
       type: 'date',
       isRequired: true,
       rules: [required],
@@ -234,7 +236,7 @@ const initForm = () => {
     },
     {
       key: 'dateTo',
-      label: 'Tanggal Selesai',
+      label: t('app.columns.date_to'),
       type: 'date',
       isRequired: true,
       rules: [required],
@@ -242,7 +244,7 @@ const initForm = () => {
     },
     {
       key: 'projectId',
-      label: 'Projek',
+      label: t('app.columns.project'),
       type: 'dropdown',
       isRequired: true,
       rules: [required],
@@ -250,7 +252,7 @@ const initForm = () => {
     },
     {
       key: 'products',
-      label: 'Produk'
+      label: t('app.columns.products')
     }
   ]
 }

@@ -48,6 +48,7 @@
 import { Ref, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import { PlusIcon } from '@heroicons/vue/solid'
 import {
   get as getRoles,
@@ -58,30 +59,31 @@ import { useNotify } from '@/composables/use-notify'
 import { roleCreate, roleEdit } from '@/router/routes/role'
 import { Role } from '@/typings/models/role.type'
 
+const { t } = useI18n()
 const router = useRouter()
 const store = useStore()
 const { notify } = useNotify('role')
 
 const columns = [
   {
-    label: 'ID',
+    label: t('app.columns.id'),
     key: 'id',
     isHidden: true
   },
   {
-    label: 'Name',
+    label: t('app.columns.name'),
     key: 'name',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Description',
+    label: t('app.columns.description'),
     key: 'description',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Permission',
+    label: t('app.columns.permission'),
     key: 'permission'
   }
 ]

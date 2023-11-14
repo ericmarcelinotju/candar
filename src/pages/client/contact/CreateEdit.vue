@@ -1,5 +1,5 @@
 <template>
-  <DefaultPage :title="$t('app.columns.clientContact')">
+  <DefaultPage :title="$t('app.columns.client_contact')">
     <div
       v-if="loading"
       class="w-full h-full flex justify-center items-center"
@@ -18,6 +18,7 @@
 <script setup lang="ts">
 import { Ref, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
 import {
@@ -29,6 +30,7 @@ import { required } from '@/utils/validation'
 import { FormSetting } from '@/typings/form.type'
 import { ClientContact } from '@/typings/models/client.type'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 
@@ -99,22 +101,22 @@ const initForm = () => {
   formSettings.value = [
     {
       key: 'name',
-      label: 'Name',
+      label: t('app.column.name'),
       isRequired: true,
       rules: [required]
     },
     {
       key: 'division',
-      label: 'Division'
+      label: t('app.column.division')
     },
     {
       key: 'phone_number',
-      label: 'Phone Number',
+      label: t('app.column.phone_number'),
       col: 6
     },
     {
       key: 'email',
-      label: 'Email',
+      label: t('app.column.email'),
       col: 6
     }
   ]

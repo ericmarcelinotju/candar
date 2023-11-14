@@ -53,6 +53,7 @@
 <script setup lang="ts">
 import { Ref, computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import Loading from '@/components/helper/Loading.vue'
 import DefaultPage from '@/components/default/Page.vue'
 import {
@@ -70,6 +71,7 @@ import { roleList } from '@/router/routes/role'
 import { FormSetting } from '@/typings/form.type'
 import { alpha, required } from '@/utils/validation'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 
@@ -153,23 +155,23 @@ const initForm = () => {
   formSettings.value = [
     {
       key: 'name',
-      label: 'Name',
+      label: t('app.columns.name'),
       isRequired: true,
       rules: [required, alpha]
     },
     {
       key: 'isManager',
-      label: 'Manager ?',
+      label: t('app.columns.is_manager'),
       type: 'checkbox'
     },
     {
       key: 'description',
-      label: 'Description',
+      label: t('app.columns.description'),
       type: 'textarea'
     },
     {
       key: 'permissions',
-      label: 'Permissions',
+      label: t('app.columns.permissions'),
       isRequired: true,
       default: []
     }

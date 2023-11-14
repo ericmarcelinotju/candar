@@ -1,6 +1,6 @@
 <template>
   <div>
-    <DefaultPage :title="$t('app.columns.product')">
+    <DefaultPage :title="$t('module.product')">
       <div
         v-if="loading"
         class="w-full h-full flex justify-center items-center"
@@ -19,7 +19,7 @@
               class="default-label"
               :for="formSetting.key"
             >
-              Tarif BM<sup v-if="formSetting.isRequired">*</sup>
+              {{ $t('app.columns.bm_tariff') }}<sup v-if="formSetting.isRequired">*</sup>
             </label>
             <Input
               :id="formSetting.key"
@@ -38,7 +38,7 @@
               class="default-label"
               :for="formSetting.key"
             >
-              HS Code<sup v-if="formSetting.isRequired">*</sup>
+              {{ $t('app.columns.hs_code') }}<sup v-if="formSetting.isRequired">*</sup>
             </label>
             <Input
               :id="formSetting.key"
@@ -56,7 +56,7 @@
             class="default-label"
             :for="formSetting.key"
           >
-            Sources<sup v-if="formSetting.isRequired">*</sup>
+            {{ $t('app.columns.source') }}<sup v-if="formSetting.isRequired">*</sup>
           </label>
           <Input
             :id="formSetting.key"
@@ -73,7 +73,7 @@
           <label
             class="default-label"
           >
-            Variant
+            {{ $t('app.columns.variant') }}
           </label>
           <div class="flex flex-col justify-center bg-gray-50 px-5 py-4 rounded-xl space-y-5">
             <div
@@ -97,7 +97,7 @@
           <label
             class="default-label mb-2"
           >
-            Iregular
+            {{ $t('product_tier.irregular') }}
           </label>
           <div class="flex flex-col bg-gray-50 px-5 py-4 rounded-xl">
             <div
@@ -110,7 +110,7 @@
                   <label
                     class="default-label"
                   >
-                    Tier {{ index + 1 }}
+                    {{ $t('product.tier') }} {{ index + 1 }}
                   </label>
                   <hr class="w-full border-gray-400">
                 </div>
@@ -119,7 +119,7 @@
                     class="default-label"
                     :for="`price-${index}`"
                   >
-                    MOQ
+                    {{ $t('product.moq') }}
                   </label>
                   <input
                     :id="`price-${index}`"
@@ -133,7 +133,7 @@
                     class="default-label"
                     :for="`price-${index}`"
                   >
-                    DISC RATE
+                    {{ $t('product.discount') }}
                   </label>
                   <input
                     :id="`price-${index}`"
@@ -147,7 +147,7 @@
                     class="default-label"
                     :for="`quantity-${index}`"
                   >
-                    Price/Unit
+                    {{ $t('product.price') }}
                   </label>
                   <input
                     :id="`quantity-${index}`"
@@ -181,7 +181,7 @@
           <label
             class="default-label mb-2"
           >
-            Regular
+            {{ $t('product_tier.regular') }}
           </label>
           <div class="flex flex-col bg-gray-50 px-5 py-4 rounded-xl">
             <div
@@ -194,7 +194,7 @@
                   <label
                     class="default-label"
                   >
-                    Tier {{ index + 1 }}
+                    {{ $t('product.tier') }} {{ index + 1 }}
                   </label>
                   <hr class="w-full border-gray-400">
                 </div>
@@ -203,7 +203,7 @@
                     class="default-label"
                     :for="`price-${index}`"
                   >
-                    MOQ
+                    {{ $t('product.moq') }}
                   </label>
                   <input
                     :id="`price-${index}`"
@@ -217,7 +217,7 @@
                     class="default-label"
                     :for="`price-${index}`"
                   >
-                    DISC RATE
+                    {{ $t('product.discount') }}
                   </label>
                   <input
                     :id="`price-${index}`"
@@ -231,7 +231,7 @@
                     class="default-label"
                     :for="`quantity-${index}`"
                   >
-                    Price/Unit
+                    {{ $t('app.columns.product') }}
                   </label>
                   <input
                     :id="`quantity-${index}`"
@@ -253,29 +253,27 @@
 <script setup lang="ts">
 import { Ref, computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
 import Input from '@/components/form/Input.vue'
-
 import {
   detail as getProduct,
   insert as insertProduct,
   update as updateProduct
 } from '@/api/product'
-import {
-  get as getProductCategory
-} from '@/api/product-category'
+import { get as getProductCategory } from '@/api/product-category'
 import { get as getVariantCategories } from '@/api/variant-category'
-
 import { required } from '@/utils/validation'
 import { FormSetting } from '@/typings/form.type'
 import { Product, ProductCategory, ProductContract } from '@/typings/models/product.type'
 import { variantList } from '@/router/routes/variant'
 import { VariantCategory } from '@/typings/models/variant.type'
 import { Option, OptionObject } from '@/typings/option.type'
-import { useStore } from 'vuex'
 import { roundingTwoDecimal, convertFromCurrencyToNumber, roundingNearestThousand } from '@/utils/number'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const store = useStore()
@@ -537,13 +535,13 @@ const initForm = () => {
     // },
     {
       key: 'name',
-      label: 'Name',
+      label: t('app.columns.name'),
       isRequired: true,
       rules: [required]
     },
     {
       key: 'source',
-      label: 'Sources',
+      label: t('app.columns.source'),
       type: 'dropdown',
       isRequired: true,
       rules: [required],
@@ -551,13 +549,13 @@ const initForm = () => {
     },
     {
       key: 'sku',
-      label: 'SKU',
+      label: t('app.columns.sku'),
       isRequired: true,
       rules: [required]
     },
     {
       key: 'stock',
-      label: 'Stock',
+      label: t('app.columns.stock'),
       isRequired: true,
       rules: [required]
     },
@@ -569,25 +567,25 @@ const initForm = () => {
     // },
     {
       key: 'price',
-      label: 'Price',
+      label: t('app.columns.price'),
       isRequired: true,
       rules: [required]
     },
     {
       key: 'categoryId',
-      label: 'Product Category',
+      label: t('app.columns.category'),
       isRequired: true,
       type: 'dropdown',
       options: productCategoryOptions.value
     },
     {
       key: 'variant',
-      label: 'Variants',
+      label: t('app.columns.variants'),
       isRequired: false
     },
     {
       key: 'hsCode',
-      label: 'HS Code',
+      label: t('app.columns.hs_code'),
       isRequired: false,
       rules: [required],
       type: 'number',
@@ -595,7 +593,7 @@ const initForm = () => {
     },
     {
       key: 'tariffBM',
-      label: 'Tarif BM',
+      label: t('app.columns.bm_tariff'),
       isRequired: false,
       rules: [required],
       type: 'number',
@@ -603,7 +601,7 @@ const initForm = () => {
     },
     {
       key: 'rateCOGS',
-      label: 'COGS Rate',
+      label: t('app.columns.cogs_rate'),
       isRequired: false,
       rules: [required],
       type: 'number',
@@ -611,7 +609,7 @@ const initForm = () => {
     },
     {
       key: 'cost',
-      label: 'Cost',
+      label: t('app.columns.cost'),
       isRequired: false,
       rules: [required],
       type: 'number',
@@ -619,7 +617,7 @@ const initForm = () => {
     },
     {
       key: 'insurance',
-      label: 'Insurance',
+      label: t('app.columns.insurance'),
       isRequired: false,
       rules: [required],
       type: 'number',
@@ -635,7 +633,7 @@ const initForm = () => {
     },
     {
       key: 'freight',
-      label: 'Freight',
+      label: t('app.columns.freight'),
       isRequired: false,
       rules: [required],
       type: 'number',
@@ -651,7 +649,7 @@ const initForm = () => {
     },
     {
       key: 'BMDuty',
-      label: 'BM / Duty',
+      label: t('app.columns.bm_duty'),
       isRequired: false,
       rules: [required],
       type: 'number',
@@ -669,7 +667,7 @@ const initForm = () => {
     },
     {
       key: 'ppn',
-      label: 'PPN',
+      label: t('app.columns.ppn'),
       isRequired: false,
       rules: [required],
       type: 'number',
@@ -687,7 +685,7 @@ const initForm = () => {
     },
     {
       key: 'pph22',
-      label: 'Pph 22',
+      label: t('app.columns.pph'),
       isRequired: false,
       rules: [required],
       type: 'number',
@@ -703,7 +701,7 @@ const initForm = () => {
     },
     {
       key: 'repack',
-      label: 'Re Pack',
+      label: t('app.columns.repack'),
       isRequired: false,
       rules: [required],
       type: 'number',
@@ -720,14 +718,14 @@ const initForm = () => {
     },
     {
       key: 'others',
-      label: 'Others',
+      label: t('app.columns.others'),
       isRequired: false,
       type: 'number',
       col: 6
     },
     {
       key: 'subtotal',
-      label: 'Sub Total',
+      label: t('app.columns.sub_total'),
       isRequired: false,
       rules: [required],
       type: 'number',
@@ -745,7 +743,7 @@ const initForm = () => {
     },
     {
       key: 'cogs',
-      label: 'COGS',
+      label: t('app.columns.cogs'),
       isRequired: false,
       rules: [required],
       type: 'number',
@@ -762,7 +760,7 @@ const initForm = () => {
     },
     {
       key: 'sellPrice',
-      label: 'Sell Price',
+      label: t('app.columns.sell_price'),
       isRequired: false,
       rules: [required],
       type: 'number',
@@ -779,7 +777,7 @@ const initForm = () => {
     },
     {
       key: 'publishPrice',
-      label: 'Publish Price',
+      label: t('app.columns.publish_price'),
       isRequired: false,
       rules: [required],
       type: 'number',
@@ -792,16 +790,16 @@ const initForm = () => {
         const roundedTwoDecimal = roundingTwoDecimal(rawResult)
         return roundingNearestThousand(roundedTwoDecimal)
       },
-      col: 6
+      col: 12
     },
     {
       key: 'iregular',
-      label: 'Iregular',
+      label: t('product_tier.irregular'),
       isRequired: false
     },
     {
       key: 'regular',
-      label: 'Regular',
+      label: t('product_tier.regular'),
       isRequired: false
     }
   ]

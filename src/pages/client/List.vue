@@ -44,6 +44,7 @@
 import { Ref, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import { PlusIcon } from '@heroicons/vue/solid'
 import DefaultTable from '@/components/default/Table.vue'
 import { get as getClients, del as deleteClient } from '@/api/client'
@@ -51,6 +52,7 @@ import { useNotify } from '@/composables/use-notify'
 import { Client } from '@/typings/models/client.type'
 import { clientCreate, clientEdit } from '@/router/routes/client'
 
+const { t } = useI18n()
 const router = useRouter()
 const store = useStore()
 const { notify } = useNotify('client')
@@ -109,42 +111,42 @@ const confirmDelete = () => {
 // Table columns setting
 const columns = [
   {
-    label: 'ID',
+    label: t('app.columns.id'),
     key: 'id',
     isHidden: true
   },
   {
-    label: 'Code',
+    label: t('app.columns.code'),
     key: 'code',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Name',
+    label: t('app.columns.name'),
     key: 'name',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Email',
+    label: t('app.columns.email'),
     key: 'email',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Phone Number',
+    label: t('app.columns.phone_number'),
     key: 'phoneNumber',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Company Type',
+    label: t('app.columns.company_type'),
     key: 'companyType',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Purchase Type',
+    label: t('app.columns.purchase_type'),
     key: 'purchaseType',
     isSortable: true,
     isSearchable: true

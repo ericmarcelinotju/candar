@@ -44,6 +44,7 @@
 import { Ref, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import { PlusIcon } from '@heroicons/vue/solid'
 import DefaultTable from '@/components/default/Table.vue'
 import { get as getDivisions, del as deleteDivision } from '@/api/division'
@@ -51,6 +52,7 @@ import { useNotify } from '@/composables/use-notify'
 import { Division } from '@/typings/models/division.type'
 import { divisionCreate, divisionEdit } from '@/router/routes/division'
 
+const { t } = useI18n()
 const router = useRouter()
 const store = useStore()
 const { notify } = useNotify('division')
@@ -109,18 +111,18 @@ const confirmDelete = () => {
 // Table columns setting
 const columns = [
   {
-    label: 'ID',
+    label: t('app.columns.id'),
     key: 'id',
     isHidden: true
   },
   {
-    label: 'Code',
+    label: t('app.columns.code'),
     key: 'code',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Name',
+    label: t('app.columns.name'),
     key: 'name',
     isSortable: true,
     isSearchable: true

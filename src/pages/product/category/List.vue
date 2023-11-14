@@ -1,5 +1,5 @@
 <template>
-  <DefaultPage :title="$t('app.columns.productCategory')">
+  <DefaultPage :title="$t('module.product_category')">
     <DefaultTable
       :columns="columns"
       :has-delete="hasPermission('DELETE')"
@@ -43,6 +43,7 @@
 <script setup lang="ts">
 import { Ref, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { PlusIcon } from '@heroicons/vue/solid'
 import DefaultTable from '@/components/default/Table.vue'
 import { get as getProductCategories, del as deleteProductCategory } from '@/api/product-category'
@@ -51,6 +52,7 @@ import { productCategoryCreate, productCategoryEdit } from '@/router/routes/prod
 import { useStore } from 'vuex'
 import { ProductCategory } from '@/typings/models/product.type'
 
+const { t } = useI18n()
 const router = useRouter()
 const store = useStore()
 
@@ -110,18 +112,18 @@ const confirmDelete = () => {
 // Table columns setting
 const columns = [
   {
-    label: 'ID',
+    label: t('app.columns.id'),
     key: 'id',
     isHidden: true
   },
   {
-    label: 'Code',
+    label: t('app.columns.code'),
     key: 'code',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Name',
+    label: t('app.columns.name'),
     key: 'name',
     isSortable: true,
     isSearchable: true
