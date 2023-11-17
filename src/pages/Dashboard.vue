@@ -49,6 +49,52 @@
         </div>
       </div>
     </div>
+    <div class="grid grid-cols-12 gap-6">
+      <div class="stat-card">
+        <div class="stat-label">
+          0
+        </div>
+        <hr>
+        <div class="flex justify-between items-center p-4">
+          <span class="font-bold">
+            {{ $t('project.due_bill') }}
+          </span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">
+          0
+        </div>
+        <hr>
+        <div class="flex justify-between items-center p-4">
+          <span class="font-bold">
+            {{ $t('project.overdue_bill') }}
+          </span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">
+          0
+        </div>
+        <hr>
+        <div class="flex justify-between items-center p-4">
+          <span class="font-bold">
+            {{ $t('project.total_overdue_gp') }}
+          </span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">
+          0
+        </div>
+        <hr>
+        <div class="flex justify-between items-center p-4">
+          <span class="font-bold">
+            {{ $t('project.disbursed_commission') }}
+          </span>
+        </div>
+      </div>
+    </div>
     <div class="grid grid-cols-12 gap-6 mt-6">
       <div class="p-6 col-span-8 rounded-md overflow-hidden bg-white shadow">
         <h1 class="text-xl font-bold mb-6">
