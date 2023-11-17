@@ -295,7 +295,7 @@ import Draggable from 'vuedraggable'
 import Switch from '@/components/form/Switch.vue'
 
 import ProjectCard from '@/components/project/Card.vue'
-import ProjectDetail from '@/components/project/Detail.vue'
+import ProjectDetail from '@/components/project/detail/Index.vue'
 
 import ProjectTaskDetail from '@/components/project/task/Detail.vue'
 import { ProjectTask } from '@/typings/models/project-task.type'

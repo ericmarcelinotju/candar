@@ -15,8 +15,8 @@
       <div class="-mx-6 -mt-8 px-6 py-4 bg-grey-soft font-semibold rounded-t-md">
         {{ project.client?.name }} > {{ project.code }}
       </div>
-      <div class="mt-3 flex gap-3">
-        <div class="flex-[1_1_11%] px-3">
+      <div class="mt-3 gap-3">
+        <div>
           <div class="flex flex-row justify-between gap-2 mb-2">
             <div class="flex flex-row gap-2 items-center">
               <div
@@ -129,157 +129,15 @@
               </transition>
             </Menu>
           </div>
-          <div class="-ml-3">
-            <input
-              v-model="project.name"
-              class="hover-input font-bold text-xl"
-              type="text"
-            >
-          </div>
-          <div class="-ml-3">
-            <textarea
-              v-model="project.description"
-              class="hover-input text-sm h-36"
-              placeholder="Write something"
-            />
-          </div>
-          <div class="mt-3">
-            <p class="text-md">
-              Tasks
-            </p>
-
-            <div class="mt-3 flex flex-col gap-3">
-              <transition-group name="list">
-                <TaskForm
-                  v-for="task in project.tasks"
-                  :key="task.id"
-                  :project="project"
-                  :task="task"
-                  @delete="onTaskUpdate"
-                  @detail="onTaskDetail"
-                  @insert="onTaskUpdate"
-                  @update="onTaskUpdate"
-                />
-              </transition-group>
-              <TaskForm
-                :project="project"
-                @delete="onTaskUpdate"
-                @insert="onTaskUpdate"
-                @update="onTaskUpdate"
-              />
-            </div>
-          </div>
-          <div class="mt-6">
-            <p class="text-md">
-              Costs
-            </p>
-
-            <div class="mt-3 flex flex-col gap-3">
-              <transition-group name="list">
-                <CostForm
-                  v-for="cost in project.costs"
-                  :key="cost.id"
-                  :cost="cost"
-                  :project="project"
-                  @delete="onCostUpdate"
-                  @detail="onCostDetail"
-                  @insert="onCostUpdate"
-                  @update="onCostUpdate"
-                />
-              </transition-group>
-              <CostForm
-                :project="project"
-                @delete="onCostUpdate"
-                @insert="onCostUpdate"
-                @update="onCostUpdate"
-              />
-            </div>
-          </div>
         </div>
-        <div class="flex-1 border-l px-3">
-          <div class="flex gap-3 text-xs font-semibold">
-            <div class="p-2">
-              <p class="mb-1 text-grey-dark uppercase">
-                {{ $t('app.columns.created_at') }}
-              </p>
-              <p>{{ project.createdAt }}</p>
-            </div>
-
-            <div class="w-[0.05rem] bg-grey" />
-
-            <div class="pt-2 px-2">
-              <!-- TODO :: Only manager can update -->
-              <p class="text-grey-dark uppercase">
-                {{ $t('app.columns.expired_at') }}
-              </p>
-              <Datepicker
-                v-model="project.expiredAt"
-                auto-apply
-                :clearable="false"
-                :enable-time-picker="false"
-              >
-                <template #trigger>
-                  <div class="hover:bg-gray-200 p-1 transition duration-300 rounded-md -translate-x-1">
-                    <InfoButton
-                      v-if="project.expiredAt"
-                      :info="$t('tip.change_expired_at')"
-                    >
-                      <p class="text-xs font-medium">
-                        {{ formatDate(project.expiredAt) }}
-                      </p>
-                    </InfoButton>
-                    <InfoButton
-                      v-else
-                      :info="$t('tip.set_expired_at')"
-                    >
-                      -
-                    </InfoButton>
-                  </div>
-                </template>
-              </Datepicker>
-            </div>
-
-            <div class="w-[0.05rem] bg-grey" />
-
-            <div class="p-2">
-              <p class="mb-1 text-grey-dark uppercase">
-                {{ $t('app.columns.source') }}
-              </p>
-              <p>{{ snakeToTitle(project.source) }}</p>
-            </div>
-
-            <div class="w-[0.05rem] bg-grey" />
-
-            <div class="p-2">
-              <p class="mb-1 text-grey-dark uppercase">
-                {{ $t('app.columns.status') }}
-              </p>
-              <p
-                class="info-tag !pt-0 !pb-[0.1rem]"
-                :style="`background-color: ${getProjectStatusColor(project.status)};`"
-              >
-                {{ snakeToTitle(project.status) }}
-              </p>
-            </div>
-          </div>
-          <div class="mt-3">
-            <p class="text-md">
-              History
-            </p>
-            <div
-              v-if="project.updates"
-              class="ml-1 mt-1 text-sm overflow-scroll max-h-[70vh]"
-            >
-              <p
-                v-for="update in project.updates"
-                :key="update.id"
-                class="mt-1"
-              >
-                <b>{{ update.user?.username || 'system' }}</b> changed the status to <b>{{ update.status }}</b>
-              </p>
-            </div>
-          </div>
-        </div>
+        <Tabs :options="tabOptions">
+          <template #detail>
+            <Detail :data="project" />
+          </template>
+          <template #summary>
+            <Summary :data="project" />
+          </template>
+        </Tabs>
       </div>
     </fieldset>
     <DefaultModal
@@ -346,14 +204,31 @@ import Dropdown from '@/components/form/dropdown/Dropdown.vue'
 import Datepicker from '@vuepic/vue-datepicker'
 import InfoButton from '@/components/helper/InfoButton.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
+import Tabs from '@/components/default/Tabs.vue'
+import Summary from './Summary.vue'
+import Detail from './Detail.vue'
+import { Option } from '@/typings/option.type'
+import { useI18n } from 'vue-i18n'
 
 interface Props {
   data: Project
 }
 const props = defineProps<Props>()
 const emit = defineEmits(['update', 'detail:task', 'detail:cost', 'close'])
+const { t } = useI18n()
 const router = useRouter()
 const { notify } = useNotify('project')
+
+const tabOptions: Option[] = [
+  {
+    label: t('global.summary'),
+    value: 'summary'
+  },
+  {
+    label: t('global.detail'),
+    value: 'detail'
+  }
+]
 
 const isLoaded = ref(false)
 const loading = ref(true)
