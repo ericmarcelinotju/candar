@@ -1,5 +1,5 @@
 <template>
-  <DefaultPage :title="$t('app.columns.contract')">
+  <DefaultPage :title="$t('module.contract')">
     <div
       v-if="loading"
       class="w-full h-full flex justify-center items-center"
@@ -12,12 +12,52 @@
       :initial-data="initialData"
       @submit="onSubmit"
     >
+      <template #attachment="{ form, formSetting }">
+        <label
+          class="default-label"
+          :for="formSetting.key"
+        >
+          {{ $t('global.attachment') }}<sup v-if="formSetting.isRequired">*</sup>
+        </label>
+        <div>
+          <input
+            ref="inputAttachment"
+            style="display: none"
+            type="file"
+            @change="(e) => onFileChange(e, form, onAttachmentChange)"
+          >
+          <a
+            v-if="form.attachment"
+            class="group block text-sm border border-transparent hover:border-grey p-1 rounded-md cursor-pointer"
+            download
+            :href="`${config.apiAddress}\\${form.attachment}`"
+            target="_blank"
+          >
+            <DocumentIcon class="w-4 h-4 inline mb-[0.15rem]" />
+            {{ getAttachmentName(form.attachment) }}
+
+            <PencilAltIcon
+              class="hidden group-hover:block w-3 h-3 m-1 float-right"
+              @click.stop.prevent="handleAttachment"
+            />
+          </a>
+          <p
+            v-else
+            class="text-sm"
+          >
+            <FileInput
+              ref="inputAttachment"
+              @change="(file) => onAttachmentChange(file, form)"
+            />
+          </p>
+        </div>
+      </template>
       <template #clientId="{ form, formSetting }">
         <label
           class="default-label"
           :for="formSetting.key"
         >
-          Client<sup v-if="formSetting.isRequired">*</sup>
+          {{ $t('module.client') }}<sup v-if="formSetting.isRequired">*</sup>
         </label>
         <Input
           :id="formSetting.key"
@@ -35,7 +75,7 @@
           <label
             class="default-label"
           >
-            Contract
+            {{ $t('module.contract') }}
           </label>
           <Input
             :id="form.id"
@@ -52,8 +92,11 @@
 <script setup lang="ts">
 import { Ref, computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { config } from '@/config'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
+import { DocumentIcon, PencilAltIcon } from '@heroicons/vue/outline'
 import {
   get as getContractList,
   detail as getContract,
@@ -67,8 +110,12 @@ import { Contract } from '@/typings/models/contract.type'
 import { contractList } from '@/router/routes/contract'
 import { Option } from '@/typings/option.type'
 import { Client } from '@/typings/models/client.type'
+import { jsonToFormData } from '@/utils'
+
+import FileInput from '@/components/form/File.vue'
 import Input from '@/components/form/Input.vue'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 
@@ -85,8 +132,8 @@ if (typeof route.params.id === 'string') {
 }
 
 let clientId = ''
-if (typeof route.params.client_id === 'string') {
-  clientId = route.params.client_id
+if (typeof route.params.clientId === 'string') {
+  clientId = route.params.clientId
 }
 
 type ClientOption = Option & { haveContract: boolean }
@@ -138,9 +185,9 @@ const initPage = async () => {
 }
 
 const onSubmit = (form: Ref<Contract>, onFinish: () => void) => {
-  const payload = {
+  const payload = jsonToFormData({
     ...form.value
-  } as Contract
+  })
 
   if (id) {
     return updateContract(id, payload)
@@ -192,13 +239,13 @@ const initForm = () => {
   formSettings.value = [
     {
       key: 'code',
-      label: 'Kode',
+      label: t('app.columns.code'),
       isRequired: true,
       rules: [required]
     },
     {
       key: 'dateFrom',
-      label: 'Tanggal Kontrak Dimulai',
+      label: t('app.columns.date_from'),
       type: 'date',
       isRequired: true,
       rules: [required],
@@ -206,7 +253,7 @@ const initForm = () => {
     },
     {
       key: 'dateTo',
-      label: 'Tanggal Kontrak Selesai',
+      label: t('app.columns.date_to'),
       type: 'date',
       isRequired: true,
       rules: [required],
@@ -214,7 +261,7 @@ const initForm = () => {
     },
     {
       key: 'clientId',
-      label: 'Client',
+      label: t('app.columns.client'),
       type: 'dropdown',
       isRequired: true,
       rules: [required],
@@ -222,18 +269,46 @@ const initForm = () => {
     },
     {
       key: 'contract',
-      label: 'Contract',
+      label: t('app.columns.contract'),
       type: 'dropdown',
       isRequired: false,
       options: contracts.value
     },
     {
       key: 'content',
-      label: 'Content',
+      label: t('app.columns.content'),
       isRequired: true,
       rules: [required]
+    },
+    {
+      key: 'attachment',
+      label: 'Attachment',
+      isRequired: false
     }
   ]
+}
+
+// Attachment
+const inputAttachment = ref(null)
+const handleAttachment = () => {
+  inputAttachment.value.click()
+}
+const getAttachmentName = (attachment: File | string) => {
+  if (typeof attachment === 'string') {
+    const strs = attachment.split('\\')
+    return strs[strs.length - 1]
+  }
+
+  return attachment.name
+}
+const onAttachmentChange = (file, form) => {
+  form.attachment = file
+}
+
+const onFileChange = (e, form, cb) => {
+  const files = e.target.files || e.dataTransfer.files
+  if (!files.length) return
+  cb(files[0], form)
 }
 
 const haveContract = (form): boolean => {

@@ -1,11 +1,7 @@
 import { Navigation } from '@/typings/navigation.type'
 import {
-  CalculatorIcon,
-  CogIcon,
   HomeIcon,
   UserIcon,
-  BellIcon,
-  CodeIcon,
   PresentationChartLineIcon,
   ShoppingBagIcon,
   ShoppingCartIcon,
@@ -26,11 +22,6 @@ export const navigations: Navigation[] = [
     name: 'Calendar',
     href: '/calendar',
     icon: CalendarIcon
-  },
-  {
-    name: 'Contract',
-    href: '/contract',
-    icon: ClipboardListIcon
   },
   {
     name: 'Product',
@@ -60,9 +51,9 @@ export const navigations: Navigation[] = [
     ]
   },
   {
-    name: 'Project',
+    name: 'Deal',
     module: 'PROJECT',
-    href: '/project',
+    href: '/deal',
     icon: PresentationChartLineIcon
   },
   {
@@ -72,16 +63,21 @@ export const navigations: Navigation[] = [
     icon: DocumentReportIcon
   },
   {
-    name: 'Purchase',
-    module: 'PURCHASE',
-    href: '/purchase',
-    icon: ShoppingCartIcon
-  },
-  {
     name: 'Client',
     module: 'CLIENT',
     href: '/client',
     icon: UsersIcon
+  },
+  {
+    name: 'Contract',
+    href: '/contract',
+    icon: ClipboardListIcon
+  },
+  {
+    name: 'Purchase',
+    module: 'PURCHASE',
+    href: '/purchase',
+    icon: ShoppingCartIcon
   },
   {
     name: 'User Access',
@@ -112,26 +108,26 @@ export const navigations: Navigation[] = [
 ]
 
 export const secondaryNavigations: Navigation[] = [
-  {
-    name: 'Settings',
-    module: 'SETTING',
-    href: '/setting',
-    icon: CogIcon
-  },
-  {
-    name: 'Maintenance',
-    icon: CalculatorIcon,
-    children: [{
-      name: 'System Log',
-      module: 'LOG',
-      href: '/log',
-      icon: BellIcon
-    },
-    {
-      name: 'Statistic',
-      module: 'STATISTIC',
-      href: '/statistic',
-      icon: CodeIcon
-    }]
-  }
+  // {
+  //   name: 'Settings',
+  //   module: 'SETTING',
+  //   href: '/setting',
+  //   icon: CogIcon
+  // },
+  // {
+  //   name: 'Maintenance',
+  //   icon: CalculatorIcon,
+  //   children: [{
+  //     name: 'System Log',
+  //     module: 'LOG',
+  //     href: '/log',
+  //     icon: BellIcon
+  //   },
+  //   {
+  //     name: 'Statistic',
+  //     module: 'STATISTIC',
+  //     href: '/statistic',
+  //     icon: CodeIcon
+  //   }]
+  // }
 ]

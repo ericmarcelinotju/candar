@@ -126,6 +126,12 @@ hr {
   }
 }
 
+fieldset[disabled] {
+  .hover-input, .default-input {
+    @apply bg-grey-soft disabled:bg-gray-50 disabled:text-grey disabled:border-grey-soft disabled:shadow-none;
+  }
+}
+
 .default-input-info {
   @apply absolute mt-1 inset-y-0 bg-grey-soft px-2 border flex items-center pointer-events-none whitespace-nowrap;
 

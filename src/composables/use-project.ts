@@ -3,14 +3,6 @@ import dayjs from 'dayjs'
 import { Project } from '@/typings/models/project.type'
 
 const useProject = (project?: Project) => {
-  const avatar = computed(() => {
-    return project.user?.avatar
-  })
-
-  const userInitial = computed(() => {
-    return project.user?.username[0]
-  })
-
   const isNeedQuotation = computed(() => {
     return project?.status === 'quotation' && project?.quotations?.length <= 0
   })
@@ -19,9 +11,12 @@ const useProject = (project?: Project) => {
     return project?.quotations?.length > 0
   })
 
+  const isExpired = computed(() => {
+    return project?.isExpired
+  })
+
   const isAlmostExpired = computed(() => {
-    // TODO :: validate project expiry
-    return dayjs().diff(dayjs(project?.createdAt), 'day') > 15
+    return dayjs(project?.expiredAt).diff(new Date(), 'day') >= 2
   })
 
   const taskProgress = computed(() => {
@@ -33,16 +28,20 @@ const useProject = (project?: Project) => {
     return `${finishedTasks.length}/${project.tasks.length}`
   })
 
-  const hasTag = computed(() => isNeedQuotation.value || isAlmostExpired.value || isQuoted.value)
+  const hasTag = computed(() => isNeedQuotation.value || isAlmostExpired.value || isQuoted.value || isExpired.value)
+
+  const isEditable = computed(() => {
+    return !isExpired.value && project.status !== 'lose' && project.status !== 'win'
+  })
 
   return {
-    avatar,
-    userInitial,
     isAlmostExpired,
     isNeedQuotation,
     isQuoted,
+    isExpired,
     taskProgress,
-    hasTag
+    hasTag,
+    isEditable
   }
 }
 

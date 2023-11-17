@@ -36,32 +36,45 @@
       v-if="currNotification"
       v-model="visibleNotificationModal"
       :confirm-text="$t('global.ok')"
-      :description="currNotification.subject"
+      :description="currNotification.message"
       :has-cancel="false"
       :has-icon="false"
       :title="currNotification.title"
       type="success"
+      @confirm="handleConfirm"
     >
-      <div
+      <!-- <div
         class="border rounded-md mt-4 p-3"
-        v-html="currNotification.content"
-      />
+        v-html="currNotification.message"
+      /> -->
     </DefaultModal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Ref, ref } from 'vue'
+import { Ref, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+
 import DefaultHeader from './Header.vue'
 // import DefaultFooter from './Footer.vue'
 import DefaultSidebar from './sidebar/Sidebar.vue'
+
+import { projectList } from '@/router/routes/project'
+import { Notification } from '@/typings/models/notification.type'
 import { config } from '@/config'
 import { Log } from '@/typings/models/log.type'
 
 const store = useStore()
+const router = useRouter()
 
 const isSidebarOpen = ref(false)
+
+const handleConfirm = () => {
+  const isProjectTask = currNotification.value.type?.toLowerCase() === 'task'
+
+  router.push({ name: projectList.name, params: { [isProjectTask ? 'project_task_id' : 'project_id']: currNotification.value.link } })
+}
 
 const handleOpenSidebar = () => {
   isSidebarOpen.value = true
@@ -78,7 +91,7 @@ const toogleCollapseSidebar = () => {
 }
 
 const visibleNotificationModal = ref(false)
-const currNotification: Ref<Log> = ref(null)
+const currNotification: Ref<Notification> = ref(null)
 
 const handleLogout = () => {
   store.dispatch('auth/logout')
@@ -93,4 +106,8 @@ const handleNotification = (notification) => {
 const handleAbout = () => {
   // window.open(config.aboutUrl, '_blank').focus()
 }
+
+onMounted(() => {
+  store.dispatch('notifications/getNotifications')
+})
 </script>

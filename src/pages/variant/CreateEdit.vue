@@ -20,6 +20,8 @@
 <script setup lang="ts">
 import { Ref, computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
 import {
@@ -35,8 +37,8 @@ import { FormSetting } from '@/typings/form.type'
 import { Variant, VariantCategory } from '@/typings/models/variant.type'
 import { variantList } from '@/router/routes/variant'
 import { Option } from '@/typings/option.type'
-import { useStore } from 'vuex'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const store = useStore()
@@ -115,19 +117,19 @@ const initForm = () => {
   formSettings.value = [
     {
       key: 'name',
-      label: 'Name',
+      label: t('app.columns.name'),
       isRequired: true,
       rules: [required]
     },
     {
       key: 'code',
-      label: 'Code',
+      label: t('app.columns.code'),
       isRequired: true,
       rules: [required]
     },
     {
       key: 'categoryId',
-      label: 'Variant Category',
+      label: t('app.columns.variant_category'),
       isRequired: true,
       type: 'dropdown',
       options: variantCategoryOptions.value

@@ -1,5 +1,5 @@
 <template>
-  <DefaultPage :title="$t('app.columns.variantOption')">
+  <DefaultPage :title="$t('app.columns.variant_category')">
     <DefaultTable
       :columns="columns"
       :has-delete="hasPermission('DELETE')"
@@ -43,14 +43,16 @@
 <script setup lang="ts">
 import { Ref, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import { PlusIcon } from '@heroicons/vue/solid'
 import DefaultTable from '@/components/default/Table.vue'
 import { get as getVariantCategories, del as deleteVariantCategory } from '@/api/variant-category'
 import { useNotify } from '@/composables/use-notify'
 import { VariantCategory } from '@/typings/models/variant.type'
 import { variantCategoryCreate, variantCategoryEdit } from '@/router/routes/variant'
-import { useStore } from 'vuex'
 
+const { t } = useI18n()
 const router = useRouter()
 const store = useStore()
 
@@ -67,7 +69,7 @@ const handleSearch = (params) => {
   getVariantCategories(params)
     .then((res) => {
       items.value = res.data.data
-      itemsTotal.value = res.data.total_item
+      itemsTotal.value = res.data.totalItem
     })
     .finally(() => {
       loading.value = false
@@ -110,12 +112,12 @@ const confirmDelete = () => {
 // Table columns setting
 const columns = [
   {
-    label: 'ID',
+    label: t('app.columns.id'),
     key: 'id',
     isHidden: true
   },
   {
-    label: 'Name',
+    label: t('app.columns.name'),
     key: 'name',
     isSortable: true,
     isSearchable: true

@@ -1,5 +1,5 @@
 <template>
-  <DefaultPage :title="$t('app.columns.project')">
+  <DefaultPage :title="$t('module.project')">
     <div
       v-if="loading"
       class="w-full h-full flex justify-center items-center"
@@ -13,13 +13,13 @@
       @submit="onSubmit"
     >
       <template #label>
-        Assign To
+        {{ $t('app.columns.assign_to') }}
       </template>
-      <template #user_id="{ form }">
+      <template #userId="{ form }">
         <Dropdown
           v-model="form.userId"
           class="default-input"
-          label="Assign To"
+          :label="$t('app.columns.assign_to')"
           :options="userOptions"
         >
           <template #default="{ option }">
@@ -57,6 +57,9 @@ import { Option } from '@/typings/option.type'
 import { User } from '@/typings/models/user.type'
 import { projectSources, projectStatuses } from './options'
 import Dropdown from '@/components/form/dropdown/Dropdown.vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const route = useRoute()
 const router = useRouter()
@@ -110,10 +113,7 @@ const initPage = () => {
 }
 
 const onSubmit = (form, onFinish) => {
-  const payload = {
-    ...form.value,
-    user_id: form.value.userId
-  }
+  const payload = { ...form.value }
   if (id) {
     return updateProject(id, payload)
       .then(() => {
@@ -150,45 +150,45 @@ const initForm = () => {
   formSettings.value = [
     {
       key: 'code',
-      label: 'Code',
+      label: t('app.columns.code'),
       isRequired: true,
       rules: [required]
     },
     {
       key: 'name',
-      label: 'Name',
+      label: t('app.columns.name'),
       isRequired: true,
       rules: [required]
     },
     {
       key: 'description',
-      label: 'Description',
+      label: t('app.columns.description'),
       type: 'textarea'
     },
     {
       key: 'source',
-      label: 'Source',
+      label: t('app.columns.source'),
       isRequired: true,
       type: 'dropdown',
       options: projectSources
     },
     {
       key: 'status',
-      label: 'Status',
+      label: t('app.columns.status'),
       isRequired: true,
       type: 'dropdown',
       options: projectStatuses
     },
     {
-      key: 'client_id',
-      label: 'Client',
+      key: 'clientId',
+      label: t('app.columns.client'),
       isRequired: true,
       type: 'dropdown',
       options: clientOptions.value
     },
     {
-      key: 'user_id',
-      label: 'Assign To',
+      key: 'userId',
+      label: t('app.columns.assign_to'),
       isRequired: true,
       type: 'dropdown',
       options: userOptions.value

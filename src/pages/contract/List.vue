@@ -11,7 +11,7 @@
       @edit="handleEdit"
       @search="handleSearch"
     >
-      <template #client_id="{ item }">
+      <template #clientId="{ item }">
         {{ item.client.name }}
       </template>
     </DefaultTable>
@@ -74,7 +74,7 @@ const handleSearch = (params) => {
   getContract(params)
     .then((res) => {
       items.value = res.data.data
-      itemsTotal.value = res.data.total_item
+      itemsTotal.value = res.data.totalItem
     })
     .finally(() => {
       loading.value = false
@@ -161,7 +161,7 @@ const initColumns = () => {
     },
     {
       label: 'Client',
-      key: 'client_id',
+      key: 'clientId',
       isSearchable: true,
       searchType: 'dropdown',
       searchOptions: clientOptions.value

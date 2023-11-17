@@ -20,16 +20,51 @@
     "online": "Online",
     "offline": "Offline",
     "back": "Back",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "smtp": "SMTP",
+    "host": "Host",
+    "port": "Port",
+    "email": "Email",
+    "apilogik": "Apilogik",
+    "url": "URL",
+    "key": "Key",
+    "password": "Password",
+    "remember_me": "Remember Me",
+    "sign_in": "Sign in",
+    "forgot_password": "Forgot Password"
+  },
+  "module": {
+    "user": "User",
+    "users": "Users",
+    "role": "Role",
+    "roles": "Roles",
+    "permission": "Permission",
+    "permissions": "Permissions",
+    "project": "Deal",
+    "projects": "Deals",
+    "quotation": "Quotation",
+    "quotations": "Quotations",
+    "purchase": "Purchase",
+    "purchases": "Purchases"
+  },
+  "project": {
+    "initiate": "Initiate",
+    "qualification": "Qualification",
+    "lead": "Lead",
+    "quotation": "Quotation",
+    "win": "Win",
+    "lose": "Lose"
   },
   "error": {
     "required": "This field is required",
     "email": "Invalid email format",
     "phone": "Invalid phone number format"
   },
-  "tips": {
-    "include_recording": "If enabled, only CDR records with recording files will be displayed (if a CDR's recording file was deleted or lost due to storage issue, the CDR record will also be displayed but you will not be able to operate on the Recording Options).<br>If disabled, all CDR records will be displayed. This option is disabled by default.",
-    "number_fuzzy_search": "Search for the fuzzy equivalent for the phone number. For example, enter <b>501</b> in <b>Call From</b> and do not enable fuzzy search, you will only get CDR exactly related to Number 501. If fuzzy search is enabled, CDR related to any number including 501, like 5501 will display."
+  "tip": {
+    "show_close_project": "Show closed deals.",
+    "sign_in": "Sign in to your account.",
+    "back_to_login": "back to login",
+    "forgot_password": "Forgot your password?"
   },
   "app": {
     "create": "Create",
@@ -145,6 +180,7 @@
       "logo": "Logo",
       "document": "Document",
       "select": "Select",
+      "source": "Source",
       "noreply": "No Reply",
       "smtp": "SMTP",
       "sftp": "SFTP",
@@ -158,13 +194,13 @@
       "client": "Client",
       "clientAddress": "Client Address",
       "clientContact": "Client Contact",
-      "product":"Produk",
-      "productCategory":"Kategori Produk",
-      "variant":"Variasi",
-      "variantOption":"Pilihan Variasi",
-      "contract": "Kontrak",
-      "purchase":"Pembelian"
-
+      "product": "Product",
+      "productCategory": "Product Category",
+      "variant": "Variant",
+      "variantOption": "Variant Option",
+      "contract": "Contract",
+      "purchase": "Purchase",
+      "assign_to": "Assign To"
     }
   }
 }

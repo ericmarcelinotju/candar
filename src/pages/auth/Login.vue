@@ -5,20 +5,14 @@
     >
       <div class="mx-auto w-full max-w-sm lg:w-96">
         <div>
-          <img alt="Workflow" class="h-32 w-auto" src="@/assets/logo.svg" />
+          <img
+            alt="Workflow"
+            class="h-32 w-auto"
+            src="@/assets/logo.svg"
+          >
           <h2 class="mt-6 text-3xl font-extrabold text-gray-900">
-            Sign in to your account
+            {{ $t('tip.sign_in') }}
           </h2>
-          <!-- <p class="mt-2 text-sm text-gray-600">
-            Or
-            {{ " " }}
-            <a
-              class="font-medium text-green-600 hover:text-green-500"
-              href="#"
-            >
-              contact us for account creation
-            </a>
-          </p> -->
         </div>
 
         <div class="mt-8">
@@ -30,7 +24,12 @@
               @submit.prevent="handleLogin"
             >
               <div>
-                <label class="default-label" for="username"> Username </label>
+                <label
+                  class="default-label"
+                  for="username"
+                >
+                  {{ $t('app.columns.username') }}
+                </label>
                 <div class="mt-1">
                   <input
                     id="username"
@@ -40,12 +39,17 @@
                     name="username"
                     required
                     type="text"
-                  />
+                  >
                 </div>
               </div>
 
               <div class="space-y-1">
-                <label class="default-label" for="password"> Password </label>
+                <label
+                  class="default-label"
+                  for="password"
+                >
+                  {{ $t('app.columns.password') }}
+                </label>
                 <div class="mt-1">
                   <input
                     id="password"
@@ -54,7 +58,7 @@
                     name="password"
                     required
                     type="password"
-                  />
+                  >
                 </div>
               </div>
 
@@ -66,12 +70,12 @@
                     class="default-checkbox"
                     name="remember-me"
                     type="checkbox"
-                  />
+                  >
                   <label
                     class="ml-2 block text-sm text-gray-900"
                     for="remember-me"
                   >
-                    Remember me
+                    {{ $t('global.remember_me') }}
                   </label>
                 </div>
 
@@ -80,18 +84,24 @@
                     class="font-semibold text-primary hover:text-primary-dark cursor-pointer"
                     @click="handleForgotPassword"
                   >
-                    Forgot your password?
+                    {{ $t('tip.forgot_password') }}
                   </a>
                 </div>
               </div>
 
               <div>
-                <button class="w-full info-button" type="submit">
-                  Sign in
+                <button
+                  class="w-full info-button"
+                  type="submit"
+                >
+                  {{ $t('global.sign_in') }}
                 </button>
               </div>
 
-              <div v-if="error" class="font-bold text-sm text-[#ff0000] mb-4">
+              <div
+                v-if="error"
+                class="font-bold text-sm text-[#ff0000] mb-4"
+              >
                 {{ error }}
               </div>
             </form>
@@ -104,7 +114,7 @@
         alt=""
         class="absolute inset-0 h-full w-full object-cover"
         src="@/assets/img/login-background.jpg"
-      />
+      >
     </div>
   </div>
 </template>
@@ -130,8 +140,7 @@ const params = reactive({ ...user })
 const error = ref(null)
 
 const handleLogin = () => {
-  store
-    .dispatch('auth/login', { ...params })
+  store.dispatch('auth/login', { ...params })
     .then(() => {
       router.push(dashboardRoute)
     })

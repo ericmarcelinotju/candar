@@ -1,6 +1,6 @@
 <template>
   <div>
-    <DefaultPage :title="$t('app.columns.purchase')">
+    <DefaultPage :title="$t('module.purchase')">
       <div
         v-if="loading"
         class="w-full h-full flex justify-center items-center"
@@ -39,6 +39,7 @@
 <script setup lang="ts">
 import { Ref, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { PlusIcon } from '@heroicons/vue/solid'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
@@ -51,6 +52,7 @@ import { purchaseList } from '@/router/routes/purchase'
 import { Product } from '@/typings/models/product.type'
 import ProductForm from './ProductForm.vue'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 
@@ -116,31 +118,31 @@ const initForm = () => {
   formSettings.value = [
     {
       key: 'code',
-      label: 'Code',
+      label: t('app.columns.code'),
       isRequired: true,
       rules: [required]
     },
     {
       key: 'vendor',
-      label: 'Vendor',
+      label: t('app.columns.vendor'),
       isRequired: true,
       rules: [required]
     },
     {
       key: 'date',
-      label: 'Date',
+      label: t('app.columns.date'),
       isRequired: true,
       type: 'date',
       rules: [required]
     },
     {
       key: 'note',
-      label: 'Note',
+      label: t('app.columns.note'),
       type: 'textarea'
     },
     {
       key: 'products',
-      label: 'Produk'
+      label: t('app.columns.products')
     }
   ]
 }

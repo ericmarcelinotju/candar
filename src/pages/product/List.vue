@@ -1,5 +1,5 @@
 <template>
-  <DefaultPage :title="$t('app.columns.product')">
+  <DefaultPage :title="$t('module.product')">
     <DefaultTable
       :columns="columns"
       :has-delete="hasPermission('DELETE')"
@@ -44,13 +44,15 @@
 import { Ref, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import { PlusIcon } from '@heroicons/vue/solid'
-import DefaultTable from '@/components/default/Table.vue'
 import { get as getProducts, del as deleteProduct } from '@/api/product'
+import DefaultTable from '@/components/default/Table.vue'
 import { useNotify } from '@/composables/use-notify'
 import { Product } from '@/typings/models/product.type'
 import { productCreate, productEdit } from '@/router/routes/product'
 
+const { t } = useI18n()
 const router = useRouter()
 const store = useStore()
 const { notify } = useNotify('variant')
@@ -66,7 +68,7 @@ const handleSearch = (params) => {
   getProducts(params)
     .then((res) => {
       items.value = res.data.data
-      itemsTotal.value = res.data.total_item
+      itemsTotal.value = res.data.totalItem
     })
     .finally(() => {
       loading.value = false
@@ -109,42 +111,42 @@ const confirmDelete = () => {
 // Table columns setting
 const columns = [
   {
-    label: 'ID',
+    label: t('app.columns.id'),
     key: 'id',
     isHidden: true
   },
   {
-    label: 'Code',
+    label: t('app.columns.code'),
     key: 'code',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Name',
+    label: t('app.columns.name'),
     key: 'name',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Cost',
+    label: t('app.columns.cost'),
     key: 'cost',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Price',
+    label: t('app.columns.price'),
     key: 'price',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Publish Price',
+    label: t('app.columns.publish_price'),
     key: 'publishPrice',
     isSortable: false,
     isSearchable: false
   },
   {
-    label: 'Category',
+    label: t('app.columns.category'),
     key: 'category.name',
     isSortable: false,
     isSearchable: false

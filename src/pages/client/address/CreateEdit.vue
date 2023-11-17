@@ -1,5 +1,5 @@
 <template>
-  <DefaultPage :title="$t('app.columns.clientAddress')">
+  <DefaultPage :title="$t('app.columns.client_address')">
     <div
       v-if="loading"
       class="w-full h-full flex justify-center items-center"
@@ -18,6 +18,7 @@
 <script setup lang="ts">
 import { Ref, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
 import {
@@ -29,6 +30,7 @@ import { required } from '@/utils/validation'
 import { FormSetting } from '@/typings/form.type'
 import { ClientAddress } from '@/typings/models/client.type'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 
@@ -99,43 +101,43 @@ const initForm = () => {
   formSettings.value = [
     {
       key: 'name',
-      label: 'Name',
+      label: t('app.columns.name'),
       isRequired: true,
       rules: [required]
     },
     {
       key: 'address',
-      label: 'Address',
+      label: t('app.columns.address'),
       type: 'textarea'
     },
     {
       key: 'province',
-      label: 'Province',
+      label: t('app.columns.province'),
       col: 6
     },
     {
       key: 'city',
-      label: 'City',
+      label: t('app.columns.city'),
       col: 6
     },
     {
       key: 'district',
-      label: 'District',
+      label: t('app.columns.district'),
       col: 4
     },
     {
       key: 'sub_district',
-      label: 'Sub District',
+      label: t('app.columns.sub_district'),
       col: 4
     },
     {
       key: 'postal_code',
-      label: 'Postal Code',
+      label: t('app.columns.postal_code'),
       col: 4
     },
     {
       key: 'coordinates',
-      label: 'Coordinates'
+      label: t('app.columns.coordinates')
     }
   ]
 }

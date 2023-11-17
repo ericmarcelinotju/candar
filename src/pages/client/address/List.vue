@@ -1,7 +1,7 @@
 <template>
   <DefaultPage
     class="!pt-0"
-    :title="$t('app.columns.clientAddress')"
+    :title="$t('app.columns.client_address')"
   >
     <DefaultTable
       :columns="columns"
@@ -40,6 +40,7 @@
 import { Ref, computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import { PlusIcon } from '@heroicons/vue/solid'
 import DefaultTable from '@/components/default/Table.vue'
 import { del as deleteClient } from '@/api/client-address'
@@ -51,6 +52,7 @@ interface Props {
   items: ClientAddress[]
 }
 
+const { t } = useI18n()
 const props = defineProps<Props>()
 
 const router = useRouter()
@@ -98,36 +100,36 @@ const confirmDelete = () => {
 // Table columns setting
 const columns = [
   {
-    label: 'ID',
+    label: t('app.columns.id'),
     key: 'id',
     isHidden: true
   },
   {
-    label: 'Name',
+    label: t('app.columns.name'),
     key: 'name',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Province',
+    label: t('app.columns.province'),
     key: 'province',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'City',
+    label: t('app.columns.city'),
     key: 'city',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'District',
+    label: t('app.columns.district'),
     key: 'district',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Sub District',
+    label: t('app.columns.sub_district'),
     key: 'sub_district',
     isSortable: true,
     isSearchable: true

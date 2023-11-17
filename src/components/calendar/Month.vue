@@ -23,70 +23,70 @@
             class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs"
           >
             <span class="xl:block lg:block md:block sm:block hidden">
-              Sunday
+              {{ $t('global.sunday') }}
             </span>
             <span class="xl:hidden lg:hidden md:hidden sm:hidden block">
-              Sun
+              {{ $t('global.sun') }}
             </span>
           </th>
           <th
             class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs"
           >
             <span class="xl:block lg:block md:block sm:block hidden">
-              Monday
+              {{ $t('global.monday') }}
             </span>
             <span class="xl:hidden lg:hidden md:hidden sm:hidden block">
-              Mon
+              {{ $t('global.mon') }}
             </span>
           </th>
           <th
             class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs"
           >
             <span class="xl:block lg:block md:block sm:block hidden">
-              Tuesday
+              {{ $t('global.tuesday') }}
             </span>
             <span class="xl:hidden lg:hidden md:hidden sm:hidden block">
-              Tue
+              {{ $t('global.tue') }}
             </span>
           </th>
           <th
             class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs"
           >
             <span class="xl:block lg:block md:block sm:block hidden">
-              Wednesday
+              {{ $t('global.wednesday') }}
             </span>
             <span class="xl:hidden lg:hidden md:hidden sm:hidden block">
-              Wed
+              {{ $t('global.wed') }}
             </span>
           </th>
           <th
             class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs"
           >
             <span class="xl:block lg:block md:block sm:block hidden">
-              Thursday
+              {{ $t('global.thursday') }}
             </span>
             <span class="xl:hidden lg:hidden md:hidden sm:hidden block">
-              Thu
+              {{ $t('global.thu') }}
             </span>
           </th>
           <th
             class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs"
           >
             <span class="xl:block lg:block md:block sm:block hidden">
-              Friday
+              {{ $t('global.friday') }}
             </span>
             <span class="xl:hidden lg:hidden md:hidden sm:hidden block">
-              Fri
+              {{ $t('global.fri') }}
             </span>
           </th>
           <th
             class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs"
           >
             <span class="xl:block lg:block md:block sm:block hidden">
-              Saturday
+              {{ $t('global.saturday') }}
             </span>
             <span class="xl:hidden lg:hidden md:hidden sm:hidden block">
-              Sat
+              {{ $t('global.sat') }}
             </span>
           </th>
         </tr>

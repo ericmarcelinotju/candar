@@ -44,6 +44,7 @@
 import { Ref, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import { PlusIcon } from '@heroicons/vue/solid'
 import DefaultTable from '@/components/default/Table.vue'
 import { get as getVariants, del as deleteVariant } from '@/api/variant'
@@ -51,6 +52,7 @@ import { useNotify } from '@/composables/use-notify'
 import { Variant } from '@/typings/models/variant.type'
 import { variantCreate, variantEdit } from '@/router/routes/variant'
 
+const { t } = useI18n()
 const router = useRouter()
 const store = useStore()
 const { notify } = useNotify('variant')
@@ -66,7 +68,7 @@ const handleSearch = (params) => {
   getVariants(params)
     .then((res) => {
       items.value = res.data.data
-      itemsTotal.value = res.data.total_item
+      itemsTotal.value = res.data.totalItem
     })
     .finally(() => {
       loading.value = false
@@ -109,18 +111,18 @@ const confirmDelete = () => {
 // Table columns setting
 const columns = [
   {
-    label: 'ID',
+    label: t('app.columns.id'),
     key: 'id',
     isHidden: true
   },
   {
-    label: 'Name',
+    label: t('app.columns.name'),
     key: 'name',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: 'Variant Category',
+    label: t('app.columns.variant_category'),
     key: 'category.name',
     isSortable: false,
     isSearchable: false

@@ -4,7 +4,10 @@
       v-if="loading"
       class="h-12 w-12 mx-auto"
     />
-    <div v-else>
+    <fieldset
+      v-else
+      :disabled="!isEditable"
+    >
       <Loading
         v-if="saveLoading"
         class="absolute bottom-0 right-3 h-6 w-6"
@@ -15,10 +18,22 @@
       <div class="mt-3 flex gap-3">
         <div class="flex-[1_1_11%] px-3">
           <div class="flex flex-row justify-between gap-2 mb-2">
-            <div class="flex flex-row gap-2">
+            <div class="flex flex-row gap-2 items-center">
+              <div
+                v-if="isExpired"
+                class="danger-tag"
+              >
+                Expired
+              </div>
+              <div
+                v-else-if="isAlmostExpired"
+                class="warning-tag"
+              >
+                Almost Expired
+              </div>
               <div
                 v-if="isNeedQuotation"
-                class="warning-tag cursor-pointer hover:bg-warning-dark"
+                class="info-tag cursor-pointer hover:bg-info-dark"
                 @click="handleQuotation"
               >
                 <PlusIcon class="w-3 h-3 mr-1" />
@@ -31,37 +46,14 @@
               >
                 Quoted
               </div>
-              <div
-                v-if="isAlmostExpired"
-                class="danger-tag"
-              >
-                Antention Needed
-              </div>
               <Popover
                 v-slot="{ open }"
                 class="relative"
               >
                 <PopoverButton @click="() => handleClickUser(open)">
                   <div class="flex justify-end p-0.5 hover:cursor-pointer hover:opacity-70 rounded-full">
-                    <div v-if="avatar">
-                      <img
-                        class="avatar"
-                        :src="avatar"
-                      >
-                    </div>
-                    <div
-                      v-else
-                      class="info-tag !rounded-full capitalize"
-                    >
-                      {{ userInitial }}
-                    </div>
+                    <UserAvatar :user="data.user" />
                   </div>
-                  <!-- <button
-                    class="rounded-full border border-dashed border-grey p-1"
-                    type="button"
-                  >
-                    <UserAddIcon class="w-4 h-4 text-grey" />
-                  </button> -->
                 </PopoverButton>
                 <transition
                   enter-active-class="transition duration-200 ease-out"
@@ -207,8 +199,8 @@
         <div class="flex-1 border-l px-3">
           <div class="flex gap-3 text-xs font-semibold">
             <div class="p-2">
-              <p class="mb-1 text-grey-dark">
-                CREATED
+              <p class="mb-1 text-grey-dark uppercase">
+                {{ $t('app.columns.created_at') }}
               </p>
               <p>{{ project.createdAt }}</p>
             </div>
@@ -216,8 +208,9 @@
             <div class="w-[0.05rem] bg-grey" />
 
             <div class="pt-2 px-2">
-              <p class="text-grey-dark">
-                DUE DATE
+              <!-- TODO :: Only manager can update -->
+              <p class="text-grey-dark uppercase">
+                {{ $t('app.columns.expired_at') }}
               </p>
               <Datepicker
                 v-model="project.expiredAt"
@@ -229,16 +222,15 @@
                   <div class="hover:bg-gray-200 p-1 transition duration-300 rounded-md -translate-x-1">
                     <InfoButton
                       v-if="project.expiredAt"
-                      :info="formatDate(project.expiredAt)"
+                      :info="$t('tip.change_expired_at')"
                     >
-                      <!-- <p>{{ project.createdAt }}</p> -->
                       <p class="text-xs font-medium">
                         {{ formatDate(project.expiredAt) }}
                       </p>
                     </InfoButton>
                     <InfoButton
                       v-else
-                      info="Set Date"
+                      :info="$t('tip.set_expired_at')"
                     >
                       -
                     </InfoButton>
@@ -250,8 +242,8 @@
             <div class="w-[0.05rem] bg-grey" />
 
             <div class="p-2">
-              <p class="mb-1 text-grey-dark">
-                SOURCE
+              <p class="mb-1 text-grey-dark uppercase">
+                {{ $t('app.columns.source') }}
               </p>
               <p>{{ snakeToTitle(project.source) }}</p>
             </div>
@@ -259,8 +251,8 @@
             <div class="w-[0.05rem] bg-grey" />
 
             <div class="p-2">
-              <p class="mb-1 text-grey-dark">
-                STATUS
+              <p class="mb-1 text-grey-dark uppercase">
+                {{ $t('app.columns.status') }}
               </p>
               <p
                 class="info-tag !pt-0 !pb-[0.1rem]"
@@ -283,13 +275,13 @@
                 :key="update.id"
                 class="mt-1"
               >
-                <b>{{ update.user.username }}</b> changed status to <b>{{ update.status }}</b>
+                <b>{{ update.user?.username || 'system' }}</b> changed the status to <b>{{ update.status }}</b>
               </p>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </fieldset>
     <DefaultModal
       v-model="visibleCloseConfirmationModal"
       description=""
@@ -353,6 +345,7 @@ import Switch from '@/components/form/Switch.vue'
 import Dropdown from '@/components/form/dropdown/Dropdown.vue'
 import Datepicker from '@vuepic/vue-datepicker'
 import InfoButton from '@/components/helper/InfoButton.vue'
+import UserAvatar from '@/components/UserAvatar.vue'
 
 interface Props {
   data: Project
@@ -396,7 +389,7 @@ watchDebounced(
     const payload = { ...project.value }
 
     if (payload.user?.id) {
-      payload.user_id = payload.user?.id
+      payload.userId = payload.user?.id
     }
 
     if (project.value?.expiredAt) {
@@ -516,20 +509,11 @@ const handleQuoted = () => {
   router.push({ ...quotationList, query: { project_id: project.value.id } })
 }
 
-const avatar = computed(() => {
-  return project.value.user?.avatar
-})
-
-const userInitial = computed(() => {
-  return project.value.user?.username[0]
-})
-
 const {
-  // avatar,
-  // userInitial,
   isAlmostExpired,
   isNeedQuotation,
   isQuoted,
-  hasTag
+  isExpired,
+  isEditable
 } = useProject(props.data)
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <DefaultPage :title="$t('app.module.project')">
+  <DefaultPage :title="$t('module.project')">
     <!-- <DefaultTable
       :columns="columns"
       :has-delete="hasPermission('DELETE')"
@@ -15,7 +15,12 @@
         <p v-html="item.content" />
       </template>
     </DefaultTable> -->
-    <!-- <div class="mt-4 grid grid-cols-4 gap-6"> -->
+    <div class="ml-3 mt-4 flex gap-2">
+      <Switch
+        v-model="isClosedProjectsShown"
+        :label="$t('tip.show_close_project')"
+      />
+    </div>
     <div
       class="mt-4 grid"
       :class="[
@@ -25,7 +30,7 @@
     >
       <div class="project-list">
         <h3 class="font-semibold ml-2">
-          Cold Call
+          {{ $t('project.initiate') }}
         </h3>
         <Draggable
           v-model="projectsInitiate"
@@ -53,7 +58,7 @@
 
       <div class="project-list">
         <h3 class="font-semibold ml-2">
-          Qualification
+          {{ $t('project.qualification') }}
         </h3>
         <Draggable
           v-model="projectsQualification"
@@ -81,7 +86,7 @@
 
       <div class="project-list">
         <h3 class="font-semibold ml-2">
-          Lead
+          {{ $t('project.lead') }}
         </h3>
         <Draggable
           v-model="projectsLead"
@@ -109,7 +114,7 @@
 
       <div class="project-list">
         <h3 class="font-semibold ml-2">
-          Quotation
+          {{ $t('project.quotation') }}
         </h3>
         <Draggable
           v-model="projectsQuotation"
@@ -137,7 +142,7 @@
       <template v-if="isClosedProjectsShown">
         <div class="project-list">
           <h3 class="font-semibold ml-2">
-            Win
+            {{ $t('project.win') }}
           </h3>
           <Draggable
             v-model="projectsWin"
@@ -164,7 +169,7 @@
         </div>
         <div class="project-list">
           <h3 class="font-semibold ml-2">
-            Lose
+            {{ $t('project.lose') }}
           </h3>
           <Draggable
             v-model="projectsLose"
@@ -203,14 +208,6 @@
           <PlusIcon class="w-4 h-4 mr-1" />
           {{ $t('app.create') }}
         </button>
-        <div class="flex flex-col">
-          <p class="text-sm font-semibold mb-2 text-primary">
-            Show closed projects
-          </p>
-          <Switch
-            v-model="isClosedProjectsShown"
-          />
-        </div>
       </div>
     </template>
     <template #search>
@@ -339,13 +336,8 @@ const handleSearch = (params) => {
   loading.value = true
   getProjects(params)
     .then((res) => {
-      // Dont Forget to Erase this code #ERASE_CODE
-      res.data.data.map(res => {
-        res.expiredAt = ''
-        return res
-      })
       items.value = res.data.data
-      itemsTotal.value = res.data.total_item
+      itemsTotal.value = res.data.totalItem
     })
     .finally(() => {
       loading.value = false
@@ -446,7 +438,6 @@ const projectsInitiate = computed({
       const currStatus = val[i].status
       if (currStatus !== 'initiate') {
         val[i].status = 'initiate'
-        val[i].expiredAt = val[i]?.expiredAt && new Date(val[i].expiredAt)
 
         updateProject(val[i].id, val[i]).catch((err) => {
           val[i].status = currStatus
@@ -463,7 +454,6 @@ const projectsQualification = computed({
       const currStatus = val[i].status
       if (currStatus !== 'qualification') {
         val[i].status = 'qualification'
-        val[i].expiredAt = val[i]?.expiredAt && new Date(val[i].expiredAt)
 
         updateProject(val[i].id, val[i]).catch((err) => {
           val[i].status = currStatus
@@ -481,7 +471,6 @@ const projectsLead = computed({
       const currStatus = val[i].status
       if (currStatus !== 'lead') {
         val[i].status = 'lead'
-        val[i].expiredAt = val[i]?.expiredAt && new Date(val[i].expiredAt)
 
         updateProject(val[i].id, val[i]).catch((err) => {
           val[i].status = currStatus
@@ -499,7 +488,6 @@ const projectsQuotation = computed({
       const currStatus = val[i].status
       if (currStatus !== 'quotation') {
         val[i].status = 'quotation'
-        val[i].expiredAt = val[i]?.expiredAt && new Date(val[i].expiredAt)
 
         updateProject(val[i].id, val[i]).catch((err) => {
           val[i].status = currStatus
@@ -510,37 +498,9 @@ const projectsQuotation = computed({
   }
 })
 
-const projectsWin = computed({
-  get: () => [...items.value.filter((item) => item.status === 'win')],
-  set: (val) => {
-    for (let i = 0; i < val.length; i++) {
-      if (val[i].status !== 'win') {
-        val[i].status = 'win'
-        val[i].expiredAt = val[i]?.expiredAt && new Date(val[i].expiredAt)
+const projectsWin = computed(() => [...items.value.filter((item) => item.status === 'win')])
 
-        updateProject(val[i].id, val[i]).catch((err) => {
-          notify('update', 'danger', err.message)
-        })
-      }
-    }
-  }
-})
-
-const projectsLose = computed({
-  get: () => [...items.value.filter((item) => item.status === 'lose')],
-  set: (val) => {
-    for (let i = 0; i < val.length; i++) {
-      if (val[i].status !== 'lose') {
-        val[i].status = 'lose'
-        val[i].expiredAt = val[i]?.expiredAt && new Date(val[i].expiredAt)
-
-        updateProject(val[i].id, val[i]).catch((err) => {
-          notify('update', 'danger', err.message)
-        })
-      }
-    }
-  }
-})
+const projectsLose = computed(() => [...items.value.filter((item) => item.status === 'lose')])
 
 const dragOptions = ref({
   animation: 200,

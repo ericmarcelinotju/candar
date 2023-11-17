@@ -6,7 +6,7 @@ import { ProjectUpdate } from './project-update.type'
 import { Quotation } from './quotation.type'
 import { User } from './user.type'
 
-type ProjectStatus = 'initiate' | 'qualification' | 'lead' | 'quotation' | 'win' | 'lose'
+export type ProjectStatus = 'initiate' | 'qualification' | 'lead' | 'quotation' | 'win' | 'lose'
 
 export class Project extends BaseModel {
   id: string
@@ -17,14 +17,13 @@ export class Project extends BaseModel {
   status: ProjectStatus
 
   userId: string
-  // eslint-disable-next-line camelcase
-  user_id?: string
   user: User
 
   clientId: string
   client: Client
 
-  expiredAt: string | Date
+  expiredAt: Date
+  isExpired: boolean
 
   updates: ProjectUpdate[]
   tasks: ProjectTask[]
@@ -40,16 +39,22 @@ export class ProjectClose {
 export const getProjectStatusColor = (status: ProjectStatus): string => {
   switch (status) {
     case 'initiate': {
-      return '#656f7d'
+      return '#A5AfBd'
     }
     case 'qualification': {
-      return '#ffcc00'
+      return '#F0E462'
     }
     case 'lead': {
-      return '#1090e0'
+      return '#A8AFFF'
     }
     case 'quotation': {
+      return '#3289FF'
+    }
+    case 'win': {
       return '#008844'
+    }
+    case 'lose': {
+      return '#CD5B8A'
     }
     default: {
       return ''

@@ -1,5 +1,5 @@
 <template>
-  <DefaultPage :title="$t('app.columns.quotation')">
+  <DefaultPage :title="$t('module.quotation')">
     <DefaultTable
       :columns="tableColumns"
       :has-delete="hasPermission('DELETE')"
@@ -21,7 +21,7 @@
             class="default-tag mr-3 !py-1"
             type="button"
           >
-            Draft
+            {{ $t('quotation.draft') }}
           </span>
           <button
             v-else
@@ -29,7 +29,7 @@
             type="button"
             @click="handleSend(item)"
           >
-            Send for Approval
+            {{ $t('quotation.send') }}
           </button>
         </template>
         <template v-else-if="item.status == 'sent'">
@@ -39,14 +39,14 @@
             type="button"
             @click="handleApprove(item)"
           >
-            Approve
+            {{ $t('quotation.approve') }}
           </button>
           <span
             v-else
             class="warning-tag mr-3 !py-1"
             type="button"
           >
-            Waiting for Approval
+            {{ $t('quotation.wait_approve') }}
           </span>
         </template>
         <template v-else-if="item.status == 'approved'">
@@ -54,7 +54,7 @@
             v-if="isManager"
             class="info-tag mr-3 !py-1"
           >
-            Waiting for Acceptance
+            {{ $t('quotation.wait_accept') }}
           </span>
           <button
             v-else
@@ -62,7 +62,7 @@
             type="button"
             @click="handleAccept(item)"
           >
-            Upload Proof
+            {{ $t('quotation.upload') }}
           </button>
         </template>
         <button
@@ -71,7 +71,7 @@
           type="button"
           @click="handleViewApproval(item)"
         >
-          Accepted
+          {{ $t('quotation.accepted') }}
         </button>
       </template>
     </DefaultTable>
@@ -161,6 +161,7 @@
 import { Ref, computed, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import { PlusIcon } from '@heroicons/vue/solid'
 import { config } from '@/config'
 import DefaultTable from '@/components/default/Table.vue'
@@ -180,6 +181,7 @@ import { TableColumn } from '@/typings/table.type'
 import { Project } from '@/typings/models/project.type'
 import { Option } from '@/typings/option.type'
 
+const { t } = useI18n()
 const router = useRouter()
 const store = useStore()
 const { notify } = useNotify('variant')
@@ -197,7 +199,7 @@ const handleSearch = (params) => {
   getQuotations(params)
     .then((res) => {
       items.value = res.data.data
-      itemsTotal.value = res.data.total_item
+      itemsTotal.value = res.data.totalItem
     })
     .finally(() => {
       loading.value = false
@@ -345,39 +347,39 @@ const tableColumns: Ref<TableColumn[]> = ref([])
 const initColumns = () => {
   tableColumns.value = [
     {
-      label: 'ID',
+      label: t('app.columns.id'),
       key: 'id',
       isHidden: true
     },
     {
-      label: 'Code',
+      label: t('app.columns.code'),
       key: 'code',
       isSortable: true,
       isSearchable: true
     },
     {
-      label: 'Tanggal Mulai',
+      label: t('app.columns.date_from'),
       key: 'dateFrom',
       isSortable: true,
       isSearchable: true,
       searchType: 'date'
     },
     {
-      label: 'Tanggal Selesai',
+      label: t('app.columns.date_to'),
       key: 'dateTo',
       isSortable: true,
       isSearchable: true,
       searchType: 'date'
     },
     {
-      label: 'Project',
+      label: t('app.columns.project'),
       key: 'project_id',
       isSearchable: true,
       searchType: 'dropdown',
       searchOptions: projectOptions.value
     },
     {
-      label: 'Status',
+      label: t('app.columns.status'),
       key: 'status',
       isSearchable: true,
       searchType: 'dropdown',

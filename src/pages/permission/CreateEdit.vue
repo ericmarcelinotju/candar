@@ -18,6 +18,7 @@
 <script setup lang="ts">
 import { Ref, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
 import {
@@ -31,6 +32,7 @@ import { FormSetting } from '@/typings/form.type'
 import { Permission } from '@/typings/models/permission.type'
 import { Option } from '@/typings/option.type'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 
@@ -110,14 +112,14 @@ const formSettings: Ref<FormSetting[]> = ref([])
 formSettings.value = [
   {
     key: 'module',
-    label: 'Module',
+    label: t('app.columns.module'),
     isRequired: true,
     autocomplete: 'permission-module',
     rules: [required, alpha]
   },
   {
     key: 'method',
-    label: 'Method',
+    label: t('app.columns.method'),
     isRequired: true,
     rules: [required],
     type: 'dropdown',
@@ -125,7 +127,7 @@ formSettings.value = [
   },
   {
     key: 'description',
-    label: 'Description',
+    label: t('app.columns.description'),
     type: 'textarea'
   }
 ]

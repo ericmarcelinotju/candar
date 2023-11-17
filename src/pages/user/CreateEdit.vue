@@ -1,6 +1,9 @@
 <template>
   <DefaultPage :title="$t('app.columns.user')">
-    <div v-if="loading" class="w-full h-full flex justify-center items-center">
+    <div
+      v-if="loading"
+      class="w-full h-full flex justify-center items-center"
+    >
       <Loading class="h-12 w-12" />
     </div>
     <DefaultCreateEdit
@@ -32,7 +35,9 @@ import { Role } from '@/typings/models/role.type'
 import { userList } from '@/router/routes/user'
 import { Option } from '@/typings/option.type'
 import { Division } from '@/typings/models/division.type'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const store = useStore()
@@ -118,37 +123,37 @@ const initForm = () => {
   formSettings.value = [
     {
       key: 'username',
-      label: 'Username',
+      label: t('app.columns.username'),
       isRequired: true,
       autocomplete: 'user-username',
       rules: [required, alpha]
     },
     {
       key: 'email',
-      label: 'Email',
+      label: t('app.columns.email'),
       isRequired: true,
       type: 'textarea'
     },
     {
       key: 'password',
-      label: 'Password',
+      label: t('app.columns.password'),
       type: 'password'
     },
     {
       key: 'confirm_password',
-      label: 'Confirm Password',
+      label: t('app.columns.confirm_password'),
       type: 'password'
     },
     {
       key: 'roleId',
-      label: 'Role',
+      label: t('app.columns.role'),
       isRequired: true,
       type: 'dropdown',
       options: roleOptions.value
     },
     {
       key: 'divisionId',
-      label: 'Division',
+      label: t('app.columns.division'),
       type: 'dropdown',
       options: divisionOptions.value
     }

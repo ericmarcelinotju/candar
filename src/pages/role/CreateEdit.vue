@@ -16,9 +16,9 @@
         <div class="grid grid-cols-5 gap-4 mt-6">
           <div />
           <div
-            v-for="method in ['GET', 'POST', 'PUT', 'DELETE']"
+            v-for="method in ['View', 'Create', 'Edit', 'Delete']"
             :key="method"
-            class="text-center mr-4"
+            class="text-left mr-4"
           >
             {{ method }}
           </div>
@@ -28,13 +28,13 @@
           :key="index"
           class="grid grid-cols-5 gap-4 mt-2 pb-1 border-b border-gray-300"
         >
-          <h5>
+          <h5 class="capitalize">
             {{ module.name }}
           </h5>
           <div
             v-for="method in ['GET', 'POST', 'PUT', 'DELETE']"
             :key="method"
-            class="default-label text-center"
+            class="default-label"
           >
             <input
               v-if="module.permissions[method]"
@@ -53,6 +53,7 @@
 <script setup lang="ts">
 import { Ref, computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import Loading from '@/components/helper/Loading.vue'
 import DefaultPage from '@/components/default/Page.vue'
 import {
@@ -70,6 +71,7 @@ import { roleList } from '@/router/routes/role'
 import { FormSetting } from '@/typings/form.type'
 import { alpha, required } from '@/utils/validation'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 
@@ -153,23 +155,23 @@ const initForm = () => {
   formSettings.value = [
     {
       key: 'name',
-      label: 'Name',
+      label: t('app.columns.name'),
       isRequired: true,
       rules: [required, alpha]
     },
     {
       key: 'isManager',
-      label: 'Manager ?',
+      label: t('app.columns.is_manager'),
       type: 'checkbox'
     },
     {
       key: 'description',
-      label: 'Description',
+      label: t('app.columns.description'),
       type: 'textarea'
     },
     {
       key: 'permissions',
-      label: 'Permissions',
+      label: t('app.columns.permissions'),
       isRequired: true,
       default: []
     }
