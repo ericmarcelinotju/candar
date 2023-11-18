@@ -180,6 +180,11 @@ const initForm = () => {
       options: projectStatuses
     },
     {
+      key: 'estimate',
+      label: t('app.columns.estimate'),
+      type: 'number'
+    },
+    {
       key: 'clientId',
       label: t('app.columns.client'),
       isRequired: true,

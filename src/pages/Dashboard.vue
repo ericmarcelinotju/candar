@@ -14,7 +14,7 @@
         {{ time }}
       </div>
     </div>
-    <div class="grid grid-cols-12 gap-6">
+    <div class="flex flex-wrap gap-6">
       <div class="stat-card">
         <div class="stat-label">
           {{ activeProjects || 0 }}
@@ -49,7 +49,7 @@
         </div>
       </div>
     </div>
-    <div class="grid grid-cols-12 gap-6">
+    <div class="mt-6 flex flex-wrap gap-6">
       <div class="stat-card">
         <div class="stat-label">
           0
@@ -407,7 +407,7 @@ const initTime = () => {
 
 <style lang="scss" scoped>
 .stat-card {
-  @apply md:col-span-4 col-span-12 rounded-md overflow-hidden bg-white shadow;
+  @apply md:flex-1 w-full rounded-md overflow-hidden bg-white shadow;
   .stat-label {
     @apply left-3 bottom-3 w-full py-2 px-3 shadow-xl bg-primary text-lg text-white font-bold;
   }

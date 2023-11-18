@@ -373,8 +373,11 @@ watchDebounced(
 const hasType = computed(() => taskPayload.value.type)
 const removeType = () => (taskPayload.value.type = null)
 const typeOptions: Ref<Option[]> = ref([
+  { label: 'Call', value: 'call' },
+  { label: 'Email', value: 'email' },
   { label: 'Meeting', value: 'meeting' },
-  { label: 'Cold Call', value: 'cold_call' }
+  { label: 'Note', value: 'note' },
+  { label: 'Task', value: 'task' }
 ])
 
 const detailTask = () => {

@@ -46,7 +46,9 @@
     "friday": "Friday",
     "fri": "Fri",
     "saturday": "Saturday",
-    "sat": "Sat"
+    "sat": "Sat",
+    "detail": "Detail",
+    "summary": "Summary"
   },
   "module": {
     "user": "User",
@@ -70,6 +72,9 @@
     "product_category": "Product Category",
     "variant": "Variant"
   },
+  "currency": {
+    "rp": "Rp."
+  },
   "project": {
     "initiate": "Initiate",
     "qualification": "Qualification",
@@ -87,7 +92,11 @@
     "lose_project": "Deals Lost",
     "status_by_source": "Deal Status by Source",
     "status": "Deal Status",
-    "me": "My Deals"
+    "me": "My Deals",
+    "tip": {
+      "note": "Write something",
+      "estimate": "Project estimated value"
+    }
   },
   "quotation": {
     "add_product": "Add Product",

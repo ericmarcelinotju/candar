@@ -12,10 +12,21 @@
         <textarea
           v-model="project.description"
           class="hover-input text-sm h-36"
-          placeholder="Write something"
+          :placeholder="$t('project.tip.note')"
         />
       </div>
-      <div class="mt-6">
+      <div class="-ml-3 flex items-center ">
+        <div class="mx-3">
+          {{ $t('currency.rp') }}
+        </div>
+        <input
+          v-model="project.estimate"
+          class="hover-input text-sm"
+          :placeholder="$t('project.tip.estimate')"
+          type="number"
+        >
+      </div>
+      <!-- <div class="mt-6">
         <p class="text-md">
           Costs
         </p>
@@ -40,7 +51,7 @@
             @update="onCostUpdate"
           />
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="flex-1 border-l px-3">
       <div class="flex gap-3 text-xs font-semibold">
