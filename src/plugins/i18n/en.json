@@ -96,6 +96,15 @@
     "tip": {
       "note": "Write something",
       "estimate": "Project estimated value"
+    },
+    "task": {
+      "activity": "Activities",
+      "call": "Calls",
+      "email": "Emails",
+      "meeting": "Meetings",
+      "note": "Notes",
+      "task": "Tasks",
+      "tip": "Add new task"
     }
   },
   "quotation": {

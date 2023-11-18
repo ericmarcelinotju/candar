@@ -10,7 +10,7 @@
         >
           <button
             class="relative top-[1px] py-2 px-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 text-gray-500 font-medium"
-            :class="selected && 'bg-white text-info border-t border-x border-gray-300'"
+            :class="[selected && 'bg-white text-info border-t border-x border-gray-300', buttonClass]"
           >
             {{ option.label }}
           </button>
@@ -35,6 +35,7 @@ import { Option } from '@/typings/option.type'
 
 interface Props {
   options: Option[];
+  buttonClass?: string;
 }
 defineProps<Props>()
 </script>

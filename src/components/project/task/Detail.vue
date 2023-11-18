@@ -245,22 +245,22 @@
 
 <script setup lang="ts">
 import { Ref, computed, onMounted, ref, watch } from 'vue'
-import { watchDebounced } from '@vueuse/core'
 import Multiselect from 'vue-multiselect'
+import { useI18n } from 'vue-i18n'
+import { watchDebounced } from '@vueuse/core'
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { UserAddIcon, PencilAltIcon, TagIcon } from '@heroicons/vue/solid'
 import { DocumentIcon } from '@heroicons/vue/outline'
-
 import { config } from '@/config'
-import { update as updateProjectTask, detail as getProjectTask } from '@/api/project-task'
+import { Option } from '@/typings/option.type'
 import { ProjectTask } from '@/typings/models/project-task.type'
+import { update as updateProjectTask, detail as getProjectTask } from '@/api/project-task'
 import { get as getAttendees } from '@/api/task-attendee'
 import { useNotify } from '@/composables/use-notify'
 import FileInput from '@/components/form/File.vue'
 import InfoButton from '@/components/helper/InfoButton.vue'
-import { jsonToFormData } from '@/utils'
-import { Option } from '@/typings/option.type'
 import Dropdown from '@/components/form/dropdown/Dropdown.vue'
+import { jsonToFormData } from '@/utils'
 import { snakeToTitle } from '@/utils/string'
 
 interface Props {
@@ -268,9 +268,8 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-
 const emit = defineEmits(['update'])
-
+const { t } = useI18n()
 const { notify } = useNotify('task')
 
 const isLoaded = ref(false)
@@ -323,8 +322,11 @@ watchDebounced(
 const hasType = computed(() => projectTask.value.type)
 const removeType = () => (projectTask.value.type = null)
 const typeOptions: Ref<Option[]> = ref([
-  { label: 'Meeting', value: 'meeting' },
-  { label: 'Cold Call', value: 'cold_call' }
+  { label: t('project.task.call'), value: 'call' },
+  { label: t('project.task.email'), value: 'email' },
+  { label: t('project.task.meeting'), value: 'meeting' },
+  { label: t('project.task.note'), value: 'note' },
+  { label: t('project.task.task'), value: 'task' }
 ])
 
 // Attendees

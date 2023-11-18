@@ -20,7 +20,7 @@
       v-model="taskPayload.name"
       class="w-full px-3 py-2 rounded-md border border-grey-soft focus:ring-info-dark focus:border-info-dark text-sm"
       :class="taskPayload.id ? '!pl-9' : ''"
-      placeholder="Write something"
+      :placeholder="$t('project.task.tip')"
       type="text"
     >
     <div class="absolute top-0 right-0 flex gap-1 m-[0.35rem]">
@@ -285,6 +285,7 @@ import InfoButton from '@/components/helper/InfoButton.vue'
 import Dropdown from '@/components/form/dropdown/Dropdown.vue'
 import { jsonToFormData } from '@/utils'
 import { snakeToTitle } from '@/utils/string'
+import { useI18n } from 'vue-i18n'
 
 const defaultTaskPayload = {
   id: null,
@@ -315,7 +316,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits(['insert', 'update', 'delete', 'detail'])
-
+const { t } = useI18n()
 const { notify } = useNotify('task')
 
 const loading = ref(false)
@@ -373,11 +374,11 @@ watchDebounced(
 const hasType = computed(() => taskPayload.value.type)
 const removeType = () => (taskPayload.value.type = null)
 const typeOptions: Ref<Option[]> = ref([
-  { label: 'Call', value: 'call' },
-  { label: 'Email', value: 'email' },
-  { label: 'Meeting', value: 'meeting' },
-  { label: 'Note', value: 'note' },
-  { label: 'Task', value: 'task' }
+  { label: t('project.task.call'), value: 'call' },
+  { label: t('project.task.email'), value: 'email' },
+  { label: t('project.task.meeting'), value: 'meeting' },
+  { label: t('project.task.note'), value: 'note' },
+  { label: t('project.task.task'), value: 'task' }
 ])
 
 const detailTask = () => {
@@ -420,7 +421,7 @@ const onAttachmentChange = (e) => {
   taskPayload.value.attachment = files[0]
 }
 
-// Attendees
+// TODO :: Move to store to avoid multiple calls
 const attendees: Ref<string[]> = ref([])
 const attendeeOptions = computed(() => attendees.value?.filter(option => taskPayload.value?.attendees.indexOf(option) === -1))
 onMounted(() => {
