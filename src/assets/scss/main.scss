@@ -167,7 +167,7 @@ fieldset[disabled] {
 }
 
 .default-tag {
-  @apply inline-flex items-center justify-center py-1 px-2 shadow-sm text-xs font-medium rounded-lg bg-white border;
+  @apply inline-flex items-center justify-center py-1 px-2 shadow-sm text-xs font-medium rounded-lg bg-white border whitespace-nowrap;
 
   &.hoverable {
     @apply focus:outline-none focus:ring-2 focus:ring-offset-2;

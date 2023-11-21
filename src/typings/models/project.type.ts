@@ -25,6 +25,7 @@ export class Project extends BaseModel {
   expiredAt: Date
   isExpired: boolean
   estimate: number
+  priority: number
 
   updates: ProjectUpdate[]
   tasks: ProjectTask[]

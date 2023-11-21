@@ -331,7 +331,7 @@ const typeOptions: Ref<Option[]> = ref([
 
 // Attendees
 const attendees: Ref<string[]> = ref([])
-const attendeeOptions = computed(() => attendees.value?.filter(option => projectTask.value?.attendees.indexOf(option) === -1))
+const attendeeOptions = computed(() => attendees.value?.filter(option => projectTask.value?.attendees?.indexOf(option) === -1))
 onMounted(() => {
   getAttendeesOption()
 })

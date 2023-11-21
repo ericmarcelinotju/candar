@@ -196,6 +196,52 @@
         </div>
       </template>
     </div>
+    <div
+      class="mt-9 grid"
+      :class="[
+        isClosedProjectsShown ?
+          'grid-cols-6 gap-4' : 'grid-cols-4 gap-6'
+      ]"
+    >
+      <div>
+        <div class="text-sm font-semibold">
+          {{ $t('project.totalEstimate') }}
+        </div>
+        {{ formatCurrency(projectsInitiateTotalEstimate) }}
+      </div>
+      <div>
+        <div class="text-sm font-semibold">
+          {{ $t('project.totalEstimate') }}
+        </div>
+        {{ formatCurrency(projectsQualificationTotalEstimate) }}
+      </div>
+      <div>
+        <div class="text-sm font-semibold">
+          {{ $t('project.totalEstimate') }}
+        </div>
+        {{ formatCurrency(projectsLeadTotalEstimate) }}
+      </div>
+      <div>
+        <div class="text-sm font-semibold">
+          {{ $t('project.total') }}
+        </div>
+        {{ formatCurrency(projectsQuotationTotalEstimate) }}
+      </div>
+      <template v-if="isClosedProjectsShown">
+        <div>
+          <div class="text-sm font-semibold">
+            {{ $t('project.total') }}
+          </div>
+          {{ formatCurrency(projectsWinTotalEstimate) }}
+        </div>
+        <div>
+          <div class="text-sm font-semibold">
+            {{ $t('project.total') }}
+          </div>
+          {{ formatCurrency(projectsLoseTotalEstimate) }}
+        </div>
+      </template>
+    </div>
 
     <template #action>
       <div class="flex flex-row">
@@ -271,6 +317,21 @@
       >
         <ProjectCostDetail :data="detailCostItem" />
       </DefaultModal>
+      <DefaultModal
+        v-model="visiblePriorityModal"
+        class-name="!max-w-3xl"
+        description="Update the current priority of this deal."
+        :has-icon="false"
+        :loading="loadingPriority"
+        title="Update Deal Priority"
+        type="info"
+        @confirm="onConfirmPriority"
+      >
+        <ProjectPriority
+          v-model="priorityItem.priority"
+          :data="priorityItem"
+        />
+      </DefaultModal>
     </template>
   </DefaultPage>
 </template>
@@ -302,6 +363,10 @@ import { ProjectTask } from '@/typings/models/project-task.type'
 
 import ProjectCostDetail from '@/components/project/cost/Detail.vue'
 import { ProjectCost } from '@/typings/models/project-cost.type'
+
+import ProjectPriority from '@/components/project/Priority.vue'
+
+import { formatCurrency } from '@/utils/number'
 
 const route = useRoute()
 const router = useRouter()
@@ -369,7 +434,7 @@ const handleTaskDetail = (data: ProjectTask) => {
   detailItem.value = null
 
   visibleTaskDetailModal.value = true
-  detailTaskItem.value = data
+  detailTaskItem.value = { ...data }
 }
 
 // Detail project Cost
@@ -381,7 +446,25 @@ const handleCostDetail = (data: ProjectCost) => {
   detailItem.value = null
 
   visibleCostDetailModal.value = true
-  detailCostItem.value = data
+  detailCostItem.value = { ...data }
+}
+
+// Detail project priority
+const loadingPriority = ref(false)
+const visiblePriorityModal = ref(false)
+const priorityItem: Ref<Project> = ref()
+const handlePriority = (data: Project) => {
+  visiblePriorityModal.value = true
+  priorityItem.value = { ...data }
+}
+const onConfirmPriority = () => {
+  updateProject(priorityItem.value.id, {
+    ...priorityItem.value,
+    expiredAt: new Date(priorityItem.value.expiredAt)
+  })
+    .catch((err) => {
+      notify('update', 'danger', err.message)
+    })
 }
 
 const initPage = async () => {
@@ -431,6 +514,19 @@ const confirmDelete = () => {
     })
 }
 
+const updatePrj = (payload: Project) => {
+  return updateProject(payload.id, {
+    ...payload,
+    expiredAt: new Date(payload.expiredAt)
+  })
+    .then(() => {
+      handlePriority(payload)
+    })
+    .catch((err) => {
+      notify('update', 'danger', err.message)
+    })
+}
+
 const projectsInitiate = computed({
   get: () => [...items.value.filter((item) => item.status === 'initiate')],
   set: (val) => {
@@ -439,14 +535,16 @@ const projectsInitiate = computed({
       if (currStatus !== 'initiate') {
         val[i].status = 'initiate'
 
-        updateProject(val[i].id, val[i]).catch((err) => {
-          val[i].status = currStatus
-          notify('update', 'danger', err.message)
-        })
+        updatePrj(val[i])
+          .catch(() => {
+            val[i].status = currStatus
+          })
       }
     }
   }
 })
+const projectsInitiateTotalEstimate = computed(() => projectsInitiate.value.reduce((acc, item) => acc + item.estimate, 0))
+
 const projectsQualification = computed({
   get: () => [...items.value.filter((item) => item.status === 'qualification')],
   set: (val) => {
@@ -455,14 +553,15 @@ const projectsQualification = computed({
       if (currStatus !== 'qualification') {
         val[i].status = 'qualification'
 
-        updateProject(val[i].id, val[i]).catch((err) => {
-          val[i].status = currStatus
-          notify('update', 'danger', err.message)
-        })
+        updatePrj(val[i])
+          .catch(() => {
+            val[i].status = currStatus
+          })
       }
     }
   }
 })
+const projectsQualificationTotalEstimate = computed(() => projectsQualification.value.reduce((acc, item) => acc + item.estimate, 0))
 
 const projectsLead = computed({
   get: () => [...items.value.filter((item) => item.status === 'lead')],
@@ -472,14 +571,15 @@ const projectsLead = computed({
       if (currStatus !== 'lead') {
         val[i].status = 'lead'
 
-        updateProject(val[i].id, val[i]).catch((err) => {
-          val[i].status = currStatus
-          notify('update', 'danger', err.message)
-        })
+        updatePrj(val[i])
+          .catch(() => {
+            val[i].status = currStatus
+          })
       }
     }
   }
 })
+const projectsLeadTotalEstimate = computed(() => projectsLead.value.reduce((acc, item) => acc + item.estimate, 0))
 
 const projectsQuotation = computed({
   get: () => [...items.value.filter((item) => item.status === 'quotation')],
@@ -489,18 +589,21 @@ const projectsQuotation = computed({
       if (currStatus !== 'quotation') {
         val[i].status = 'quotation'
 
-        updateProject(val[i].id, val[i]).catch((err) => {
-          val[i].status = currStatus
-          notify('update', 'danger', err.message)
-        })
+        updatePrj(val[i])
+          .catch(() => {
+            val[i].status = currStatus
+          })
       }
     }
   }
 })
+const projectsQuotationTotalEstimate = computed(() => projectsQuotation.value.reduce((acc, item) => acc + item.estimate, 0))
 
 const projectsWin = computed(() => [...items.value.filter((item) => item.status === 'win')])
+const projectsWinTotalEstimate = computed(() => projectsWin.value.reduce((acc, item) => acc + item.estimate, 0))
 
 const projectsLose = computed(() => [...items.value.filter((item) => item.status === 'lose')])
+const projectsLoseTotalEstimate = computed(() => projectsLose.value.reduce((acc, item) => acc + item.estimate, 0))
 
 const dragOptions = ref({
   animation: 200,

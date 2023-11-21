@@ -93,6 +93,8 @@
     "status_by_source": "Deal Status by Source",
     "status": "Deal Status",
     "me": "My Deals",
+    "totalEstimate": "Total estimate value",
+    "total": "Total value",
     "tip": {
       "note": "Write something",
       "estimate": "Project estimated value"
@@ -319,7 +321,8 @@
       "sub_district": "Sub District",
       "address": "Address",
       "postal_code": "Postal Code",
-      "coordinates": "Coordinates"
+      "coordinates": "Coordinates",
+      "priority": "Priority"
     }
   }
 }

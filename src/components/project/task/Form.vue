@@ -266,7 +266,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, Ref, watch } from 'vue'
+import { computed, onMounted, ref, Ref } from 'vue'
 import { watchDebounced } from '@vueuse/core'
 import dayjs from 'dayjs'
 import Datepicker from '@vuepic/vue-datepicker'
@@ -423,7 +423,7 @@ const onAttachmentChange = (e) => {
 
 // TODO :: Move to store to avoid multiple calls
 const attendees: Ref<string[]> = ref([])
-const attendeeOptions = computed(() => attendees.value?.filter(option => taskPayload.value?.attendees.indexOf(option) === -1))
+const attendeeOptions = computed(() => attendees.value?.filter(option => taskPayload.value?.attendees?.indexOf(option) === -1))
 onMounted(() => {
   getAttendeesOption()
 })

@@ -123,7 +123,7 @@ interface Props {
   data: Project
 }
 const props = defineProps<Props>()
-const emit = defineEmits(['update', 'detail:task', 'detail:cost', 'close'])
+const emit = defineEmits(['update', 'detail:task'])
 const { t } = useI18n()
 const { notify } = useNotify('project')
 
@@ -178,8 +178,6 @@ watchDebounced(
     updateProject(payload.id, payload)
       .then(() => {
         emit('update', payload)
-
-        // if (isClosed.value) emit('close')
       })
       .catch(() => {
         notify('saved', 'danger')

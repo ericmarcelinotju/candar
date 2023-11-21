@@ -25,9 +25,18 @@ const convertFromCurrencyToNumber = (value) => {
   return parseInt(result)
 }
 
+const formatCurrency = (value: number): string => {
+  const currency = new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR'
+  })
+  return currency.format(value)
+}
+
 export {
   roundingTwoDecimal,
   roundingNearestThousand,
   isNumber,
-  convertFromCurrencyToNumber
+  convertFromCurrencyToNumber,
+  formatCurrency
 }
