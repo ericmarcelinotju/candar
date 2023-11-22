@@ -20,6 +20,18 @@ export const productCreate = {
   }
 }
 
+const ProductImport = () => import('@/pages/product/import.vue')
+
+export const productImport = {
+  path: '/product/import',
+  name: 'product-import',
+  component: ProductImport,
+  meta: {
+    auth: true,
+    title: 'Product Import'
+  }
+}
+
 export const productEdit = {
   path: '/product/edit/:id',
   name: 'product-edit',

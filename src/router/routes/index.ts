@@ -30,7 +30,8 @@ import {
   productCategoryList,
   productCreate,
   productEdit,
-  productList
+  productList,
+  productImport
 } from './product'
 import { quotationCreate, quotationEdit, quotationList } from './quotation'
 import { contractCreate, contractEdit, contractList } from './contract'
@@ -136,7 +137,8 @@ export const contractRoutes: Record<string, RouteRecordRaw> = {
 export const productRoutes: Record<string, RouteRecordRaw> = {
   list: productList,
   create: productCreate,
-  edit: productEdit
+  edit: productEdit,
+  import: productImport
 }
 export const productCategoryRoutes: Record<string, RouteRecordRaw> = {
   list: productCategoryList,

@@ -23,10 +23,15 @@ const del = (id: string): Promise<BaseResponse<null>> => {
   return axios.delete(`/product/${id}`)
 }
 
+const importData = (data: FormData): Promise<BaseResponse<null>> => {
+  return axios.put('/import/product', data)
+}
+
 export {
   get,
   detail,
   insert,
   update,
-  del
+  del,
+  importData
 }

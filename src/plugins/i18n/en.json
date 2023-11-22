@@ -69,6 +69,7 @@
     "clients": "Clients",
     "product": "Product",
     "products": "Products",
+    "product_import": "Product Import",
     "product_category": "Product Category",
     "variant": "Variant"
   },
@@ -322,7 +323,8 @@
       "address": "Address",
       "postal_code": "Postal Code",
       "coordinates": "Coordinates",
-      "priority": "Priority"
+      "priority": "Priority",
+      "estimate": "Estimate"
     }
   }
 }

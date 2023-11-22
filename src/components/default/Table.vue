@@ -53,11 +53,15 @@
                 />
               </div>
             </th>
+            <slot
+              name="custom-head"
+            />
             <th
               v-if="hasEdit || hasDelete"
               class="head action"
             />
           </tr>
+          <slot name="custom-head-2" />
         </thead>
         <tbody>
           <template v-if="hasItems">
@@ -105,6 +109,10 @@
                     </span>
                   </template>
                 </td>
+                <slot
+                  :item="item"
+                  name="custom-body"
+                />
                 <td
                   v-if="hasEdit || hasDelete"
                   class="action"
