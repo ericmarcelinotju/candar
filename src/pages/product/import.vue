@@ -73,245 +73,224 @@
             </div>
           </template>
         </DefaultCreateEdit>
-        <DefaultTable
-          :columns="columns"
-          :items="productImportList"
-          :loading="loading"
-          :total="itemsTotal"
-        >
-          <template #custom-head>
-            <th
-              class="head"
-              colspan="9"
-              scope="col"
-              style="text-align: center;"
+        <template v-else>
+          <DefaultTable
+            :columns="columns"
+            :has-delete="false"
+            :has-edit="false"
+            :items="productImportList"
+            :loading="loading"
+            :total="itemsTotal"
+          >
+            <template #custom-head>
+              <th
+                class="head"
+                colspan="9"
+                scope="col"
+                style="text-align: center;"
+              >
+                Iregular
+              </th>
+              <th
+                class="head"
+                colspan="9"
+                scope="col"
+                style="text-align: center;"
+              >
+                Regular
+              </th>
+            </template>
+            <template #custom-head-2>
+              <tr>
+                <th
+                  class="head"
+                  colspan="3"
+                  style="text-align: center;"
+                >
+                  Tier 1
+                </th>
+                <th
+                  class="head"
+                  colspan="3"
+                  style="text-align: center;"
+                >
+                  Tier 2
+                </th>
+                <th
+                  class="head"
+                  colspan="3"
+                  style="text-align: center;"
+                >
+                  Tier 3
+                </th>
+                <th
+                  class="head"
+                  colspan="3"
+                  style="text-align: center;"
+                >
+                  Tier 1
+                </th>
+                <th
+                  class="head"
+                  colspan="3"
+                  style="text-align: center;"
+                >
+                  Tier 2
+                </th>
+                <th
+                  class="head"
+                  colspan="3"
+                  style="text-align: center;"
+                >
+                  Tier 3
+                </th>
+                <th />
+              </tr>
+              <tr>
+                <th
+                  class="head"
+                  scope="col"
+                >
+                  M.O.Q
+                </th>
+                <th
+                  class="head"
+                  scope="col"
+                >
+                  Disc. Rate
+                </th>
+                <th
+                  class="head"
+                  scope="col"
+                >
+                  Price/Unit
+                </th>
+                <th
+                  class="head"
+                  scope="col"
+                >
+                  M.O.Q
+                </th>
+                <th
+                  class="head"
+                  scope="col"
+                >
+                  Disc. Rate
+                </th>
+                <th
+                  class="head"
+                  scope="col"
+                >
+                  Price/Unit
+                </th>
+                <th
+                  class="head"
+                  scope="col"
+                >
+                  M.O.Q
+                </th>
+                <th
+                  class="head"
+                  scope="col"
+                >
+                  Disc. Rate
+                </th>
+                <th
+                  class="head"
+                  scope="col"
+                >
+                  Price/Unit
+                </th>
+                <th
+                  class="head"
+                  scope="col"
+                >
+                  M.O.Q
+                </th>
+                <th
+                  class="head"
+                  scope="col"
+                >
+                  Disc. Rate
+                </th>
+                <th
+                  class="head"
+                  scope="col"
+                >
+                  Price/Unit
+                </th>
+                <th
+                  class="head"
+                  scope="col"
+                >
+                  M.O.Q
+                </th>
+                <th
+                  class="head"
+                  scope="col"
+                >
+                  Disc. Rate
+                </th>
+                <th
+                  class="head"
+                  scope="col"
+                >
+                  Price/Unit
+                </th>
+                <th
+                  class="head"
+                  scope="col"
+                >
+                  M.O.Q
+                </th>
+                <th
+                  class="head"
+                  scope="col"
+                >
+                  Disc. Rate
+                </th>
+                <th
+                  class="head"
+                  scope="col"
+                >
+                  Price/Unit
+                </th>
+                <th />
+              </tr>
+            </template>
+            <template #custom-body="{ item }">
+              <template
+                v-for="el in item.tiers"
+                :key="`tiers-${el.secureId}`"
+              >
+                <td class="text-center">
+                  {{ el.moq }}
+                </td>
+                <td class="text-center">
+                  {{ el.discRate }}
+                </td>
+                <td class="text-center">
+                  {{ el.price }}
+                </td>
+              </template>
+            </template>
+          </DefaultTable>
+          <div class="create-edit-submit-container">
+            <button
+              class="default-button mr-4"
+              @click="handleReset"
             >
-              Iregular
-            </th>
-            <th
-              class="head"
-              colspan="9"
-              scope="col"
-              style="text-align: center;"
+              {{ $t('app.reset') }}
+            </button>
+            <button
+              class="success-button"
+              @click="handleConfirm"
             >
-              Regular
-            </th>
-          </template>
-          <template #custom-head-2>
-            <tr>
-              <th
-                class="head"
-                colspan="3"
-                style="text-align: center;"
-              >
-                Tier 1
-              </th>
-              <th
-                class="head"
-                colspan="3"
-                style="text-align: center;"
-              >
-                Tier 2
-              </th>
-              <th
-                class="head"
-                colspan="3"
-                style="text-align: center;"
-              >
-                Tier 3
-              </th>
-              <th
-                class="head"
-                colspan="3"
-                style="text-align: center;"
-              >
-                Tier 1
-              </th>
-              <th
-                class="head"
-                colspan="3"
-                style="text-align: center;"
-              >
-                Tier 2
-              </th>
-              <th
-                class="head"
-                colspan="3"
-                style="text-align: center;"
-              >
-                Tier 3
-              </th>
-              <th />
-            </tr>
-            <tr>
-              <th
-                class="head"
-                scope="col"
-              >
-                M.O.Q
-              </th>
-              <th
-                class="head"
-                scope="col"
-              >
-                Disc. Rate
-              </th>
-              <th
-                class="head"
-                scope="col"
-              >
-                Price/Unit
-              </th>
-              <th
-                class="head"
-                scope="col"
-              >
-                M.O.Q
-              </th>
-              <th
-                class="head"
-                scope="col"
-              >
-                Disc. Rate
-              </th>
-              <th
-                class="head"
-                scope="col"
-              >
-                Price/Unit
-              </th>
-              <th
-                class="head"
-                scope="col"
-              >
-                M.O.Q
-              </th>
-              <th
-                class="head"
-                scope="col"
-              >
-                Disc. Rate
-              </th>
-              <th
-                class="head"
-                scope="col"
-              >
-                Price/Unit
-              </th>
-              <th
-                class="head"
-                scope="col"
-              >
-                M.O.Q
-              </th>
-              <th
-                class="head"
-                scope="col"
-              >
-                Disc. Rate
-              </th>
-              <th
-                class="head"
-                scope="col"
-              >
-                Price/Unit
-              </th>
-              <th
-                class="head"
-                scope="col"
-              >
-                M.O.Q
-              </th>
-              <th
-                class="head"
-                scope="col"
-              >
-                Disc. Rate
-              </th>
-              <th
-                class="head"
-                scope="col"
-              >
-                Price/Unit
-              </th>
-              <th
-                class="head"
-                scope="col"
-              >
-                M.O.Q
-              </th>
-              <th
-                class="head"
-                scope="col"
-              >
-                Disc. Rate
-              </th>
-              <th
-                class="head"
-                scope="col"
-              >
-                Price/Unit
-              </th>
-              <th />
-            </tr>
-          </template>
-          <template #custom-body>
-            <td class="text-center">
-              default
-            </td>
-            <td class="text-center">
-              default
-            </td>
-            <td class="text-center">
-              default
-            </td>
-            <td class="text-center">
-              default
-            </td>
-            <td class="text-center">
-              default
-            </td>
-            <td class="text-center">
-              default
-            </td>
-            <td class="text-center">
-              default
-            </td>
-            <td class="text-center">
-              default
-            </td>
-            <td class="text-center">
-              default
-            </td>
-            <td class="text-center">
-              default
-            </td>
-            <td class="text-center">
-              default
-            </td>
-            <td class="text-center">
-              default
-            </td>
-            <td class="text-center">
-              default
-            </td>
-            <td class="text-center">
-              default
-            </td>
-            <td class="text-center">
-              default
-            </td>
-            <td class="text-center">
-              default
-            </td>
-            <td class="text-center">
-              default
-            </td>
-            <td class="text-center">
-              default
-            </td>
-          </template>
-        </DefaultTable>
+              <Loading v-if="loadingConfirm" />
+              Confirm
+            </button>
+          </div>
+        </template>
       </template>
     </DefaultPage>
   </div>
@@ -321,11 +300,17 @@
 import { Ref, ref, computed } from 'vue'
 import { FormSetting } from '@/typings/form.type'
 import { config } from '@/config'
-// import { useI18n } from 'vue-i18n'
+import { useI18n } from 'vue-i18n'
+import { ProductImport } from '@/typings/models/product-import.type'
+import { useRouter } from 'vue-router'
 // import { required } from '@/utils/validation'
 
 import FileInput from '@/components/form/File.vue'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
+import DefaultTable from '@/components/default/Table.vue'
+import Loading from '@/components/helper/Loading.vue'
+
+
 import { PencilAltIcon } from '@heroicons/vue/solid'
 import { DocumentIcon } from '@heroicons/vue/outline'
 
@@ -333,18 +318,181 @@ const loading: Ref<boolean> = ref(false)
 const formSettings: Ref<FormSetting[]> = ref([])
 const initialData: Ref<any> = ref()
 
+const { t } = useI18n()
+const router = useRouter()
+
 const productImportFile: Ref<{ file: File, name: string }> = ref({
   file: null,
   name: null
 })
 
-const productImportList: Ref<any[]> = ref([1, 2])
+// Table columns setting
+const columns = [
+  {
+    label: t('app.columns.id'),
+    key: 'id',
+    isHidden: true
+  },
+  {
+    label: t('app.columns.code'),
+    key: 'code',
+    isSortable: true,
+    isSearchable: true,
+    isHidden: true
+  },
+  {
+    label: t('app.columns.name'),
+    key: 'name',
+    isSortable: true,
+    isSearchable: true
+  },
+  {
+    label: t('app.columns.cost'),
+    key: 'cost',
+    isSortable: true,
+    isSearchable: true
+  },
+  {
+    label: t('app.columns.price'),
+    key: 'price',
+    isSortable: true,
+    isSearchable: true
+  },
+  {
+    label: t('app.columns.publish_price'),
+    key: 'publishPrice',
+    isSortable: false,
+    isSearchable: false
+  },
+  {
+    label: t('app.columns.category'),
+    key: 'category.name',
+    isSortable: false,
+    isSearchable: false
+  }
+]
+
+const productImportList: Ref<ProductImport[]> = ref([])
 const itemsTotal = ref(0)
 const isProductImportSuccess = computed(() => productImportList.value.length > 0)
-// const { t } = useI18n()
+
+const handleReset = () => {
+  productImportList.value = []
+  productImportFile.value = {
+    file: null,
+    name: null
+  }
+}
 
 const onSubmit = (form, onFinish) => {
   console.log(productImportFile.value)
+
+  setTimeout(() => {
+    productImportList.value = [
+      {
+        error: 'Product Duplicate',
+        productCode: 'X1007VAVB',
+        name: 'Produk A',
+        description: 'Ini Produk A',
+        sku: 'asdasd',
+        unitCode: 'asd',
+        contain: null,
+        unit: null,
+        hsCode: null,
+        stock: 1,
+        price: 5000000,
+        cost: 500000,
+        bmTariff: 0.05,
+        rateCOGS: 0.28,
+        insurance: 2500,
+        freight: 135000,
+        bmDuty: 25000,
+        ppn: 72875,
+        pph22: 16562.5,
+        repack: 22558.125,
+        others: null,
+        subTotal: 774495.625,
+        cogs: 1075688.368,
+        sellPrice: 28133388088,
+        publishPrice: 28133390000,
+        variants: [
+          [
+            {
+              id: 'ed541bae-57fd-4415-bb7a-dd89d23b515a',
+              name: 'variant 2',
+              code: 'VA',
+              createdAt: '2023-10-18T17:48:49.489Z',
+              updatedAt: '2023-10-18T17:48:49.489Z',
+              disable: false
+            },
+            {
+              id: 'd6f3398e-7a80-4691-9d2a-5ff43a4cb568',
+              name: 'variant 1',
+              code: 'VB',
+              createdAt: '2023-10-18T17:48:49.489Z',
+              updatedAt: '2023-10-18T17:48:49.489Z',
+              disable: false
+            }
+          ]
+        ],
+        categoryId: 'c4259084-928c-467f-b780-212e5992309a',
+        tiers: [
+          {
+            name: 'tier 1',
+            type: 'regular',
+            moq: 1,
+            discRate: 0.12,
+            price: 24757383200
+          },
+          {
+            name: 'tier 2',
+            type: 'regular',
+            moq: 2,
+            discRate: 2,
+            price: -28133390000
+          },
+          {
+            name: 'tier 3',
+            type: 'regular',
+            moq: 3,
+            discRate: 3,
+            price: -56266780000
+          },
+          {
+            name: 'tier 1',
+            type: 'irregular',
+            moq: 4,
+            discRate: 4,
+            price: -84400170000
+          },
+          {
+            name: 'tier 2',
+            type: 'irregular',
+            moq: 5,
+            discRate: 5,
+            price: -112533560000
+          },
+          {
+            name: 'tier 3',
+            type: 'irregular',
+            moq: 6,
+            discRate: 6,
+            price: -140666950000
+          }
+        ]
+      }
+    ]
+  }, 2000)
+}
+
+const loadingConfirm: Ref<boolean> = ref(false)
+
+const handleConfirm = () => {
+  loadingConfirm.value = true
+  setTimeout(() => {
+    loadingConfirm.value = false
+    router.push({ name: 'product' })
+  }, 1000)
 }
 
 const initForm = () => {
@@ -390,6 +538,14 @@ initForm()
 <style lang="scss" scoped>
 .disclaimer-label {
     @apply text-xs text-black-soft;
+}
+
+.head {
+  @apply px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 whitespace-nowrap;
+
+  &.action {
+    @apply text-center w-1;
+  }
 }
 
 </style>
