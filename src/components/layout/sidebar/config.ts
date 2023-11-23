@@ -47,6 +47,11 @@ export const navigations: Navigation[] = [
         name: 'Product',
         module: 'PRODUCT',
         href: '/product'
+      },
+      {
+        name: 'Product Import',
+        module: 'PRODUCT',
+        href: '/product/import'
       }
     ]
   },
