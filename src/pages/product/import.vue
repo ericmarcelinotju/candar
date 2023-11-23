@@ -303,6 +303,8 @@ import { config } from '@/config'
 import { useI18n } from 'vue-i18n'
 import { ProductImport } from '@/typings/models/product-import.type'
 import { useRouter } from 'vue-router'
+import { useNotify } from '@/composables/use-notify'
+
 // import { required } from '@/utils/validation'
 
 import FileInput from '@/components/form/File.vue'
@@ -310,9 +312,13 @@ import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
 import DefaultTable from '@/components/default/Table.vue'
 import Loading from '@/components/helper/Loading.vue'
 
-
 import { PencilAltIcon } from '@heroicons/vue/solid'
 import { DocumentIcon } from '@heroicons/vue/outline'
+
+import {
+  insert as importData,
+  confirm as confirmImport
+} from '@/api/product-import'
 
 const loading: Ref<boolean> = ref(false)
 const formSettings: Ref<FormSetting[]> = ref([])
@@ -320,6 +326,7 @@ const initialData: Ref<any> = ref()
 
 const { t } = useI18n()
 const router = useRouter()
+const { notify } = useNotify('product')
 
 const productImportFile: Ref<{ file: File, name: string }> = ref({
   file: null,
@@ -385,114 +392,41 @@ const handleReset = () => {
 }
 
 const onSubmit = (form, onFinish) => {
-  console.log(productImportFile.value)
+  const payload = new FormData()
+  payload.append('file', productImportFile.value.file)
 
-  setTimeout(() => {
-    productImportList.value = [
-      {
-        error: 'Product Duplicate',
-        productCode: 'X1007VAVB',
-        name: 'Produk A',
-        description: 'Ini Produk A',
-        sku: 'asdasd',
-        unitCode: 'asd',
-        contain: null,
-        unit: null,
-        hsCode: null,
-        stock: 1,
-        price: 5000000,
-        cost: 500000,
-        bmTariff: 0.05,
-        rateCOGS: 0.28,
-        insurance: 2500,
-        freight: 135000,
-        bmDuty: 25000,
-        ppn: 72875,
-        pph22: 16562.5,
-        repack: 22558.125,
-        others: null,
-        subTotal: 774495.625,
-        cogs: 1075688.368,
-        sellPrice: 28133388088,
-        publishPrice: 28133390000,
-        variants: [
-          [
-            {
-              id: 'ed541bae-57fd-4415-bb7a-dd89d23b515a',
-              name: 'variant 2',
-              code: 'VA',
-              createdAt: '2023-10-18T17:48:49.489Z',
-              updatedAt: '2023-10-18T17:48:49.489Z',
-              disable: false
-            },
-            {
-              id: 'd6f3398e-7a80-4691-9d2a-5ff43a4cb568',
-              name: 'variant 1',
-              code: 'VB',
-              createdAt: '2023-10-18T17:48:49.489Z',
-              updatedAt: '2023-10-18T17:48:49.489Z',
-              disable: false
-            }
-          ]
-        ],
-        categoryId: 'c4259084-928c-467f-b780-212e5992309a',
-        tiers: [
-          {
-            name: 'tier 1',
-            type: 'regular',
-            moq: 1,
-            discRate: 0.12,
-            price: 24757383200
-          },
-          {
-            name: 'tier 2',
-            type: 'regular',
-            moq: 2,
-            discRate: 2,
-            price: -28133390000
-          },
-          {
-            name: 'tier 3',
-            type: 'regular',
-            moq: 3,
-            discRate: 3,
-            price: -56266780000
-          },
-          {
-            name: 'tier 1',
-            type: 'irregular',
-            moq: 4,
-            discRate: 4,
-            price: -84400170000
-          },
-          {
-            name: 'tier 2',
-            type: 'irregular',
-            moq: 5,
-            discRate: 5,
-            price: -112533560000
-          },
-          {
-            name: 'tier 3',
-            type: 'irregular',
-            moq: 6,
-            discRate: 6,
-            price: -140666950000
-          }
-        ]
-      }
-    ]
-  }, 2000)
+  return importData(payload)
+    .then((res) => {
+      notify('inserted')
+      productImportList.value = [
+        ...res.data
+      ]
+    })
+    .catch(() => {
+      notify('inserted', 'danger')
+    })
+    .finally(onFinish)
 }
 
 const loadingConfirm: Ref<boolean> = ref(false)
 
 const handleConfirm = () => {
+  const payload = [
+    ...productImportList.value
+  ]
+
   loadingConfirm.value = true
-  setTimeout(() => {
-    loadingConfirm.value = false
-    router.push({ name: 'product' })
-  }, 1000)
+  return confirmImport(payload)
+    .then(() => {
+      notify('inserted')
+      router.push({ name: 'product' })
+    })
+    .catch(() => {
+      notify('inserted', 'danger')
+    })
+    .finally(() => {
+      loadingConfirm.value = true
+    })
 }
 
 const initForm = () => {
