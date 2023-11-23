@@ -75,7 +75,7 @@
         </DefaultCreateEdit>
         <DefaultTable
           :columns="columns"
-          :items="items"
+          :items="productImportList"
           :loading="loading"
           :total="itemsTotal"
         >
@@ -338,8 +338,8 @@ const productImportFile: Ref<{ file: File, name: string }> = ref({
   name: null
 })
 
-const productImportList: Ref<any[]> = ref([])
-
+const productImportList: Ref<any[]> = ref([1, 2])
+const itemsTotal = ref(0)
 const isProductImportSuccess = computed(() => productImportList.value.length > 0)
 // const { t } = useI18n()
 
