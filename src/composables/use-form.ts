@@ -55,7 +55,6 @@ const useForm = <T>(formSetting?: FormSetting[]) => {
             isValid: false,
             message: `${item.key} ${currRule.name} validation fail`
           }
-          break
         }
       }
     }

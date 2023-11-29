@@ -13,6 +13,23 @@
         :initial-data="initialData"
         @submit="onSubmit"
       >
+        <template #source="{ formSetting, form }">
+          <label
+            class="default-label"
+            :for="formSetting.key"
+          >
+            {{ formSetting.label }}
+          </label>
+          <input
+            :id="formSetting.key"
+            v-model="form.source"
+            class="default-input"
+            false-value="local"
+            :name="formSetting.key"
+            true-value="import"
+            type="checkbox"
+          >
+        </template>
         <template #variant>
           <label
             class="default-label"
@@ -508,20 +525,17 @@ const initForm = () => {
     {
       key: 'description',
       label: t('app.columns.description'),
-      isRequired: true,
-      rules: [required]
+      type: 'textarea'
     }
   ]
 
   if (!id) {
     formSettings.value = [...formSettings.value,
-    // {
-    //   key: 'cost',
-    //   label: 'Cost',
-    //   isRequired: true,
-    //   rules: [required],
-    //   type: 'number'
-    // },
+      {
+        key: 'variant',
+        label: t('app.columns.variants'),
+        isRequired: false
+      },
       {
         key: 'price',
         label: t('app.columns.price'),
@@ -539,39 +553,38 @@ const initForm = () => {
         col: 6
       },
       {
-        key: 'variant',
-        label: t('app.columns.variants'),
-        isRequired: false
+        key: 'source',
+        label: t('app.columns.is_import'),
+        type: 'checkbox'
       },
       {
         key: 'hsCode',
         label: t('app.columns.hs_code'),
         isRequired: false,
-        rules: [required],
         type: 'number',
-        col: 6
+        col: 6,
+        isHidden: (form) => form.source !== 'import'
       },
       {
-        key: 'tariffBM',
+        key: 'bmTariff',
         label: t('app.columns.bm_tariff'),
         isRequired: false,
-        rules: [required],
         type: 'number',
-        col: 6
+        col: 6,
+        isHidden: (form) => form.source !== 'import'
       },
       {
         key: 'rateCOGS',
         label: t('app.columns.cogs_rate'),
         isRequired: false,
-        rules: [required],
         type: 'number',
-        col: 6
+        col: 6,
+        isHidden: (form) => form.source !== 'import'
       },
       {
         key: 'cost',
         label: t('app.columns.cost'),
         isRequired: false,
-        rules: [required],
         type: 'number',
         col: 6
       },
@@ -579,7 +592,6 @@ const initForm = () => {
         key: 'insurance',
         label: t('app.columns.insurance'),
         isRequired: false,
-        rules: [required],
         type: 'number',
         disabled: true,
         formula: (form) => {
@@ -589,13 +601,13 @@ const initForm = () => {
           rawResult = +(form.cost * 0.005).toFixed(2)
           return roundingTwoDecimal(rawResult)
         },
-        col: 6
+        col: 6,
+        isHidden: (form) => form.source !== 'import'
       },
       {
         key: 'freight',
         label: t('app.columns.freight'),
         isRequired: false,
-        rules: [required],
         type: 'number',
         disabled: true,
         formula: (form) => {
@@ -605,62 +617,62 @@ const initForm = () => {
           rawResult = +(form.cost * 0.27).toFixed(2)
           return roundingTwoDecimal(rawResult)
         },
-        col: 6
+        col: 6,
+        isHidden: (form) => form.source !== 'import'
       },
       {
-        key: 'BMDuty',
+        key: 'bmDuty',
         label: t('app.columns.bm_duty'),
         isRequired: false,
-        rules: [required],
         type: 'number',
         disabled: true,
         formula: (form) => {
           let rawResult = 0
-          if (!form.cost || !form.tariffBM) return rawResult
+          if (!form.cost || !form.bmTariff) return rawResult
 
-          rawResult = +(form.cost * (form.tariffBM / 100)).toFixed(2)
+          rawResult = +(form.cost * (form.bmTariff / 100)).toFixed(2)
           return roundingTwoDecimal(rawResult)
         },
-        col: 6
+        col: 6,
+        isHidden: (form) => form.source !== 'import'
       },
       {
         key: 'ppn',
         label: t('app.columns.ppn'),
         isRequired: false,
-        rules: [required],
         type: 'number',
         disabled: true,
         formula: (form) => {
           let rawResult = 0
 
-          if (!form.cost || !form.insurance || !form.freight || !form.BMDuty) return rawResult
+          if (!form.cost || !form.insurance || !form.freight || !form.bmDuty) return rawResult
 
-          rawResult = +((form.cost + form.insurance + form.freight + form.BMDuty) * 0.11).toFixed(2)
+          rawResult = +((form.cost + form.insurance + form.freight + form.bmDuty) * 0.11).toFixed(2)
           return roundingTwoDecimal(rawResult)
         },
-        col: 6
+        col: 6,
+        isHidden: (form) => form.source !== 'import'
       },
       {
         key: 'pph22',
         label: t('app.columns.pph'),
         isRequired: false,
-        rules: [required],
         type: 'number',
         disabled: true,
         formula: (form) => {
           let rawResult = 0
-          if (!form.cost || !form.insurance || !form.freight || !form.BMDuty) return rawResult
+          if (!form.cost || !form.insurance || !form.freight || !form.bmDuty) return rawResult
 
-          rawResult = +((form.cost + form.insurance + form.freight + form.BMDuty) * 0.025).toFixed(2)
+          rawResult = +((form.cost + form.insurance + form.freight + form.bmDuty) * 0.025).toFixed(2)
           return roundingTwoDecimal(rawResult)
         },
-        col: 6
+        col: 6,
+        isHidden: (form) => form.source !== 'import'
       },
       {
         key: 'repack',
         label: t('app.columns.repack'),
         isRequired: false,
-        rules: [required],
         type: 'number',
         disabled: true,
         formula: (form) => {
@@ -668,24 +680,24 @@ const initForm = () => {
 
           if (!form.pph22 || !form.ppn) return rawResult
 
-          rawResult = +((form.cost + form.insurance + form.freight + form.BMDuty + form.ppn + form.pph22) * 0.03).toFixed(2)
+          rawResult = +((form.cost + form.insurance + form.freight + form.bmDuty + form.ppn + form.pph22) * 0.03).toFixed(2)
           return roundingTwoDecimal(rawResult)
         },
-        col: 6
+        col: 6,
+        isHidden: (form) => form.source !== 'import'
       },
       {
         key: 'others',
         label: t('app.columns.others'),
         isRequired: false,
-        rules: [required],
         type: 'number',
-        col: 6
+        col: 6,
+        isHidden: (form) => form.source !== 'import'
       },
       {
-        key: 'subtotal',
+        key: 'subTotal',
         label: t('app.columns.sub_total'),
         isRequired: false,
-        rules: [required],
         type: 'number',
         disabled: true,
         formula: (form) => {
@@ -694,19 +706,23 @@ const initForm = () => {
 
           if (!form.pph22 || !form.ppn) return rawResult
 
-          rawResult = +(form.cost + form.insurance + form.freight + form.BMDuty + form.ppn + form.pph22 + form.repack + (!isOthersEmpty ? form.others : 0)).toFixed(2)
+          rawResult = +(form.cost + form.insurance + form.freight + form.bmDuty + form.ppn + form.pph22 + form.repack + (!isOthersEmpty ? form.others : 0)).toFixed(2)
           return roundingTwoDecimal(rawResult)
         },
-        col: 6
+        col: 6,
+        isHidden: (form) => form.source !== 'import'
       },
       {
         key: 'cogs',
         label: t('app.columns.cogs'),
         isRequired: false,
-        rules: [required],
         type: 'number',
         disabled: true,
         formula: (form) => {
+          if (form.source !== 'import') {
+            return form.cost
+          }
+
           let rawResult = 0
           if (!form.rateCOGS || !form.subtotal) return rawResult
 
@@ -719,7 +735,6 @@ const initForm = () => {
         key: 'sellPrice',
         label: t('app.columns.sell_price'),
         isRequired: false,
-        rules: [required],
         type: 'number',
         disabled: true,
         formula: (form) => {
@@ -730,16 +745,20 @@ const initForm = () => {
           rawResult = +((form.cogs / (1 - 0.35)) * 1).toFixed(2)
           return roundingTwoDecimal(rawResult)
         },
-        col: 6
+        col: 6,
+        isHidden: (form) => form.source !== 'import'
       },
       {
         key: 'publishPrice',
         label: t('app.columns.publish_price'),
         isRequired: false,
-        rules: [required],
         type: 'number',
         disabled: true,
         formula: (form) => {
+          if (form.source !== 'import') {
+            return form.price
+          }
+
           let rawResult = 0
           if (!form.sellPrice) return rawResult
 

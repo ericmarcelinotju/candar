@@ -13,61 +13,22 @@
         :initial-data="initialData"
         @submit="onSubmit"
       >
-        <template #tariffBM="{ form, formSetting }">
-          <template v-if="!isLocal">
-            <label
-              class="default-label"
-              :for="formSetting.key"
-            >
-              {{ $t('app.columns.bm_tariff') }}<sup v-if="formSetting.isRequired">*</sup>
-            </label>
-            <Input
-              :id="formSetting.key"
-              v-model="form[formSetting.key]"
-              :autocomplete="formSetting.autocomplete"
-              :disabled="formSetting.disabled"
-              :formula="formSetting.formula ? () => formSetting.formula(form) : null"
-              :options="(formSetting.options as Option[])"
-              :type="formSetting.type"
-            />
-          </template>
-        </template>
-        <template #hsCode="{ form, formSetting }">
-          <template v-if="!isLocal">
-            <label
-              class="default-label"
-              :for="formSetting.key"
-            >
-              {{ $t('app.columns.hs_code') }}<sup v-if="formSetting.isRequired">*</sup>
-            </label>
-            <Input
-              :id="formSetting.key"
-              v-model="form[formSetting.key]"
-              :autocomplete="formSetting.autocomplete"
-              :disabled="formSetting.disabled"
-              :formula="formSetting.formula ? () => formSetting.formula(form) : null"
-              :options="(formSetting.options as Option[])"
-              :type="formSetting.type"
-            />
-          </template>
-        </template>
-        <template #source="{ form, formSetting }">
+        <template #source="{ formSetting, form }">
           <label
             class="default-label"
             :for="formSetting.key"
           >
-            {{ $t('app.columns.source') }}<sup v-if="formSetting.isRequired">*</sup>
+            {{ formSetting.label }}
           </label>
-          <Input
+          <input
             :id="formSetting.key"
-            :autocomplete="formSetting.autocomplete"
-            :disabled="formSetting.disabled"
-            :formula="formSetting.formula ? () => formSetting.formula(form) : null"
-            :model-value="form[formSetting.key]"
-            :options="(formSetting.options as Option[])"
-            :type="formSetting.type"
-            @update:model-value="(newValue) => handleUpdate(newValue, form, formSetting.key)"
-          />
+            v-model="form.source"
+            class="default-input"
+            false-value="local"
+            :name="formSetting.key"
+            true-value="import"
+            type="checkbox"
+          >
         </template>
         <template #variant>
           <label
@@ -231,7 +192,7 @@
                     class="default-label"
                     :for="`quantity-${index}`"
                   >
-                    {{ $t('app.columns.product') }}
+                    {{ $t('product.price') }}
                   </label>
                   <input
                     :id="`quantity-${index}`"
@@ -265,13 +226,13 @@ import {
 } from '@/api/product'
 import { get as getProductCategory } from '@/api/product-category'
 import { get as getVariantCategories } from '@/api/variant-category'
+import { productList } from '@/router/routes/product'
 import { required } from '@/utils/validation'
+import { roundingTwoDecimal, convertFromCurrencyToNumber, roundingNearestThousand } from '@/utils/number'
 import { FormSetting } from '@/typings/form.type'
 import { Product, ProductCategory, ProductContract } from '@/typings/models/product.type'
-import { variantList } from '@/router/routes/variant'
 import { VariantCategory } from '@/typings/models/variant.type'
 import { Option, OptionObject } from '@/typings/option.type'
-import { roundingTwoDecimal, convertFromCurrencyToNumber, roundingNearestThousand } from '@/utils/number'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -281,28 +242,14 @@ const store = useStore()
 const productCategories: Ref<ProductCategory[]> = ref([])
 const productCategoryOptions: Ref<Option[]> = computed(() => productCategories.value.map(productCategory => ({ label: productCategory.name, value: productCategory.id })))
 
-const sourceOptions: Ref<Option[]> = computed(() => [
-  {
-    label: 'Local',
-    value: 'local'
-  },
-  {
-    label: 'Import',
-    value: 'import'
-  }
-])
-
 const options: Ref<OptionObject[]> = ref([])
 
 const { notify } = useNotify('product')
 
-const modelValue: Ref<Array<{ value: { id: string, name: string, disabled: boolean }[], options: OptionObject[] }>> = ref([])
+const modelValue: Ref<Array<{ value: { id: string, name: string, disabled: boolean }[], options: OptionObject[] }>> = ref([{ value: [], options: [] }])
 
 const initialData: Ref<Product> = ref(new Product())
 const loading: Ref<boolean> = ref(false)
-
-const source: Ref<string> = ref()
-const isLocal = computed(() => source.value?.toLowerCase() === 'local')
 
 let id = ''
 if (typeof route.params.id === 'string') {
@@ -361,15 +308,10 @@ const handleInputPrice = (form: any, current: ProductContract) => {
 
   if (!form.publishPrice) return rawResult
 
-  if (isDiscRateEmpty) return roundingTwoDecimal(form.publishPrice.toFixed(2))
+  if (isDiscRateEmpty) return form.publishPrice
 
   rawResult = +(form.publishPrice * (1 - (+current.discRate / 100))).toFixed(2)
   return roundingTwoDecimal(rawResult)
-}
-
-const handleUpdate = (val, form, key) => {
-  form[key] = val
-  source.value = val
 }
 
 const initOptions = async () => {
@@ -388,7 +330,7 @@ const initOptions = async () => {
         })
 
         options.value = data as OptionObject[]
-        modelValue.value = [{ value: [], options: [...data] as OptionObject[] }]
+        modelValue.value[0].options = [...data] as OptionObject[]
       }
     })
   initForm()
@@ -401,7 +343,7 @@ const initPage = () => {
     .then((res) => {
       res.data.cost = res.data.costNumber
       res.data.price = res.data.priceNumber
-      res.data.BMDuty = convertFromCurrencyToNumber(res.data.BMDuty)
+      res.data.bmDuty = convertFromCurrencyToNumber(res.data.bmDuty)
       res.data.cogs = convertFromCurrencyToNumber(res.data.cogs)
       res.data.freight = convertFromCurrencyToNumber(res.data.freight)
       res.data.insurance = convertFromCurrencyToNumber(res.data.insurance)
@@ -409,7 +351,7 @@ const initPage = () => {
       res.data.pph22 = convertFromCurrencyToNumber(res.data.pph22)
       res.data.ppn = convertFromCurrencyToNumber(res.data.ppn)
       res.data.repack = convertFromCurrencyToNumber(res.data.repack)
-      res.data.subtotal = convertFromCurrencyToNumber(res.data.subtotal)
+      res.data.subTotal = convertFromCurrencyToNumber(res.data.subTotal)
 
       if (res.data.tiers.length <= 0) {
         initialData.value = {
@@ -426,12 +368,20 @@ const initPage = () => {
           id: e.id,
           moq: e.moq,
           discRate: e.discRate,
-          price: 0
+          price: e.price
         })
       })
+
+      const variantValue = res.data.variants.map((variant) => ({
+        id: variant.id,
+        name: variant.name,
+        disabled: false
+      }))
+      modelValue.value[0].value = variantValue
     })
-    .catch(() => {
-      notify('loaded', 'danger')
+    .catch(err => {
+      console.error(err)
+      notify('loaded', 'danger', err)
     })
     .finally(() => {
       loading.value = false
@@ -495,25 +445,23 @@ const onSubmit = (form, onFinish) => {
   // }
 
   if (id) {
-    delete payload.code
-
     return updateProduct(id, payload)
       .then(() => {
-        router.push(variantList)
+        router.push(productList)
         notify('updated')
       })
-      .catch(() => {
-        notify('updated', 'danger')
+      .catch(err => {
+        notify('updated', 'danger', err.message)
       })
       .finally(onFinish)
   } else {
     return insertProduct(payload)
       .then(() => {
-        router.push(variantList)
+        router.push(productList)
         notify('inserted')
       })
-      .catch(() => {
-        notify('inserted', 'danger')
+      .catch(err => {
+        notify('inserted', 'danger', err.message)
       })
       .finally(onFinish)
   }
@@ -527,12 +475,11 @@ onMounted(() => {
 const formSettings: Ref<FormSetting[]> = ref([])
 const initForm = () => {
   formSettings.value = [
-    // {
-    //   key: 'code',
-    //   label: 'Code',
-    //   isRequired: true,
-    //   rules: [required]
-    // },
+    {
+      key: 'code',
+      label: 'Code',
+      disabled: !!id
+    },
     {
       key: 'name',
       label: t('app.columns.name'),
@@ -540,36 +487,31 @@ const initForm = () => {
       rules: [required]
     },
     {
-      key: 'source',
-      label: t('app.columns.source'),
-      type: 'dropdown',
-      isRequired: true,
-      rules: [required],
-      options: sourceOptions.value
+      key: 'sku',
+      label: t('app.columns.sku')
     },
     {
-      key: 'sku',
-      label: t('app.columns.sku'),
-      isRequired: true,
-      rules: [required]
+      key: 'no',
+      label: t('app.columns.product_no')
+    },
+    {
+      key: 'unitCode',
+      label: t('app.columns.unit_code'),
+      col: 4
+    },
+    {
+      key: 'contain',
+      label: t('app.columns.contain'),
+      col: 4
+    },
+    {
+      key: 'unit',
+      label: t('app.columns.unit'),
+      col: 4
     },
     {
       key: 'stock',
-      label: t('app.columns.stock'),
-      isRequired: true,
-      rules: [required]
-    },
-    // {
-    //   key: 'cost',
-    //   label: 'Cost',
-    //   isRequired: true,
-    //   rules: [required]
-    // },
-    {
-      key: 'price',
-      label: t('app.columns.price'),
-      isRequired: true,
-      rules: [required]
+      label: t('app.columns.stock')
     },
     {
       key: 'categoryId',
@@ -584,34 +526,44 @@ const initForm = () => {
       isRequired: false
     },
     {
+      key: 'price',
+      label: t('app.columns.price'),
+      isRequired: true,
+      rules: [required]
+    },
+    {
+      key: 'source',
+      label: t('app.columns.is_import'),
+      type: 'checkbox'
+    },
+    {
       key: 'hsCode',
       label: t('app.columns.hs_code'),
       isRequired: false,
-      rules: [required],
       type: 'number',
-      col: 6
+      col: 6,
+      isHidden: (form) => form.source !== 'import'
     },
     {
-      key: 'tariffBM',
+      key: 'bmTariff',
       label: t('app.columns.bm_tariff'),
       isRequired: false,
-      rules: [required],
       type: 'number',
-      col: 6
+      col: 6,
+      isHidden: (form) => form.source !== 'import'
     },
     {
       key: 'rateCOGS',
       label: t('app.columns.cogs_rate'),
       isRequired: false,
-      rules: [required],
       type: 'number',
-      col: 6
+      col: 6,
+      isHidden: (form) => form.source !== 'import'
     },
     {
       key: 'cost',
       label: t('app.columns.cost'),
       isRequired: false,
-      rules: [required],
       type: 'number',
       col: 6
     },
@@ -619,7 +571,6 @@ const initForm = () => {
       key: 'insurance',
       label: t('app.columns.insurance'),
       isRequired: false,
-      rules: [required],
       type: 'number',
       disabled: true,
       formula: (form) => {
@@ -629,13 +580,13 @@ const initForm = () => {
         rawResult = +(form.cost * 0.005).toFixed(2)
         return roundingTwoDecimal(rawResult)
       },
-      col: 6
+      col: 6,
+      isHidden: (form) => form.source !== 'import'
     },
     {
       key: 'freight',
       label: t('app.columns.freight'),
       isRequired: false,
-      rules: [required],
       type: 'number',
       disabled: true,
       formula: (form) => {
@@ -645,65 +596,63 @@ const initForm = () => {
         rawResult = +(form.cost * 0.27).toFixed(2)
         return roundingTwoDecimal(rawResult)
       },
-      col: 6
+      col: 6,
+      isHidden: (form) => form.source !== 'import'
     },
     {
-      key: 'BMDuty',
+      key: 'bmDuty',
       label: t('app.columns.bm_duty'),
       isRequired: false,
-      rules: [required],
       type: 'number',
       disabled: true,
       formula: (form) => {
         let rawResult = 0
-        if (!form.cost || (!isLocal.value && !form.tariffBM)) return rawResult
+        if (!form.cost || !form.bmTariff) return rawResult
 
-        if (!isLocal.value) (rawResult = +(form.cost * ((form.tariffBM) / 100)).toFixed(2))
-        else (rawResult = 0)
-
+        rawResult = +(form.cost * (form.bmTariff / 100)).toFixed(2)
         return roundingTwoDecimal(rawResult)
       },
-      col: 6
+      col: 6,
+      isHidden: (form) => form.source !== 'import'
     },
     {
       key: 'ppn',
       label: t('app.columns.ppn'),
       isRequired: false,
-      rules: [required],
       type: 'number',
       disabled: true,
       formula: (form) => {
         let rawResult = 0
 
-        if (!form.cost || !form.insurance || !form.freight || (!isLocal.value && !form.BMDuty)) return rawResult
+        if (!form.cost || !form.insurance || !form.freight || !form.bmDuty) return rawResult
 
-        rawResult = +((form.cost + form.insurance + form.freight + form.BMDuty) * 0.11).toFixed(2)
+        rawResult = +((form.cost + form.insurance + form.freight + form.bmDuty) * 0.11).toFixed(2)
 
         return roundingTwoDecimal(rawResult)
       },
-      col: 6
+      col: 6,
+      isHidden: (form) => form.source !== 'import'
     },
     {
       key: 'pph22',
       label: t('app.columns.pph'),
       isRequired: false,
-      rules: [required],
       type: 'number',
       disabled: true,
       formula: (form) => {
         let rawResult = 0
-        if (!form.cost || !form.insurance || !form.freight || (!isLocal.value && !form.BMDuty)) return rawResult
+        if (!form.cost || !form.insurance || !form.freight || !form.bmDuty) return rawResult
 
-        rawResult = +((form.cost + form.insurance + form.freight + form.BMDuty) * 0.025).toFixed(2)
+        rawResult = +((form.cost + form.insurance + form.freight + form.bmDuty) * 0.025).toFixed(2)
         return roundingTwoDecimal(rawResult)
       },
-      col: 6
+      col: 6,
+      isHidden: (form) => form.source !== 'import'
     },
     {
       key: 'repack',
       label: t('app.columns.repack'),
       isRequired: false,
-      rules: [required],
       type: 'number',
       disabled: true,
       formula: (form) => {
@@ -711,23 +660,24 @@ const initForm = () => {
 
         if (!form.pph22 || !form.ppn) return rawResult
 
-        rawResult = +((form.cost + form.insurance + form.freight + form.BMDuty + form.ppn + form.pph22) * 0.03).toFixed(2)
+        rawResult = +((form.cost + form.insurance + form.freight + form.bmDuty + form.ppn + form.pph22) * 0.03).toFixed(2)
         return roundingTwoDecimal(rawResult)
       },
-      col: 6
+      col: 6,
+      isHidden: (form) => form.source !== 'import'
     },
     {
       key: 'others',
       label: t('app.columns.others'),
       isRequired: false,
       type: 'number',
-      col: 6
+      col: 6,
+      isHidden: (form) => form.source !== 'import'
     },
     {
-      key: 'subtotal',
+      key: 'subTotal',
       label: t('app.columns.sub_total'),
       isRequired: false,
-      rules: [required],
       type: 'number',
       disabled: true,
       formula: (form) => {
@@ -736,24 +686,27 @@ const initForm = () => {
 
         if (!form.pph22 || !form.ppn) return rawResult
 
-        rawResult = +(form.cost + form.insurance + form.freight + form.BMDuty + form.ppn + form.pph22 + form.repack + (!isOthersEmpty ? form.others : 0)).toFixed(2)
+        rawResult = +(form.cost + form.insurance + form.freight + form.bmDuty + form.ppn + form.pph22 + form.repack + (!isOthersEmpty ? form.others : 0)).toFixed(2)
         return roundingTwoDecimal(rawResult)
       },
-      col: 6
+      col: 6,
+      isHidden: (form) => form.source !== 'import'
     },
     {
       key: 'cogs',
       label: t('app.columns.cogs'),
       isRequired: false,
-      rules: [required],
       type: 'number',
       disabled: true,
       formula: (form) => {
-        console.log(form.rateCOGS)
-        let rawResult = 0
-        if (!form.rateCOGS || !form.subtotal) return rawResult
+        if (form.source !== 'import') {
+          return form.cost
+        }
 
-        rawResult = +(form.subtotal / (1 - (form.rateCOGS / 100))).toFixed(2)
+        let rawResult = 0
+        if (!form.rateCOGS || !form.subTotal) return rawResult
+
+        rawResult = +(form.subTotal / (1 - (form.rateCOGS / 100))).toFixed(2)
         return roundingTwoDecimal(rawResult)
       },
       col: 6
@@ -762,7 +715,6 @@ const initForm = () => {
       key: 'sellPrice',
       label: t('app.columns.sell_price'),
       isRequired: false,
-      rules: [required],
       type: 'number',
       disabled: true,
       formula: (form) => {
@@ -773,16 +725,20 @@ const initForm = () => {
         rawResult = +((form.cogs / (1 - 0.35)) * 1).toFixed(2)
         return roundingTwoDecimal(rawResult)
       },
-      col: 6
+      col: 6,
+      isHidden: (form) => form.source !== 'import'
     },
     {
       key: 'publishPrice',
       label: t('app.columns.publish_price'),
       isRequired: false,
-      rules: [required],
       type: 'number',
       disabled: true,
       formula: (form) => {
+        if (form.source !== 'import') {
+          return form.price
+        }
+
         let rawResult = 0
         if (!form.sellPrice) return rawResult
 

@@ -19,7 +19,7 @@ export class Variant {
 
 export class ProductImport {
   error: string;
-  productCode: string;
+  code: string;
   name: string;
   description: string;
   sku: string;

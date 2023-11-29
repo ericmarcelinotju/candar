@@ -2,6 +2,7 @@
   "title": "Volt",
   "global": {
     "ok": "OK",
+    "submit": "Submit",
     "done": "Done",
     "pending": "Pending",
     "paid": "Paid",
@@ -324,7 +325,8 @@
       "postal_code": "Postal Code",
       "coordinates": "Coordinates",
       "priority": "Priority",
-      "estimate": "Estimate"
+      "estimate": "Estimate",
+      "is_import": "Import ?"
     }
   }
 }

@@ -22,6 +22,8 @@ export class ProductCategory extends BaseModel {
   price: string
   priceNumber: number
 
+  source: 'local' | 'import'
+
   variant: Variant[]
 
   iregular: ProductContract[]
@@ -78,7 +80,9 @@ export class Product extends BaseModel {
   price: string | number
   priceNumber: number
 
-  BMDuty: string | number
+  source: 'local' | 'import'
+
+  bmDuty: string | number
   cogs: string | number
   freight: string | number
   insurance: string | number
@@ -87,8 +91,8 @@ export class Product extends BaseModel {
   ppn: string | number
   rateCOGS: number
   repack: string | number
-  subtotal: string | number
-  tariffBM: number
+  subTotal: string | number
+  bmTariff: number
 
   categoryId: string
   category: ProductCategory
@@ -97,6 +101,8 @@ export class Product extends BaseModel {
   regular: ProductContract[]
 
   tiers: Array<{ id: string, name: string, type: string } & ProductContract>
+
+  variants: Variant[]
 
   public constructor () {
     super()

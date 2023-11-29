@@ -122,6 +122,12 @@ const columns = [
     isSearchable: true
   },
   {
+    label: t('app.columns.sku'),
+    key: 'sku',
+    isSortable: true,
+    isSearchable: true
+  },
+  {
     label: t('app.columns.name'),
     key: 'name',
     isSortable: true,

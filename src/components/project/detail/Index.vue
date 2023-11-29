@@ -235,15 +235,19 @@
     <DefaultModal
       v-model="visibleCloseConfirmationModal"
       description=""
+      :has-cancel="false"
+      :has-confirm="false"
       :has-icon="false"
       :is-close-on-confirm="false"
       :loading="loadingClose"
       title="Close Project"
       type="success"
-      @confirm="confirmClose"
     >
       <template #default>
-        <div class="flex flex-col mb-4 mt-12 space-y-4">
+        <form
+          class="flex flex-col -mb-4 mt-12 space-y-4"
+          @submit.prevent="confirmClose"
+        >
           <div class="flex flex-col">
             <p class="text-sm font-semibold mb-2">
               Status
@@ -262,10 +266,17 @@
               v-model="projectClose.reason"
               class="hover-input h-36 text-sm"
               placeholder="Write something"
+              required
               type="textarea"
             />
           </div>
-        </div>
+          <button
+            class="info-button float-right"
+            type="submit"
+          >
+            {{ $t('global.submit') }}
+          </button>
+        </form>
       </template>
     </DefaultModal>
   </div>
@@ -426,13 +437,14 @@ const confirmClose = () => {
       emit('close')
 
       notify('closed')
+
+      visibleCloseConfirmationModal.value = false
     })
     .catch(() => {
       notify('closed', 'danger')
     })
     .finally(() => {
       loadingClose.value = false
-      visibleCloseConfirmationModal.value = false
     })
 }
 

@@ -21,9 +21,9 @@
         <span
           v-if="!isCollapse || !item.icon"
           class="ml-4"
-        >{{
-          item.name
-        }}</span>
+        >
+          {{ item.name }}
+        </span>
       </router-link>
       <Disclosure
         v-else
