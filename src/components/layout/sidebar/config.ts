@@ -8,13 +8,13 @@ import {
   UsersIcon,
   DocumentReportIcon,
   CalendarIcon,
-  ClipboardListIcon
+  ClipboardListIcon,
+  CogIcon
 } from '@heroicons/vue/outline'
 
 export const navigations: Navigation[] = [
   {
     name: 'Dashboard',
-    module: 'DASHBOARD',
     href: '/dashboard',
     icon: HomeIcon
   },
@@ -25,12 +25,11 @@ export const navigations: Navigation[] = [
   },
   {
     name: 'Product',
-    module: 'PRODUCT',
     icon: ShoppingBagIcon,
     children: [
       {
         name: 'Variant Category',
-        module: 'VARIANT',
+        module: 'VARIANT_CATEGORY',
         href: '/variant-category'
       },
       {
@@ -40,7 +39,7 @@ export const navigations: Navigation[] = [
       },
       {
         name: 'Product Category',
-        module: 'PRODUCT',
+        module: 'PRODUCT_CATEGORY',
         href: '/product-category'
       },
       {
@@ -75,6 +74,7 @@ export const navigations: Navigation[] = [
   },
   {
     name: 'Contract',
+    module: 'CONTRACT',
     href: '/contract',
     icon: ClipboardListIcon
   },
@@ -86,6 +86,7 @@ export const navigations: Navigation[] = [
   },
   {
     name: 'User Access',
+    module: 'USER',
     icon: UserIcon,
     children: [
       {
@@ -113,12 +114,12 @@ export const navigations: Navigation[] = [
 ]
 
 export const secondaryNavigations: Navigation[] = [
-  // {
-  //   name: 'Settings',
-  //   module: 'SETTING',
-  //   href: '/setting',
-  //   icon: CogIcon
-  // },
+  {
+    name: 'Settings',
+    module: 'SETTING',
+    href: '/setting',
+    icon: CogIcon
+  }
   // {
   //   name: 'Maintenance',
   //   icon: CalculatorIcon,

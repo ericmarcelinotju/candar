@@ -104,10 +104,6 @@ const onSubmit = (form, onFinish) => {
   }
 }
 
-const hasPermission = (method, module = 'USER') => {
-  return store.getters['auth/hasPermission'](module, method)
-}
-
 onMounted(() => {
   initPage()
 

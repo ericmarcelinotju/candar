@@ -7,7 +7,7 @@
         active-class="bg-primary text-white"
         class="group nav-button mb-2"
         :class="{
-          hidden: item.module && !hasPermission(item.module),
+          '!hidden': item.module && !hasPermission(item.module),
           'justify-center': isCollapse && item.icon,
         }"
         :to="item.href || ''"
@@ -31,7 +31,7 @@
         v-slot="{ open }"
         as="div"
         class="space-y-1 mb-2"
-        :class="{ hidden: !hasAnyPermission(item.children) }"
+        :class="{ '!hidden': !hasAnyPermission(item.children) }"
         :default-open="hasActiveChild(item.children)"
       >
         <DisclosureButton
@@ -69,7 +69,7 @@
             active-class="bg-primary text-white"
             class="group nav-button"
             :class="{
-              hidden: subItem.module && !hasPermission(subItem.module),
+              '!hidden': subItem.module && !hasPermission(subItem.module),
               '!pl-12': !isCollapse,
               'justify-center': isCollapse && subItem.icon,
             }"
@@ -81,7 +81,9 @@
               class="flex-shrink-0 h-6 w-6"
               :class="{ 'mr-4': !isCollapse }"
             />
-            <span v-if="!isCollapse || !subItem.icon">{{ subItem.name }}</span>
+            <span v-if="!isCollapse || !subItem.icon">
+              {{ subItem.name }}
+            </span>
           </router-link>
         </DisclosurePanel>
       </Disclosure>

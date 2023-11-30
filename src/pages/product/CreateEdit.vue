@@ -760,8 +760,5 @@ const initForm = () => {
     }
   ]
 }
-const hasPermission = (method, module = 'USER') => {
-  return store.getters['auth/hasPermission'](module, method)
-}
 initForm()
 </script>

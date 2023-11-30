@@ -29,7 +29,7 @@
           class="grid grid-cols-5 gap-4 mt-2 pb-1 border-b border-gray-300"
         >
           <h5 class="capitalize">
-            {{ module.name }}
+            {{ snakeToTitle(module.name) }}
           </h5>
           <div
             v-for="method in ['GET', 'POST', 'PUT', 'DELETE']"
@@ -70,6 +70,7 @@ import { Role } from '@/typings/models/role.type'
 import { roleList } from '@/router/routes/role'
 import { FormSetting } from '@/typings/form.type'
 import { alpha, required } from '@/utils/validation'
+import { snakeToTitle } from '@/utils/string'
 
 const { t } = useI18n()
 const route = useRoute()

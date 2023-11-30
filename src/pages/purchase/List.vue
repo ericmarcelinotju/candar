@@ -138,7 +138,7 @@ const columns = [
     isSearchable: true
   }
 ]
-const hasPermission = (method, module = 'USER') => {
+const hasPermission = (method, module = 'PURCHASE') => {
   return store.getters['auth/hasPermission'](module, method)
 }
 </script>

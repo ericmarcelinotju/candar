@@ -159,7 +159,7 @@ const columns = [
   }
 ]
 
-const hasPermission = (method, module = 'CLIENT') => {
+const hasPermission = (method, module = 'PRODUCT') => {
   return store.getters['auth/hasPermission'](module, method)
 }
 </script>

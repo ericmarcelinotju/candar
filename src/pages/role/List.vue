@@ -152,7 +152,7 @@ const confirmDelete = () => {
     })
 }
 
-const hasPermission = (method) => {
-  return store.getters['auth/hasPermission']('ROLE', method)
+const hasPermission = (method, module = 'ROLE') => {
+  return store.getters['auth/hasPermission'](module, method)
 }
 </script>
