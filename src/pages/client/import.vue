@@ -75,7 +75,37 @@
             :items="clientImportList"
             :loading="loading"
             :total="itemsTotal"
-          />
+          >
+            <template #[`address.coordinates`]="{ item }">
+              {{ item.address && item.address.coordinates && item.address.coordinates.join(", ") }}
+            </template>
+            <template #error="{ item }">
+              <CheckIcon
+                v-if="item.error.length < 1"
+                class="h-6 w-6 text-success"
+              />
+              <Popper
+                v-else
+                arrow
+                hover
+              >
+                <XCircleIcon
+                  class="h-6 w-6 text-danger"
+                />
+                <template #content>
+                  <ul>
+                    <li
+                      v-for="(el, key) in item.error"
+                      :key="key"
+                      class="mb-0.5"
+                    >
+                      {{ el }}
+                    </li>
+                  </ul>
+                </template>
+              </Popper>
+            </template>
+          </DefaultTable>
           <div class="create-edit-submit-container">
             <button
               class="default-button mr-4"
@@ -84,7 +114,8 @@
               {{ $t('app.reset') }}
             </button>
             <button
-              class="success-button"
+              :class="[isImportValid ? 'success-button' : 'disabled-button']"
+              :disabled="!isImportValid"
               @click="handleConfirm"
             >
               <Loading v-if="loadingConfirm" />
@@ -112,9 +143,10 @@ import FileInput from '@/components/form/File.vue'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
 import DefaultTable from '@/components/default/Table.vue'
 import Loading from '@/components/helper/Loading.vue'
+import Popper from 'vue3-popper'
 
-import { PencilAltIcon } from '@heroicons/vue/solid'
-import { DocumentIcon } from '@heroicons/vue/outline'
+import { PencilAltIcon, CheckIcon } from '@heroicons/vue/solid'
+import { DocumentIcon, XCircleIcon } from '@heroicons/vue/outline'
 
 import {
   insert as importData,
@@ -249,12 +281,19 @@ const columns = [
     key: 'contact.email',
     isSortable: false,
     isSearchable: false
+  },
+  {
+    label: t('app.columns.validation'),
+    key: 'error',
+    isSortable: false,
+    isSearchable: false
   }
 ]
 
 const clientImportList: Ref<ClientImport[]> = ref([])
 const itemsTotal = ref(0)
 const isClientImportSuccess = computed(() => clientImportList.value.length > 0)
+const isImportValid = computed(() => clientImportList.value.some((e) => !(e.error.length > 0)))
 
 const handleReset = () => {
   clientImportList.value = []
@@ -268,41 +307,6 @@ const onSubmit = (form, onFinish) => {
   const payload = new FormData()
   payload.append('file', clientImportFile.value.file)
 
-  // setTimeout(() => {
-  //   clientImportList.value = [
-  //     {
-  //       code: 'CLI-001',
-  //       name: 'Client Testing',
-  //       companyType: 'Testing',
-  //       purchaseType: 'standart',
-  //       credit: 1000000,
-  //       phoneNumber: '08123451',
-  //       email: 'email@email.com',
-  //       website: 'googlepedia.com',
-  //       address: {
-  //         name: 'default',
-  //         address: 'Jl.Address no 5',
-  //         province: 'Jakarta',
-  //         city: 'Jakarta Barat',
-  //         district: 'Tanjung Pinang',
-  //         subDistrict: 'RW 10',
-  //         postalCode: '15114',
-  //         coordinates: [
-  //           10,
-  //           10
-  //         ],
-  //         isDefault: true
-  //       },
-  //       contact: {
-  //         name: 'Kevin',
-  //         division: 'IT',
-  //         phoneNumber: '0812341',
-  //         email: 'kevin@kevin.com'
-  //       }
-  //     }
-  //   ]
-  //   itemsTotal.value = clientImportList.value.length
-  // }, 2000)
   return importData(payload)
     .then((res) => {
       notify('inserted')

@@ -30,4 +30,5 @@ export class ClientImport {
   website: string;
   address: Address;
   contact: Contact;
+  error: string[]
 }
