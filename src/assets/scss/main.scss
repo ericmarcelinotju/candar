@@ -209,9 +209,17 @@ fieldset[disabled] {
     @apply hover:bg-rose-600 focus:ring-rose-500;
   }
 }
-
+ 
 .default-button {
   @apply inline-flex items-center justify-center py-2 px-4 shadow-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-offwhite border border-gray-300 hover:bg-gray-300 focus:ring-gray-300;
+
+  &[disabled] {
+    @apply inline-flex items-center justify-center py-2 px-4 shadow-sm rounded-md bg-grey-soft disabled:bg-gray-50 disabled:text-grey disabled:border-grey-soft disabled:shadow-none;
+  }
+}
+
+.disabled-button {
+  @apply inline-flex items-center justify-center py-2 px-4 shadow-sm rounded-md bg-grey-soft disabled:bg-gray-50 disabled:text-grey disabled:border-grey-soft disabled:shadow-none;
 }
 
 .secondary-button {
@@ -376,4 +384,15 @@ input.search-datepicker {
 .suffix .input-group-addon {
   border-left: 0;
   border-radius: 0px 4px 4px 0px;
+}
+
+:root {
+  --popper-theme-background-color: #333333;
+  --popper-theme-background-color-hover: #333333;
+  --popper-theme-text-color: #ffffff;
+  --popper-theme-border-width: 0px;
+  --popper-theme-border-style: solid;
+  --popper-theme-border-radius: 6px;
+  --popper-theme-padding: 10px;
+  --popper-theme-box-shadow: 0 6px 30px -6px rgba(0, 0, 0, 0.25);
 }

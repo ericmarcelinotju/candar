@@ -18,7 +18,7 @@ export class Variant {
 }
 
 export class ProductImport {
-  error: string;
+  error: string[];
   code: string;
   name: string;
   description: string;

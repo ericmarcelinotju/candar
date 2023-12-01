@@ -29,3 +29,15 @@ export const userEdit = {
     title: 'User Edit'
   }
 }
+
+const UserImport = () => import(/* webpackChunkName: 'p-user-import' */ '@/pages/user/import.vue')
+
+export const userImport = {
+  path: '/user/import',
+  name: 'user-import',
+  component: UserImport,
+  meta: {
+    auth: true,
+    title: 'User Import'
+  }
+}

@@ -88,6 +88,12 @@ const columns = [
     isSearchable: true
   },
   {
+    label: t('app.columns.code'),
+    key: 'code',
+    isSortable: true,
+    isSearchable: true
+  },
+  {
     label: t('app.columns.description'),
     key: 'description',
     isSortable: true,
