@@ -73,3 +73,15 @@ export const clientContactEdit = {
     title: 'Client Contact Edit'
   }
 }
+
+const ClientImport = () => import(/* webpackChunkName: 'p-client-import' */ '@/pages/client/import.vue')
+
+export const clientImport = {
+  path: '/client/import',
+  name: 'client-import',
+  component: ClientImport,
+  meta: {
+    auth: true,
+    title: 'Client Import'
+  }
+}

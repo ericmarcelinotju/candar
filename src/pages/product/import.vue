@@ -401,6 +401,7 @@ const onSubmit = (form, onFinish) => {
       productImportList.value = [
         ...res.data
       ]
+      itemsTotal.value = productImportList.value.length
     })
     .catch(() => {
       notify('inserted', 'danger')

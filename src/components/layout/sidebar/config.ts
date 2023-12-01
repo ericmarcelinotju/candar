@@ -70,8 +70,19 @@ export const navigations: Navigation[] = [
   {
     name: 'Client',
     module: 'CLIENT',
-    href: '/client',
-    icon: UsersIcon
+    icon: UsersIcon,
+    children: [
+      {
+        name: 'Client',
+        module: 'CLIENT',
+        href: '/client'
+      },
+      {
+        name: 'Client Import',
+        module: 'CLIENT',
+        href: '/client/import'
+      }
+    ]
   },
   {
     name: 'Contract',

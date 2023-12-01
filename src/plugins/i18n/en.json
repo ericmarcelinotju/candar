@@ -71,6 +71,7 @@
     "products": "Products",
     "product_import": "Product Import",
     "product_category": "Product Category",
+    "client_import": "Client Import",
     "variant": "Variant"
   },
   "currency": {
@@ -284,6 +285,7 @@
       "client": "Client",
       "client_address": "Client Address",
       "client_contact": "Client Contact",
+      "contact_name": "Contact Name",
       "product": "Product",
       "products": "Products",
       "product_category": "Product Category",

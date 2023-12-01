@@ -10,7 +10,8 @@ import {
   clientContactEdit,
   clientCreate,
   clientEdit,
-  clientList
+  clientList,
+  clientImport
 } from './client'
 import { divisionCreate, divisionEdit, divisionList } from './division'
 import { projectCreate, projectEdit, projectList } from './project'
@@ -119,7 +120,8 @@ export const divisionRoutes: Record<string, RouteRecordRaw> = {
 export const clientRoutes: Record<string, RouteRecordRaw> = {
   list: clientList,
   create: clientCreate,
-  edit: clientEdit
+  edit: clientEdit,
+  import: clientImport
 }
 
 export const variantRoutes: Record<string, RouteRecordRaw> = {
