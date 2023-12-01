@@ -99,12 +99,14 @@
               >
                 Regular
               </th>
+              <th />
             </template>
             <template #custom-head-2>
               <tr>
                 <th
                   class="head"
                   colspan="3"
+                  scope="col"
                   style="text-align: center;"
                 >
                   Tier 1
@@ -112,6 +114,7 @@
                 <th
                   class="head"
                   colspan="3"
+                  scope="col"
                   style="text-align: center;"
                 >
                   Tier 2
@@ -119,6 +122,7 @@
                 <th
                   class="head"
                   colspan="3"
+                  scope="col"
                   style="text-align: center;"
                 >
                   Tier 3
@@ -126,6 +130,7 @@
                 <th
                   class="head"
                   colspan="3"
+                  scope="col"
                   style="text-align: center;"
                 >
                   Tier 1
@@ -133,6 +138,7 @@
                 <th
                   class="head"
                   colspan="3"
+                  scope="col"
                   style="text-align: center;"
                 >
                   Tier 2
@@ -140,6 +146,7 @@
                 <th
                   class="head"
                   colspan="3"
+                  scope="col"
                   style="text-align: center;"
                 >
                   Tier 3
@@ -254,6 +261,12 @@
                   scope="col"
                 >
                   Price/Unit
+                </th>
+                <th
+                  class="head"
+                  scope="col"
+                >
+                  Validation
                 </th>
                 <th />
               </tr>
@@ -273,6 +286,32 @@
                   {{ el.price }}
                 </td>
               </template>
+              <td class="text-center">
+                <CheckIcon
+                  v-if="item.error.length < 1"
+                  class="h-6 w-6 text-success"
+                />
+                <Popper
+                  v-else
+                  arrow
+                  hover
+                >
+                  <XCircleIcon
+                    class="h-6 w-6 text-danger"
+                  />
+                  <template #content>
+                    <ul>
+                      <li
+                        v-for="(el, key) in item.error"
+                        :key="key"
+                        class="mb-0.5"
+                      >
+                        {{ el }}
+                      </li>
+                    </ul>
+                  </template>
+                </Popper>
+              </td>
             </template>
           </DefaultTable>
           <div class="create-edit-submit-container">
@@ -283,7 +322,8 @@
               {{ $t('app.reset') }}
             </button>
             <button
-              class="success-button"
+              :class="[isImportValid ? 'success-button' : 'disabled-button']"
+              :disabled="!isImportValid"
               @click="handleConfirm"
             >
               <Loading v-if="loadingConfirm" />
@@ -311,9 +351,10 @@ import FileInput from '@/components/form/File.vue'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
 import DefaultTable from '@/components/default/Table.vue'
 import Loading from '@/components/helper/Loading.vue'
+import Popper from 'vue3-popper'
 
-import { PencilAltIcon } from '@heroicons/vue/solid'
-import { DocumentIcon } from '@heroicons/vue/outline'
+import { PencilAltIcon, CheckIcon } from '@heroicons/vue/solid'
+import { DocumentIcon, XCircleIcon } from '@heroicons/vue/outline'
 
 import {
   insert as importData,
@@ -382,6 +423,7 @@ const columns = [
 const productImportList: Ref<ProductImport[]> = ref([])
 const itemsTotal = ref(0)
 const isProductImportSuccess = computed(() => productImportList.value.length > 0)
+const isImportValid = computed(() => productImportList.value.some((e) => !(e.error.length > 0)))
 
 const handleReset = () => {
   productImportList.value = []
