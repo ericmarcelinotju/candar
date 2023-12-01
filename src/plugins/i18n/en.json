@@ -218,6 +218,7 @@
       }
     },
     "columns": {
+      "validation": "Validation",
       "view": "View",
       "edit": "Edit",
       "delete": "Delete",
