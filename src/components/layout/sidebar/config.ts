@@ -105,6 +105,11 @@ export const navigations: Navigation[] = [
         href: '/user'
       },
       {
+        name: 'User Import',
+        module: 'USER',
+        href: '/user/import'
+      },
+      {
         name: 'Division',
         module: 'DIVISION',
         href: '/division'

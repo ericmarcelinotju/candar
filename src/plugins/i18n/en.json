@@ -52,6 +52,7 @@
   },
   "module": {
     "user": "User",
+    "user_import": "User Import",
     "users": "Users",
     "role": "Role",
     "roles": "Roles",
@@ -250,6 +251,8 @@
       "purchase_type": "Purchase Type",
       "division": "Division",
       "role": "Role",
+      "role_code": "Role Code",
+      "division_code": "Division Code",
       "credit": "Credit",
       "website": "Website",
       "is_manager": "Manager ?",

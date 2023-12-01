@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from 'vue-router'
 import { forgotPassword, login, logout, resetPassword } from './auth'
-import { userCreate, userEdit, userList } from './user'
+import { userCreate, userEdit, userList, userImport } from './user'
 import { roleCreate, roleEdit, roleList } from './role'
 import { permissionCreate, permissionEdit, permissionList } from './permission'
 import {
@@ -92,7 +92,8 @@ export const authRoutes: RouteRecordRaw[] = [
 export const userRoutes: Record<string, RouteRecordRaw> = {
   list: userList,
   create: userCreate,
-  edit: userEdit
+  edit: userEdit,
+  import: userImport
 }
 
 export const roleRoutes: Record<string, RouteRecordRaw> = {
