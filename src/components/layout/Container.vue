@@ -62,8 +62,6 @@ import DefaultSidebar from './sidebar/Sidebar.vue'
 
 import { projectList } from '@/router/routes/project'
 import { Notification } from '@/typings/models/notification.type'
-import { config } from '@/config'
-import { Log } from '@/typings/models/log.type'
 
 const store = useStore()
 const router = useRouter()

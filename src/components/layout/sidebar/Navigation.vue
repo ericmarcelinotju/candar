@@ -4,7 +4,7 @@
       <router-link
         v-if="!item.children"
         :key="item.name"
-        active-class="bg-primary text-white"
+        active-class="bg-secondary text-white"
         class="group nav-button mb-2"
         :class="{
           '!hidden': item.module && !hasPermission(item.module),
@@ -35,7 +35,7 @@
         :default-open="hasActiveChild(item.children)"
       >
         <DisclosureButton
-          active-class="bg-primary text-white"
+          active-class="bg-secondary text-white"
           class="nav-button"
         >
           <component
@@ -66,7 +66,7 @@
           <router-link
             v-for="subItem in item.children"
             :key="subItem.name"
-            active-class="bg-primary text-white"
+            active-class="bg-secondary text-white"
             class="group nav-button"
             :class="{
               '!hidden': subItem.module && !hasPermission(subItem.module),
