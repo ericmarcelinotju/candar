@@ -67,7 +67,7 @@
                   Pada column Variant diisikan Code dari Variant
                 </li>
                 <li class="disclaimer-label pl-2 my-0.5">
-                  Pada column Category diisikan Code dari Category
+                  Pada column Category diisikan Code dari Product Category
                 </li>
               </ul>
             </div>
@@ -414,7 +414,7 @@ const columns = [
   },
   {
     label: t('app.columns.category'),
-    key: 'category.name',
+    key: 'categoryName',
     isSortable: false,
     isSearchable: false
   }
