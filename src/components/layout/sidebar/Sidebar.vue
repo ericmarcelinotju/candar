@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-white">
     <TransitionRoot
       as="template"
       :show="isOpen"
@@ -48,7 +48,7 @@
                   <span class="sr-only">Close sidebar</span>
                   <XIcon
                     aria-hidden="true"
-                    class="h-6 w-6 text-white"
+                    class="h-6 w-6"
                   />
                 </button>
               </div>
@@ -76,6 +76,13 @@
                 <DefaultNavigation :navigations="secondaryNavigations" />
               </div>
             </nav>
+            <div class="p-3">
+              <img
+                alt="Logo Pancaka"
+                class="w-1/2 mr-auto"
+                src="@/assets/logo_pancaka_white.png"
+              >
+            </div>
           </div>
         </TransitionChild>
         <div
@@ -93,7 +100,7 @@
       :class="{ 'w-24': isCollapse }"
     >
       <!-- Sidebar component, swap this element with another sidebar if you like -->
-      <div class="flex flex-col flex-grow bg-black text-white shadow-lg overflow-y-auto">
+      <div class="flex flex-col flex-grow bg-black shadow-lg overflow-y-auto">
         <div
           class="flex items-center justify-between flex-shrink-0 px-4 max-h-20"
         >
