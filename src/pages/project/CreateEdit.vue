@@ -141,10 +141,6 @@ onMounted(() => {
   initPage()
 })
 
-const hasPermission = (method, module = 'PROJECT') => {
-  return store.getters['auth/hasPermission'](module, method)
-}
-
 const formSettings: Ref<FormSetting[]> = ref([])
 const initForm = () => {
   formSettings.value = [

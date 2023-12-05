@@ -614,10 +614,9 @@ const dragOptions = ref({
 
 const drag = ref(false)
 
-const hasPermission = (method, module = 'DEVICE') => {
+const hasPermission = (method, module = 'PROJECT') => {
   return store.getters['auth/hasPermission'](module, method)
 }
-
 </script>
 
 <style lang="scss" scoped>

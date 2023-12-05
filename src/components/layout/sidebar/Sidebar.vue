@@ -29,7 +29,7 @@
           leave-from="translate-x-0"
           leave-to="-translate-x-full"
         >
-          <div class="relative flex-1 flex flex-col max-w-xs w-full bg-info">
+          <div class="relative flex-1 flex flex-col max-w-xs w-full bg-black">
             <TransitionChild
               as="template"
               enter="ease-in-out duration-300"
@@ -61,11 +61,8 @@
                 <img
                   alt="Logo"
                   class="inline h-12 w-auto mr-2"
-                  src="@/assets/logo.svg"
+                  src="@/assets/logo.png"
                 >
-                <h1 class="inline text-black text-xl font-semibold">
-                  Volt
-                </h1>
               </router-link>
             </div>
             <nav
@@ -96,25 +93,26 @@
       :class="{ 'w-24': isCollapse }"
     >
       <!-- Sidebar component, swap this element with another sidebar if you like -->
-      <div class="flex flex-col flex-grow bg-info shadow-lg overflow-y-auto">
+      <div class="flex flex-col flex-grow bg-black text-white shadow-lg overflow-y-auto">
         <div
           class="flex items-center justify-between flex-shrink-0 px-4 max-h-20"
         >
           <router-link
-            class="flex items-center my-4 overflow-hidden"
+            class="flex-1 text-center my-4 overflow-hidden"
             to="/"
           >
             <img
+              v-if="isCollapse"
               alt="Logo"
-              class="h-12 w-auto mr-2"
-              src="@/assets/logo.svg"
+              class="h-10 w-auto"
+              src="@/assets/logo_square.png"
             >
-            <h1
-              v-if="!isCollapse"
-              class="text-black text-xl font-semibold"
+            <img
+              v-else
+              alt="Logo"
+              class="h-12 w-auto mx-auto"
+              src="@/assets/logo.png"
             >
-              Volt
-            </h1>
           </router-link>
 
           <button>
@@ -127,7 +125,7 @@
         </div>
         <nav
           aria-label="Sidebar"
-          class="mt-5 flex-1 flex flex-col divide-y divide-grey-dark overflow-y-auto"
+          class="mt-5 flex-1 flex flex-col divide-y divide-grey-soft overflow-y-auto"
         >
           <div class="px-4 space-y-1">
             <DefaultNavigation
@@ -142,6 +140,13 @@
             />
           </div>
         </nav>
+        <div class="p-3">
+          <img
+            alt="Logo Pancaka"
+            class="w-1/2 mr-auto"
+            src="@/assets/logo_pancaka_white.png"
+          >
+        </div>
       </div>
     </div>
   </div>

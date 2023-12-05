@@ -1,7 +1,7 @@
 <template>
-  <div class="flex-shrink-0 flex h-20 bg-info shadow-lg border-none">
+  <div class="flex-shrink-0 flex h-20 bg-secondary text-white shadow-lg border-none">
     <button
-      class="px-6 text-grey-dark focus:outline-none focus:ring-1 focus:ring-inset focus:ring-white lg:hidden hover:bg-secondary-dark focus:bg-secondary-dark hover:text-white"
+      class="px-6 focus:outline-none focus:ring-1 focus:ring-inset focus:ring-white lg:hidden hover:bg-secondary-dark focus:bg-secondary-dark hover:text-grey"
       type="button"
       @click="openSidebar"
     >
@@ -20,7 +20,10 @@
           class="ml-3 relative"
         >
           <div>
-            <MenuButton class="menu-button" @click="handleClickNotif">
+            <MenuButton
+              class="menu-button"
+              @click="handleClickNotif"
+            >
               <BellIcon
                 aria-hidden="true"
                 class="h-6 w-6"
@@ -40,12 +43,14 @@
             leave-to-class="transform opacity-0 scale-95"
           >
             <MenuItems
-              class="overflow-y-scroll max-h-[50vh] origin-top-right absolute right-0 mt-4 w-52 z-10 rounded-md shadow-lg bg-info ring-1 ring-grey-dark focus:outline-none"
+              class="overflow-y-auto max-h-[50vh] origin-top-right absolute right-0 mt-4 w-64 z-10 rounded-md shadow-lg bg-white text-grey-dark focus:outline-none"
             >
               <MenuItem v-if="notifications.length <= 0">
                 <span
-                  class="block px-4 py-2 text-sm text-grey-dark cursor-pointer"
-                >{{ $t('app.components.notification.empty') }}</span>
+                  class="block px-6 py-3 text-sm cursor-pointer"
+                >
+                  {{ $t('app.components.notification.empty') }}
+                </span>
               </MenuItem>
               <MenuItem
                 v-for="notification in notifications"
@@ -55,16 +60,16 @@
               >
                 <a
                   :class="[
-                    active ? 'bg-primary-dark rounded-md' : '',
-                    'block px-4 py-2 text-grey cursor-pointer'
+                    active ? 'bg-grey-soft' : '',
+                    'w-full block px-6 py-3 cursor-pointer'
                   ]"
                   @click="handleNotification(notification)"
                 >
-                  <div class="text-black font-bold">
+                  <div class="font-bold">
                     {{ notification.title }}
                   </div>
                   <div
-                    class="text-black text-sm whitespace-nowrap text-ellipsis overflow-hidden"
+                    class="text-sm whitespace-nowrap text-ellipsis overflow-hidden"
                   >
                     {{ notification.message }}
                   </div>
@@ -97,13 +102,13 @@
             leave-to-class="transform opacity-0 scale-95"
           >
             <MenuItems
-              class="origin-top-right absolute right-0 mt-4 w-48 rounded-md shadow-lg z-10 bg-info ring-1 ring-grey-dark focus:outline-none overflow-hidden"
+              class="origin-top-right absolute right-0 mt-4 w-48 rounded-md shadow-lg z-10 bg-white text-grey-dark focus:outline-none overflow-hidden"
             >
               <MenuItem v-slot="{ active }">
                 <a
                   :class="[
-                    active ? 'bg-info-dark' : '',
-                    'block px-4 py-2 text-grey-dark'
+                    active ? 'bg-grey-soft' : '',
+                    'block px-6 py-3'
                   ]"
                 >
                   <div class="mb-2">
@@ -116,8 +121,8 @@
               <MenuItem v-slot="{ active }">
                 <a
                   :class="[
-                    active ? 'bg-info-dark' : '',
-                    'px-4 py-2 text-grey-dark cursor-pointer flex items-center'
+                    active ? 'bg-grey-soft' : '',
+                    'px-6 py-3 cursor-pointer flex items-center'
                   ]"
                   @click="handleLogout"
                 >
@@ -174,6 +179,6 @@ const handleNotification = (notification) => {
 
 <style lang="scss" scoped>
 .menu-button {
-  @apply max-w-xs rounded-full lg:rounded-md flex items-center text-sm p-1 lg:p-2 hover:bg-secondary focus:bg-secondary text-grey-dark hover:text-white focus:text-white focus:outline-none focus:ring-2 focus:ring-white;
+  @apply max-w-xs rounded-full lg:rounded-md flex items-center text-sm p-1 lg:p-2 hover:text-grey focus:outline-none focus:ring-2 focus:ring-white;
 }
 </style>

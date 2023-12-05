@@ -15,4 +15,5 @@ export class FormSetting {
   col?: number
   disabled?: boolean
   formula?: ((form: any, current?: any) => number | string | null) | null
+  isHidden?: ((form: any) => boolean | null) | boolean
 }

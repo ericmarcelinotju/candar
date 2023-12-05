@@ -122,6 +122,12 @@ const columns = [
     isSearchable: true
   },
   {
+    label: t('app.columns.sku'),
+    key: 'sku',
+    isSortable: true,
+    isSearchable: true
+  },
+  {
     label: t('app.columns.name'),
     key: 'name',
     isSortable: true,
@@ -153,7 +159,7 @@ const columns = [
   }
 ]
 
-const hasPermission = (method, module = 'CLIENT') => {
+const hasPermission = (method, module = 'PRODUCT') => {
   return store.getters['auth/hasPermission'](module, method)
 }
 </script>

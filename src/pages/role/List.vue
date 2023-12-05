@@ -11,6 +11,11 @@
       @edit="handleEdit"
       @search="handleSearch"
     >
+      <template #isManager="{ item }">
+        <span class="default-tag">
+          {{ item.isManager ? $t('global.yes') : $t('global.no') }}
+        </span>
+      </template>
       <template #permission="{ item }">
         {{ item.permissions.length }}
       </template>
@@ -71,6 +76,12 @@ const columns = [
     isHidden: true
   },
   {
+    label: t('app.columns.code'),
+    key: 'code',
+    isSortable: true,
+    isSearchable: true
+  },
+  {
     label: t('app.columns.name'),
     key: 'name',
     isSortable: true,
@@ -87,6 +98,10 @@ const columns = [
     key: 'description',
     isSortable: true,
     isSearchable: true
+  },
+  {
+    label: t('app.columns.is_manager'),
+    key: 'isManager'
   },
   {
     label: t('app.columns.permission'),
@@ -143,7 +158,7 @@ const confirmDelete = () => {
     })
 }
 
-const hasPermission = (method) => {
-  return store.getters['auth/hasPermission']('ROLE', method)
+const hasPermission = (method, module = 'ROLE') => {
+  return store.getters['auth/hasPermission'](module, method)
 }
 </script>

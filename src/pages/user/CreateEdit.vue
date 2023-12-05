@@ -28,7 +28,7 @@ import {
 } from '@/api/user'
 import { get as getRoles } from '@/api/role'
 import { get as getDivisions } from '@/api/division'
-import { required, alpha } from '@/utils/validation'
+import { required, alpha, phone, email } from '@/utils/validation'
 import { FormSetting } from '@/typings/form.type'
 import { User } from '@/typings/models/user.type'
 import { Role } from '@/typings/models/role.type'
@@ -87,8 +87,8 @@ const onSubmit = (form, onFinish) => {
         router.push(userList)
         notify('updated')
       })
-      .catch(() => {
-        notify('updated', 'danger')
+      .catch(err => {
+        notify('updated', 'danger', err.message)
       })
       .finally(onFinish)
   } else {
@@ -97,15 +97,11 @@ const onSubmit = (form, onFinish) => {
         router.push(userList)
         notify('inserted')
       })
-      .catch(() => {
-        notify('inserted', 'danger')
+      .catch(err => {
+        notify('inserted', 'danger', err.message)
       })
       .finally(onFinish)
   }
-}
-
-const hasPermission = (method, module = 'USER') => {
-  return store.getters['auth/hasPermission'](module, method)
 }
 
 onMounted(() => {
@@ -132,7 +128,14 @@ const initForm = () => {
       key: 'email',
       label: t('app.columns.email'),
       isRequired: true,
+      rules: [required, email],
       type: 'textarea'
+    },
+    {
+      key: 'phone',
+      label: t('app.columns.phone'),
+      isRequired: true,
+      rules: [required, phone]
     },
     {
       key: 'password',
@@ -140,7 +143,7 @@ const initForm = () => {
       type: 'password'
     },
     {
-      key: 'confirm_password',
+      key: 'confirmPassword',
       label: t('app.columns.confirm_password'),
       type: 'password'
     },

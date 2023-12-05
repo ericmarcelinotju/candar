@@ -63,7 +63,7 @@
               class="info-button submit"
               type="submit"
             >
-              {{ $t('app.submit') }}
+              {{ $t('global.submit') }}
             </button>
           </div>
         </form>

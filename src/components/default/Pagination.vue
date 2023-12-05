@@ -20,7 +20,7 @@
         :disabled="!hasPrev"
         @click.prevent="changePage(prevPage)"
       >
-        {{ $t("app.components.pagination.previous") }}
+        Prev
       </button>
       <button
         class="
@@ -41,7 +41,7 @@
         :disabled="!hasNext"
         @click.prevent="changePage(nextPage)"
       >
-        {{ $t("app.components.pagination.next") }}
+        Next
       </button>
     </div>
     <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">

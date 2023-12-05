@@ -2,7 +2,12 @@
   <form class="flex mb-4">
     <div class="flex flex-col flex-1 gap-4 border rounded-md p-4">
       <div class="default-field">
-        <label class="default-label" for="user"> Produk<sup>*</sup> </label>
+        <label
+          class="default-label"
+          for="user"
+        >
+          Produk<sup>*</sup>
+        </label>
         <Dropdown
           id="user"
           v-model="inputVal.productId"
@@ -11,7 +16,12 @@
         />
       </div>
       <div class="default-field">
-        <label class="default-label" for="price"> Harga </label>
+        <label
+          class="default-label"
+          for="price"
+        >
+          Harga
+        </label>
         <Dropdown
           id="price"
           v-model="inputVal.tierId"
@@ -20,13 +30,18 @@
         />
       </div>
       <div class="default-field">
-        <label class="default-label" for="quantity"> Kuantitas </label>
+        <label
+          class="default-label"
+          for="quantity"
+        >
+          Kuantitas
+        </label>
         <input
           id="quantity"
           v-model="inputVal.quantity"
           class="default-input"
           type="number"
-        />
+        >
       </div>
     </div>
     <div class="flex flex-col gap-4 ml-4">
@@ -75,6 +90,8 @@ const tierOptions: Ref<Option[]> = computed(() =>
       (tier) =>
         tier.productId === inputVal.value.productId &&
         tier.type === (props.hasContract ? 'regular' : 'iregular')
+        // TODO : What happen when no price available
+        // inputVal.value.quantity >= tier.moq
     )
     .map((tier) => ({
       label: `${tier.type} Tier: ${tier.name}  MOQ: ${tier.moq}  Price: ${tier.price}`,
@@ -83,10 +100,10 @@ const tierOptions: Ref<Option[]> = computed(() =>
 )
 
 const inputVal = computed({
-  get() {
+  get () {
     return props.modelValue
   },
-  set(val) {
+  set (val) {
     emit('update:modelValue', val)
   }
 })

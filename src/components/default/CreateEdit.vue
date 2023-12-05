@@ -14,7 +14,8 @@
           :class="[
             `col-span-${row.col ?? 12}`,
             {
-              inline: row.type === 'checkbox'
+              'inline': row.type === 'checkbox',
+              '!hidden': row.isHidden ? typeof row.isHidden == 'boolean' ? row.isHidden : row.isHidden(form) : false
             }
           ]"
         >
