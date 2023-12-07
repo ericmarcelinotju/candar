@@ -362,14 +362,14 @@ const initColumns = () => {
     },
     {
       label: t('app.columns.date_from'),
-      key: 'dateFromFormat',
+      key: 'dateFromDisplay',
       isSortable: true,
       isSearchable: true,
       searchType: 'date'
     },
     {
       label: t('app.columns.date_to'),
-      key: 'dateToFormat',
+      key: 'dateToDisplay',
       isSortable: true,
       isSearchable: true,
       searchType: 'date'
