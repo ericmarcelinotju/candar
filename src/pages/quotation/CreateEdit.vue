@@ -167,7 +167,6 @@ const initPage = async () => {
       handleAddProduct(initialData.value)
     }
 
-    initialData.value.date = new Date()
     if (projectId) {
       initialData.value.projectId = projectId
     }

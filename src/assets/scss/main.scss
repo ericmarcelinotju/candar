@@ -239,7 +239,7 @@ fieldset[disabled] {
 
 .warning-button {
   @extend .default-button;
-  @apply bg-warning hover:bg-warning-dark focus:ring-warning-soft;
+  @apply bg-warning text-white hover:bg-warning-dark focus:ring-warning-soft;
 }
 
 .danger-button {

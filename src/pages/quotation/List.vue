@@ -14,6 +14,9 @@
       <template #project_id="{ item }">
         {{ item.project.code }}
       </template>
+      <template #revision="{ item }">
+        v{{ item.revision + 1 }}.0
+      </template>
       <template #status="{ item }">
         <template v-if="item.status == 'draft'">
           <span
@@ -359,14 +362,14 @@ const initColumns = () => {
     },
     {
       label: t('app.columns.date_from'),
-      key: 'dateFrom',
+      key: 'dateFromFormat',
       isSortable: true,
       isSearchable: true,
       searchType: 'date'
     },
     {
       label: t('app.columns.date_to'),
-      key: 'dateTo',
+      key: 'dateToFormat',
       isSortable: true,
       isSearchable: true,
       searchType: 'date'
@@ -377,6 +380,10 @@ const initColumns = () => {
       isSearchable: true,
       searchType: 'dropdown',
       searchOptions: projectOptions.value
+    },
+    {
+      label: t('app.columns.version'),
+      key: 'revision'
     },
     {
       label: t('app.columns.status'),

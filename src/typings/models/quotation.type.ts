@@ -18,7 +18,8 @@ type QuotationStatus = 'draft' | 'sent' | 'approved' | 'accepted'
 export class Quotation extends BaseModel {
   id: string
   code: string
-  date: Date
+  dateFrom: Date
+  dateTo: Date
   totalPrice: string
 
   projectId: string
@@ -30,4 +31,6 @@ export class Quotation extends BaseModel {
 
   approvedBy?: User
   approvalAttachment?: string
+
+  revision: number
 }
