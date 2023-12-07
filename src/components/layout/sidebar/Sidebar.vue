@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white">
+  <div>
     <TransitionRoot
       as="template"
       :show="isOpen"
@@ -29,7 +29,7 @@
           leave-from="translate-x-0"
           leave-to="-translate-x-full"
         >
-          <div class="relative flex-1 flex flex-col max-w-xs w-full bg-black">
+          <div class="relative flex-1 flex flex-col text-white max-w-xs w-full bg-black">
             <TransitionChild
               as="template"
               enter="ease-in-out duration-300"
@@ -96,7 +96,7 @@
 
     <!-- Static sidebar for desktop -->
     <div
-      class="hidden lg:flex flex-col w-72 fixed inset-y-0 shadow-lg transition-all ease-out"
+      class="hidden lg:flex flex-col w-72 fixed inset-y-0 shadow-lg transition-all ease-out text-white"
       :class="{ 'w-24': isCollapse }"
     >
       <!-- Sidebar component, swap this element with another sidebar if you like -->
