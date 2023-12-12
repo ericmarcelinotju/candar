@@ -371,7 +371,7 @@ import { formatCurrency } from '@/utils/number'
 const route = useRoute()
 const router = useRouter()
 const store = useStore()
-const { notify } = useNotify('project')
+const { notify } = useNotify('deal')
 
 const columns = [
   {

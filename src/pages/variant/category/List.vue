@@ -56,7 +56,7 @@ const { t } = useI18n()
 const router = useRouter()
 const store = useStore()
 
-const { notify } = useNotify('variant-option')
+const { notify } = useNotify('variant category')
 
 const loading = ref(false)
 let stateParams = reactive({})

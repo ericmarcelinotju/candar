@@ -76,7 +76,7 @@ const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 
-const { notify } = useNotify('user')
+const { notify } = useNotify('role')
 
 const initialData: Ref<Role> = ref()
 const loading: Ref<boolean> = ref(false)

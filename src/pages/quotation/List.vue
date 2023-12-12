@@ -187,7 +187,7 @@ import { Option } from '@/typings/option.type'
 const { t } = useI18n()
 const router = useRouter()
 const store = useStore()
-const { notify } = useNotify('variant')
+const { notify } = useNotify('quotation')
 
 const isManager = computed(() => store.getters['auth/isManager'])
 

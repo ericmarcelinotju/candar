@@ -67,7 +67,7 @@ const store = useStore()
 
 const currUser = store.getters['auth/user']
 
-const { notify } = useNotify('project')
+const { notify } = useNotify('deal')
 
 const initialData: Ref<Project> = ref(new Project())
 initialData.value.status = 'initiate'

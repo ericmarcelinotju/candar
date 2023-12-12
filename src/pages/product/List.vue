@@ -55,7 +55,7 @@ import { productCreate, productEdit } from '@/router/routes/product'
 const { t } = useI18n()
 const router = useRouter()
 const store = useStore()
-const { notify } = useNotify('variant')
+const { notify } = useNotify('product')
 
 const loading = ref(false)
 let stateParams = reactive({})

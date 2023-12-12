@@ -34,7 +34,7 @@ const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 
-const { notify } = useNotify('address')
+const { notify } = useNotify('client address')
 
 const initialData: Ref<ClientAddress> = ref()
 const loading: Ref<boolean> = ref(false)

@@ -40,7 +40,7 @@ const route = useRoute()
 const router = useRouter()
 const store = useStore()
 
-const { notify } = useNotify('variant')
+const { notify } = useNotify('variant category')
 
 const initialData: Ref<Variant> = ref()
 const loading: Ref<boolean> = ref(false)

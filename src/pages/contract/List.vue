@@ -61,7 +61,7 @@ import { Option } from '@/typings/option.type'
 
 const router = useRouter()
 const store = useStore()
-const { notify } = useNotify('variant')
+const { notify } = useNotify('contract')
 
 const loading = ref(false)
 let stateParams = reactive({})

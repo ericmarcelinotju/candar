@@ -57,7 +57,7 @@ const props = defineProps<Props>()
 
 const router = useRouter()
 const store = useStore()
-const { notify } = useNotify('client address')
+const { notify } = useNotify('client contact')
 
 const loading = ref(false)
 

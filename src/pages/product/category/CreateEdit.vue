@@ -294,7 +294,7 @@ const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 
-const { notify } = useNotify('variant')
+const { notify } = useNotify('product category')
 
 const options: Ref<OptionObject[]> = ref([])
 
