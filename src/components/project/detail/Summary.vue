@@ -80,13 +80,10 @@ import { Ref, computed, ref, watch } from 'vue'
 import { watchDebounced } from '@vueuse/core'
 import dayjs from 'dayjs'
 
-import { Project, getProjectStatusColor } from '@/typings/models/project.type'
+import { Project } from '@/typings/models/project.type'
 import { update as updateProject, detail as getProject } from '@/api/project'
 
 import { useNotify } from '@/composables/use-notify'
-import { snakeToTitle } from '@/utils/string'
-import Datepicker from '@vuepic/vue-datepicker'
-import InfoButton from '@/components/helper/InfoButton.vue'
 
 interface Props {
   data: Project

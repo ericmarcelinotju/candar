@@ -38,7 +38,6 @@ import { variantCategoryList } from '@/router/routes/variant'
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
-const store = useStore()
 
 const { notify } = useNotify('variant category')
 

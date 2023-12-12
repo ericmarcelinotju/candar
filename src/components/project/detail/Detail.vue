@@ -1,13 +1,13 @@
 <template>
   <div>
     <Tabs
-    class="mt-3"
+      class="mt-3"
       :options="tabOptions"
     >
       <template #activity>
         <transition-group name="list">
           <TaskForm
-            v-for="task in data.tasks"
+            v-for="task in project.tasks"
             :key="task.id"
             class="mt-3"
             :project="project"
@@ -22,7 +22,7 @@
       <template #call>
         <transition-group name="list">
           <TaskForm
-            v-for="task in filterTask('call', data.tasks)"
+            v-for="task in filterTask('call', project.tasks)"
             :key="task.id"
             class="mt-3"
             :project="project"
@@ -37,7 +37,7 @@
       <template #email>
         <transition-group name="list">
           <TaskForm
-            v-for="task in filterTask('email', data.tasks)"
+            v-for="task in filterTask('email', project.tasks)"
             :key="task.id"
             class="mt-3"
             :project="project"
@@ -52,7 +52,7 @@
       <template #meeting>
         <transition-group name="list">
           <TaskForm
-            v-for="task in filterTask('meeting', data.tasks)"
+            v-for="task in filterTask('meeting', project.tasks)"
             :key="task.id"
             class="mt-3"
             :project="project"
@@ -67,7 +67,7 @@
       <template #note>
         <transition-group name="list">
           <TaskForm
-            v-for="task in filterTask('note', data.tasks)"
+            v-for="task in filterTask('note', project.tasks)"
             :key="task.id"
             class="mt-3"
             :project="project"
@@ -82,7 +82,7 @@
       <template #task>
         <transition-group name="list">
           <TaskForm
-            v-for="task in filterTask('task', data.tasks)"
+            v-for="task in filterTask('task', project.tasks)"
             :key="task.id"
             class="mt-3"
             :project="project"
