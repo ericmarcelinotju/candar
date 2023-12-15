@@ -5,15 +5,16 @@ import { User } from './user.type'
 export class QuotationProduct extends BaseModel {
   id: string
   quantity: number
+  price: number
+  priceDisplay: string
   productId: string
   productName: string
   tierId: string
   tierName: string
-  price: string
-  priceNumber: number
 }
 
-type QuotationStatus = 'draft' | 'sent' | 'approved' | 'accepted'
+export type QuotationStatus = 'draft' | 'sent' | 'approved' | 'accepted'
+export type QuotationType = 'local' | 'export' | 'all_in'
 
 export class Quotation extends BaseModel {
   id: string
@@ -21,6 +22,7 @@ export class Quotation extends BaseModel {
   dateFrom: Date
   dateTo: Date
   totalPrice: string
+  attachment?: string
 
   projectId: string
   project: Project
@@ -28,6 +30,7 @@ export class Quotation extends BaseModel {
   quotationProducts: QuotationProduct[]
 
   status: QuotationStatus
+  type: QuotationType
 
   approvedBy?: User
   approvalAttachment?: string

@@ -6,7 +6,7 @@
           class="default-label"
           for="user"
         >
-          Produk<sup>*</sup>
+          {{ $t('module.product') }}<sup>*</sup>
         </label>
         <Dropdown
           id="user"
@@ -20,21 +20,37 @@
           class="default-label"
           for="price"
         >
-          Harga
+          {{ $t('product.tier') }}
         </label>
         <Dropdown
           id="price"
           v-model="inputVal.tierId"
           class="default-input"
+          :disabled="!inputVal.productId"
           :options="tierOptions"
+          @input="onChangeTier"
         />
+      </div>
+      <div class="default-field">
+        <label
+          class="default-label"
+          for="price"
+        >
+          {{ $t('app.columns.price') }}
+        </label>
+        <input
+          id="price"
+          v-model="inputVal.price"
+          class="default-input"
+          type="number"
+        >
       </div>
       <div class="default-field">
         <label
           class="default-label"
           for="quantity"
         >
-          Kuantitas
+          {{ $t('app.columns.quantity') }}
         </label>
         <input
           id="quantity"
@@ -44,7 +60,10 @@
         >
       </div>
     </div>
-    <div class="flex flex-col gap-4 ml-4">
+    <div
+      v-if="!isEdit || !inputVal.id"
+      class="flex flex-col gap-4 ml-4"
+    >
       <button
         class="danger-button flex-1"
         type="button"
@@ -57,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, computed } from 'vue'
+import { Ref, computed, ref } from 'vue'
 import { TrashIcon } from '@heroicons/vue/solid'
 import Dropdown from '@/components/form/dropdown/Dropdown.vue'
 import { QuotationProduct } from '@/typings/models/quotation.type'
@@ -71,6 +90,7 @@ interface Props {
   tiers: ProductTier[]
   hasContract: boolean
   modelValue: QuotationProduct
+  isEdit: boolean
 }
 
 const props = defineProps<Props>()
@@ -79,7 +99,7 @@ const emit = defineEmits(['update:modelValue', 'delete'])
 
 const productOptions: Ref<Option[]> = computed(() =>
   props.products.map((product) => ({
-    label: `${product.name} : ${product.code}`,
+    label: `${product.name} : ${product.code} | Stock : ${product.stock}`,
     value: product.id
   }))
 )
@@ -90,14 +110,15 @@ const tierOptions: Ref<Option[]> = computed(() =>
       (tier) =>
         tier.productId === inputVal.value.productId &&
         tier.type === (props.hasContract ? 'regular' : 'iregular')
-        // TODO : What happen when no price available
-        // inputVal.value.quantity >= tier.moq
     )
     .map((tier) => ({
       label: `${tier.type} Tier: ${tier.name}  MOQ: ${tier.moq}  Price: ${tier.price}`,
       value: tier.id
     }))
 )
+const onChangeTier = (tierId: string) => {
+  inputVal.value.price = +props.tiers.find(item => item.id === tierId).price
+}
 
 const inputVal = computed({
   get () {

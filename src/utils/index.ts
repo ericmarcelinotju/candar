@@ -7,7 +7,11 @@ const jsonToFormData = (json: object): FormData => {
     }
     if (Array.isArray(json[key])) {
       for (const i in json[key]) {
-        formData.append(key + '[]', json[key][i])
+        if (typeof json[key][i] === 'object') {
+          formData.append(key + '[]', JSON.stringify(json[key][i]))
+        } else {
+          formData.append(key + '[]', json[key][i])
+        }
       }
       continue
     }

@@ -185,9 +185,7 @@ const initPage = async () => {
 }
 
 const onSubmit = (form: Ref<Contract>, onFinish: () => void) => {
-  const payload = jsonToFormData({
-    ...form.value
-  })
+  const payload = jsonToFormData(form.value)
 
   if (id) {
     return updateContract(id, payload)

@@ -95,6 +95,52 @@
         </div>
       </div>
     </div>
+    <div class="mt-6 flex flex-wrap gap-6">
+      <div class="stat-card">
+        <div class="stat-label">
+          {{ acceptedQuotations }}
+        </div>
+        <hr>
+        <div class="flex justify-between items-center p-4">
+          <span class="font-bold">
+            {{ $t('quotation.accepted') }} {{ $t('module.quotation') }}
+          </span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">
+          {{ approvedQuotations }}
+        </div>
+        <hr>
+        <div class="flex justify-between items-center p-4">
+          <span class="font-bold">
+            {{ $t('quotation.approved') }} {{ $t('module.quotation') }}
+          </span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">
+          {{ draftQuotations }}
+        </div>
+        <hr>
+        <div class="flex justify-between items-center p-4">
+          <span class="font-bold">
+            {{ $t('quotation.draft') }} {{ $t('module.quotation') }}
+          </span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">
+          {{ sentQuotations }}
+        </div>
+        <hr>
+        <div class="flex justify-between items-center p-4">
+          <span class="font-bold">
+            {{ $t('quotation.sent') }} {{ $t('module.quotation') }}
+          </span>
+        </div>
+      </div>
+    </div>
     <div class="grid grid-cols-12 gap-6 mt-6">
       <div class="p-6 col-span-8 rounded-md overflow-hidden bg-white shadow">
         <h1 class="text-xl font-bold mb-6">
@@ -219,6 +265,11 @@ const almostDueProjects: Ref<number> = ref()
 const winProject: Ref<number> = ref()
 const lostProject: Ref<number> = ref()
 
+const acceptedQuotations: Ref<number> = ref()
+const approvedQuotations: Ref<number> = ref()
+const draftQuotations: Ref<number> = ref()
+const sentQuotations: Ref<number> = ref()
+
 const getTagClass = (status: string) => {
   if (status === 'initiate') {
     return 'danger-tag'
@@ -329,6 +380,11 @@ const processDashboard = () => {
       almostDueProjects.value = result.data.almostDueProject
       winProject.value = result.data.projectByStatus.find((e: ProjectByStatus) => e.status === 'win')?.count || 0
       lostProject.value = result.data.projectByStatus.find((e: ProjectByStatus) => e.status === 'lose')?.count || 0
+
+      acceptedQuotations.value = result.data.quotationByStatus.find((e) => e.status === 'accepted')?.count || 0
+      approvedQuotations.value = result.data.quotationByStatus.find((e) => e.status === 'approved')?.count || 0
+      draftQuotations.value = result.data.quotationByStatus.find((e) => e.status === 'draft')?.count || 0
+      sentQuotations.value = result.data.quotationByStatus.find((e) => e.status === 'sent')?.count || 0
 
       const sources = []
       const statusList = []

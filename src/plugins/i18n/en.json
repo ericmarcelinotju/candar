@@ -99,6 +99,10 @@
     "me": "My Deals",
     "totalEstimate": "Total estimate value",
     "total": "Total value",
+    "due_bill": "Due Bill",
+    "overdue_bill": "Overdue Bill",
+    "total_overdue_gp": "Total Overdue GP",
+    "disbursed_commission": "Disbursed Commission",
     "tip": {
       "note": "Write something",
       "estimate": "Project estimated value"
@@ -123,7 +127,9 @@
     "wait_approval": "Waiting for Approval",
     "wait_accept": "Waiting for Acceptance",
     "upload": "Upload Proof",
-    "accepted": "Accepted"
+    "accepted": "Accepted",
+    "approved": "Approved",
+    "sent": "Sent"
   },
   "error": {
     "required": "This field is required",
@@ -219,6 +225,7 @@
       }
     },
     "columns": {
+      "attachment": "Attachment",
       "validation": "Validation",
       "view": "View",
       "edit": "Edit",

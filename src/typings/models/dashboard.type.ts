@@ -1,8 +1,14 @@
 import { Project, ProjectStatus } from '@/typings/models/project.type'
+import { QuotationStatus } from '@/typings/models/quotation.type'
 
 export class ProjectByStatus {
     count: number
     status: ProjectStatus
+}
+
+export class QuotationByStatus {
+    count: number
+    status: QuotationStatus
 }
 
 export class ProjectStatusBySource {
@@ -25,5 +31,6 @@ export class Dashboard {
     almostDueProject: number
     projectBySource: ProjectBySource[]
     projectByStatus: ProjectByStatus[]
+    quotationByStatus: QuotationByStatus[]
     projects: Project[]
 }

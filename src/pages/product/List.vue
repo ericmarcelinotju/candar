@@ -134,6 +134,12 @@ const columns = [
     isSearchable: true
   },
   {
+    label: t('app.columns.stock'),
+    key: 'stock',
+    isSortable: true,
+    isSearchable: true
+  },
+  {
     label: t('app.columns.cost'),
     key: 'cost',
     isSortable: true,

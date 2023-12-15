@@ -1,6 +1,6 @@
 export class Option {
   label: string
-  value: string | string[]
+  value: string | string[] | unknown
 }
 
 export class OptionObject {

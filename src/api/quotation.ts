@@ -11,11 +11,11 @@ const detail = (id: string): Promise<BaseResponse<Quotation>> => {
   return axios.get(`/quotation/${id}`)
 }
 
-const insert = (data: Quotation): Promise<BaseResponse<null>> => {
+const insert = (data: FormData): Promise<BaseResponse<null>> => {
   return axios.post('/quotation', data)
 }
 
-const update = (id: string, data: Quotation): Promise<BaseResponse<null>> => {
+const update = (id: string, data: FormData): Promise<BaseResponse<null>> => {
   return axios.put(`/quotation/${id}`, data)
 }
 

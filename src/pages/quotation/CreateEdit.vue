@@ -12,6 +12,46 @@
       :initial-data="initialData"
       @submit="onSubmit"
     >
+      <template #attachment="{ form, formSetting }">
+        <label
+          class="default-label"
+          :for="formSetting.key"
+        >
+          {{ $t('global.attachment') }}<sup v-if="formSetting.isRequired">*</sup>
+        </label>
+        <div>
+          <input
+            ref="inputAttachment"
+            style="display: none"
+            type="file"
+            @change="(e) => onFileChange(e, form, onAttachmentChange)"
+          >
+          <a
+            v-if="form.attachment"
+            class="group block text-sm border border-transparent hover:border-grey p-1 rounded-md cursor-pointer"
+            download
+            :href="`${config.apiAddress}\\${form.attachment}`"
+            target="_blank"
+          >
+            <DocumentIcon class="w-4 h-4 inline mb-[0.15rem]" />
+            {{ getAttachmentName(form.attachment) }}
+
+            <PencilAltIcon
+              class="hidden group-hover:block w-3 h-3 m-1 float-right"
+              @click.stop.prevent="handleAttachment"
+            />
+          </a>
+          <p
+            v-else
+            class="text-sm"
+          >
+            <FileInput
+              ref="inputAttachment"
+              @change="(file) => onAttachmentChange(file, form)"
+            />
+          </p>
+        </div>
+      </template>
       <template #products="{ form }">
         <ProductForm
           v-for="(quotationProduct, index) in form.quotationProducts"
@@ -19,6 +59,7 @@
           v-model="form.quotationProducts[index]"
           :has-contract="hasContract(form.projectId)"
           :index="index"
+          :is-edit="isEdit"
           :products="products"
           :tiers="productTiers"
           @delete="(index) => handleRemoveProduct(form, index)"
@@ -107,7 +148,12 @@ import { Option } from '@/typings/option.type'
 import { Project } from '@/typings/models/project.type'
 import { Product } from '@/typings/models/product.type'
 import { ProductTier } from '@/typings/models/product-tier.type'
+import { quotationTypes } from './options'
 import ProductForm from './ProductForm.vue'
+import { config } from '@/config'
+import { jsonToFormData } from '@/utils'
+import { DocumentIcon, PencilAltIcon } from '@heroicons/vue/outline'
+import FileInput from '@/components/form/File.vue'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -181,13 +227,7 @@ const initPage = async () => {
 }
 
 const onSubmit = (form: Ref<Quotation>, onFinish: () => void) => {
-  const payload = {
-    ...form.value,
-    quotationProducts: form.value.quotationProducts.map((f) => ({
-      ...f,
-      price: f.priceNumber
-    }))
-  } as unknown as Quotation
+  const payload = jsonToFormData(form.value)
 
   if (id) {
     return updateQuotation(id, payload)
@@ -226,6 +266,13 @@ const initForm = () => {
       rules: [required]
     },
     {
+      key: 'type',
+      label: t('app.columns.type'),
+      isRequired: true,
+      type: 'dropdown',
+      options: quotationTypes
+    },
+    {
       key: 'dateFrom',
       label: t('app.columns.date_from'),
       type: 'date',
@@ -242,6 +289,11 @@ const initForm = () => {
       col: 6
     },
     {
+      key: 'attachment',
+      label: t('app.columns.attachment'),
+      type: 'file'
+    },
+    {
       key: 'projectId',
       label: t('app.columns.project'),
       type: 'dropdown',
@@ -256,6 +308,28 @@ const initForm = () => {
   ]
 }
 initForm()
+
+// Attachment
+const inputAttachment = ref(null)
+const handleAttachment = () => {
+  inputAttachment.value.click()
+}
+const getAttachmentName = (attachment: File | string) => {
+  if (typeof attachment === 'string') {
+    const strs = attachment.split('\\')
+    return strs[strs.length - 1]
+  }
+
+  return attachment.name
+}
+const onAttachmentChange = (file, form) => {
+  form.attachment = file
+}
+const onFileChange = (e, form, cb) => {
+  const files = e.target.files || e.dataTransfer.files
+  if (!files.length) return
+  cb(files[0], form)
+}
 
 const handleAddProduct = (form) => {
   if (!form.quotationProducts) {

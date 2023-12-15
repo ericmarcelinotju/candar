@@ -33,6 +33,11 @@
     v-bind="$props"
     v-model="inputVal"
   />
+  <FileInput
+    v-else-if="type === 'file'"
+    v-bind="$props"
+    v-model="inputVal"
+  />
   <textarea
     v-else-if="type === 'textarea'"
     v-bind="$props"
@@ -67,6 +72,7 @@ import { Option, OptionObject } from '@/typings/option.type'
 import Dropdown from './dropdown/Dropdown.vue'
 import Combobox from './dropdown/Combobox.vue'
 import ImageInput from './image/ImageFile.vue'
+import FileInput from './File.vue'
 import Tags from './combobox/Tags.vue'
 
 interface Props {

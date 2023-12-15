@@ -1,31 +1,31 @@
 export const projectSources = [
   {
     label: 'Call',
-    value: 'Call'
+    value: 'call'
   },
   {
     label: 'Advertisement',
-    value: 'Advertisement'
+    value: 'advertisement'
   },
   {
     label: 'Referal',
-    value: 'Referal'
+    value: 'referal'
   },
   {
     label: 'Partner',
-    value: 'Partner'
+    value: 'partner'
   },
   {
     label: 'Public Relations',
-    value: 'Public Relations'
+    value: 'public relations'
   },
   {
     label: 'Web',
-    value: 'Web'
+    value: 'web'
   },
   {
     label: 'Other',
-    value: 'Other'
+    value: 'other'
   }
 ]
 
