@@ -9,6 +9,7 @@ export class ClientAddress extends BaseModel {
   subDistrict: string
   postalCode: string
   coordinates: string
+  isDefault: boolean
 }
 
 export class ClientContact extends BaseModel {

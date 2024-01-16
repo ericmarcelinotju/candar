@@ -13,7 +13,15 @@
       :total="itemsTotal"
       @delete="handleDelete"
       @edit="handleEdit"
-    />
+    >
+      <template #isDefault="{ item }">
+        <input
+          :checked="item.isDefault"
+          class="default-input pointer-events-none"
+          type="checkbox"
+        >
+      </template>
+    </DefaultTable>
     <template #action>
       <button
         v-if="hasPermission('POST')"
@@ -131,9 +139,13 @@ const columns = [
   },
   {
     label: t('app.columns.sub_district'),
-    key: 'sub_district',
+    key: 'subDistrict',
     isSortable: true,
     isSearchable: true
+  },
+  {
+    label: t('app.columns.is_default'),
+    key: 'isDefault'
   }
 ]
 

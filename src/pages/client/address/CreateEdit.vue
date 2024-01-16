@@ -53,7 +53,10 @@ const initPage = () => {
   loading.value = true
   getClientAddress(id)
     .then((res) => {
-      initialData.value = res.data
+      initialData.value = {
+        ...res.data,
+        coordinates: res.data.coordinates.toString()
+      }
     })
     .catch(() => {
       notify('loaded', 'danger')
@@ -64,6 +67,7 @@ const initPage = () => {
 }
 
 const onSubmit = (form, onFinish) => {
+  console.log(form.value.coordinates)
   const payload = {
     ...form.value,
     clientId: route.params.client_id,
