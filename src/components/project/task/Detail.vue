@@ -82,6 +82,15 @@
               </transition>
             </Popover>
           </div>
+          <div class="mt-3 font-semibold">
+            <a
+              class="hover:text-info-dark"
+              href="./"
+              @click.prevent="onProjectClick"
+            >
+              {{ $t('app.columns.project') }} {{ projectTask.project?.code }}
+            </a>
+          </div>
           <div class="-ml-3">
             <input
               v-model="projectTask.name"
@@ -247,6 +256,7 @@
 import { Ref, computed, onMounted, ref, watch } from 'vue'
 import Multiselect from 'vue-multiselect'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import { watchDebounced } from '@vueuse/core'
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { UserAddIcon, PencilAltIcon, TagIcon } from '@heroicons/vue/solid'
@@ -260,8 +270,11 @@ import { useNotify } from '@/composables/use-notify'
 import FileInput from '@/components/form/File.vue'
 import InfoButton from '@/components/helper/InfoButton.vue'
 import Dropdown from '@/components/form/dropdown/Dropdown.vue'
+import { projectList } from '@/router/routes/project'
 import { jsonToFormData } from '@/utils'
 import { snakeToTitle } from '@/utils/string'
+
+const router = useRouter()
 
 interface Props {
   data: ProjectTask
@@ -385,5 +398,9 @@ const onFileChange = (e, cb) => {
   const files = e.target.files || e.dataTransfer.files
   if (!files.length) return
   cb(files[0])
+}
+
+const onProjectClick = () => {
+  router.push({ ...projectList, params: { project_id: projectTask.value.project.id } })
 }
 </script>

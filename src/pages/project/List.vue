@@ -337,7 +337,7 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, computed, onMounted, reactive, ref } from 'vue'
+import { Ref, computed, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { PlusIcon } from '@heroicons/vue/solid'
@@ -467,19 +467,19 @@ const onConfirmPriority = () => {
     })
 }
 
-const initPage = async () => {
-  if (route.params.project_task_id) {
-    const projectTaskResp = await getProjectTask(route.params.project_task_id as string)
-    handleTaskDetail(projectTaskResp.data)
-  } else if (route.params.project_id) {
-    const projectResp = await getProject(route.params.project_id as string)
-    handleDetail(projectResp.data)
-  }
-}
-
-onMounted(() => {
-  initPage()
-})
+watch(
+  () => route.params,
+  async params => {
+    if (params.project_task_id) {
+      const projectTaskResp = await getProjectTask(params.project_task_id as string)
+      handleTaskDetail(projectTaskResp.data)
+    } else if (params.project_id) {
+      const projectResp = await getProject(params.project_id as string)
+      handleDetail(projectResp.data)
+    }
+  },
+  { immediate: true }
+)
 
 const onProjectUpdate = (payload) => {
   items.value.splice(

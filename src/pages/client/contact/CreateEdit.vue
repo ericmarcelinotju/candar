@@ -101,22 +101,22 @@ const initForm = () => {
   formSettings.value = [
     {
       key: 'name',
-      label: t('app.column.name'),
+      label: t('app.columnsname'),
       isRequired: true,
       rules: [required]
     },
     {
       key: 'division',
-      label: t('app.column.division')
+      label: t('app.columnsdivision')
     },
     {
       key: 'phone_number',
-      label: t('app.column.phone_number'),
+      label: t('app.columnsphone_number'),
       col: 6
     },
     {
       key: 'email',
-      label: t('app.column.email'),
+      label: t('app.columnsemail'),
       col: 6
     }
   ]

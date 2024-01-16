@@ -44,11 +44,12 @@ import { PlusIcon } from '@heroicons/vue/solid'
 import DefaultTable from '@/components/default/Table.vue'
 import { del as deleteClient } from '@/api/client-address'
 import { useNotify } from '@/composables/use-notify'
-import { ClientContact } from '@/typings/models/client.type'
+import { Client, ClientContact } from '@/typings/models/client.type'
 import { clientContactCreate, clientContactEdit } from '@/router/routes/client'
 import { useI18n } from 'vue-i18n'
 
 interface Props {
+  client: Client
   items: ClientContact[]
 }
 
@@ -100,36 +101,36 @@ const confirmDelete = () => {
 // Table columns setting
 const columns = [
   {
-    label: t('app.column.id'),
+    label: t('app.columnsid'),
     key: 'id',
     isHidden: true
   },
   {
-    label: t('app.column.name'),
+    label: t('app.columnsname'),
     key: 'name',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: t('app.column.division'),
+    label: t('app.columnsdivision'),
     key: 'division',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: t('app.column.email'),
+    label: t('app.columnsemail'),
     key: 'email',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: t('app.column.phone_number'),
+    label: t('app.columnsphone_number'),
     key: 'phone_number',
     isSortable: true,
     isSearchable: true
   },
   {
-    label: t('app.column.email'),
+    label: t('app.columnsemail'),
     key: 'email',
     isSortable: true,
     isSearchable: true

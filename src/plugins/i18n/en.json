@@ -339,7 +339,8 @@
       "coordinates": "Coordinates",
       "priority": "Priority",
       "estimate": "Estimate",
-      "is_import": "Import ?"
+      "is_import": "Import ?",
+      "is_default": "Default ?"
     }
   }
 }

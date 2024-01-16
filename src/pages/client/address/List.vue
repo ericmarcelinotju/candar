@@ -45,10 +45,11 @@ import { PlusIcon } from '@heroicons/vue/solid'
 import DefaultTable from '@/components/default/Table.vue'
 import { del as deleteClient } from '@/api/client-address'
 import { useNotify } from '@/composables/use-notify'
-import { ClientAddress } from '@/typings/models/client.type'
+import { Client, ClientAddress } from '@/typings/models/client.type'
 import { clientAddressCreate, clientAddressEdit } from '@/router/routes/client'
 
 interface Props {
+  client: Client
   items: ClientAddress[]
 }
 
@@ -64,11 +65,11 @@ const loading = ref(false)
 const itemsTotal = computed(() => props.items.length)
 
 const handleCreate = () => {
-  router.push(clientAddressCreate)
+  router.push({ ...clientAddressCreate, params: { client_id: props.client.id } })
 }
 
 const handleEdit = ({ id }) => {
-  router.push({ ...clientAddressEdit, params: { id } })
+  router.push({ ...clientAddressEdit, params: { id, client_id: props.client.id } })
 }
 
 // Delete client

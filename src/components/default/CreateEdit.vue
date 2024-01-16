@@ -12,12 +12,12 @@
         <div
           class="default-field"
           :class="[
-            `col-span-${row.col ?? 12}`,
             {
               'inline': row.type === 'checkbox',
               '!hidden': row.isHidden ? typeof row.isHidden == 'boolean' ? row.isHidden : row.isHidden(form) : false
             }
           ]"
+          :style="`grid-column: span ${row.col ?? 12} / span ${row.col ?? 12};`"
         >
           <template v-if="$slots[row.key]">
             <slot

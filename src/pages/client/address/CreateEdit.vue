@@ -66,7 +66,8 @@ const initPage = () => {
 const onSubmit = (form, onFinish) => {
   const payload = {
     ...form.value,
-    coordinates: [form.coord_x, form.coord_y]
+    clientId: route.params.client_id,
+    coordinates: form.value.coordinates.split(',')
   }
   if (id) {
     return updateClientAddress(id, payload)
@@ -126,18 +127,23 @@ const initForm = () => {
       col: 4
     },
     {
-      key: 'sub_district',
+      key: 'subDistrict',
       label: t('app.columns.sub_district'),
       col: 4
     },
     {
-      key: 'postal_code',
+      key: 'postalCode',
       label: t('app.columns.postal_code'),
       col: 4
     },
     {
       key: 'coordinates',
       label: t('app.columns.coordinates')
+    },
+    {
+      key: 'isDefault',
+      label: t('app.columns.is_default'),
+      type: 'checkbox'
     }
   ]
 }

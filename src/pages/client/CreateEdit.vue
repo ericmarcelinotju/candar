@@ -16,10 +16,12 @@
     </DefaultPage>
     <AddressList
       v-if="isEdit"
+      :client="initialData"
       :items="addresses"
     />
     <ContactList
       v-if="isEdit"
+      :client="initialData"
       :items="contacts"
     />
   </div>

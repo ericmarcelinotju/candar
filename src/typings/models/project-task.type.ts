@@ -1,4 +1,5 @@
 import { BaseModel } from './model.type'
+import { Project } from './project.type'
 
 export class ProjectTask extends BaseModel {
   id: string
@@ -10,5 +11,5 @@ export class ProjectTask extends BaseModel {
   picture: string
   attachment: string
   isFinish: boolean
-  projectId: string
+  project: Project
 }

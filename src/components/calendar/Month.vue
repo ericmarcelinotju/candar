@@ -5,13 +5,19 @@
         <slot />
       </div>
       <div>
-        <button class="default-button mr-4 !px-2" @click="handlePrevMonth">
+        <button
+          class="default-button mr-4 !px-2"
+          @click="handlePrevMonth"
+        >
           <ChevronLeftIcon class="w-4 h-4" />
         </button>
         <span class="text-lg font-bold">
           {{ dayjsDate.format('MMMM') }} {{ dayjsDate.get('year') }}
         </span>
-        <button class="default-button ml-4 !px-2" @click="handleNextMonth">
+        <button
+          class="default-button ml-4 !px-2"
+          @click="handleNextMonth"
+        >
           <ChevronRightIcon class="w-4 h-4" />
         </button>
       </div>
@@ -92,7 +98,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(week, i) in calendar" :key="i" class="text-center h-20">
+        <tr
+          v-for="(week, i) in calendar"
+          :key="i"
+          class="text-center h-20"
+        >
           <td
             v-for="(day, j) in week"
             :key="j"
@@ -127,7 +137,7 @@
                     @click="handleEventClick(day, event)"
                   >
                     <span class="event-name">
-                      {{ event.name }}
+                      {{ event.name }} ({{ event.project?.code }})
                     </span>
                   </div>
                   <div
