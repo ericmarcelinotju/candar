@@ -12,7 +12,7 @@
       @search="handleSearch"
     >
       <template #clientId="{ item }">
-        {{ item.client.name }}
+        {{ item.client?.name }}
       </template>
     </DefaultTable>
     <template #action>
