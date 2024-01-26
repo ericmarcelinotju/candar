@@ -417,6 +417,24 @@ const columns = [
     key: 'categoryName',
     isSortable: false,
     isSearchable: false
+  },
+  {
+    label: t('app.columns.batch_number'),
+    key: 'batchNumber',
+    isSortable: false,
+    isSearchable: false
+  },
+  {
+    label: t('app.columns.entry_date'),
+    key: 'entryDate',
+    isSortable: false,
+    isSearchable: false
+  },
+  {
+    label: t('app.columns.expired_date'),
+    key: 'expDate',
+    isSortable: false,
+    isSearchable: false
   }
 ]
 
