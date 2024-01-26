@@ -14,10 +14,7 @@
         @submit="onSubmit"
       >
         <template #source="{ formSetting, form }">
-          <label
-            class="default-label"
-            :for="formSetting.key"
-          >
+          <label class="default-label" :for="formSetting.key">
             {{ formSetting.label }}
           </label>
           <input
@@ -28,15 +25,15 @@
             :name="formSetting.key"
             true-value="import"
             type="checkbox"
-          >
+          />
         </template>
         <template #variant>
-          <label
-            class="default-label"
-          >
+          <label class="default-label">
             {{ $t('app.columns.variant') }}
           </label>
-          <div class="flex flex-col justify-center bg-gray-50 px-5 py-4 rounded-xl space-y-5">
+          <div
+            class="flex flex-col justify-center bg-gray-50 px-5 py-4 rounded-xl space-y-5"
+          >
             <div
               v-for="(e, index) in modelValue"
               :key="`model-value-${index}`"
@@ -55,9 +52,7 @@
           </div>
         </template>
         <template #iregular="{ form }">
-          <label
-            class="default-label mb-2"
-          >
+          <label class="default-label mb-2">
             {{ $t('product_tier.irregular') }}
           </label>
           <div class="flex flex-col bg-gray-50 px-5 py-4 rounded-xl">
@@ -68,18 +63,13 @@
             >
               <div class="grid grid-cols-2 flex-1 gap-4 border rounded-md p-4">
                 <div class="col-span-2">
-                  <label
-                    class="default-label"
-                  >
+                  <label class="default-label">
                     {{ $t('product.tier') }} {{ index + 1 }}
                   </label>
-                  <hr class="w-full border-gray-400">
+                  <hr class="w-full border-gray-400" />
                 </div>
                 <div class="default-field">
-                  <label
-                    class="default-label"
-                    :for="`price-${index}`"
-                  >
+                  <label class="default-label" :for="`price-${index}`">
                     {{ $t('product.moq') }}
                   </label>
                   <input
@@ -87,13 +77,10 @@
                     v-model="form.iregular[index].moq"
                     class="default-input"
                     type="number"
-                  >
+                  />
                 </div>
                 <div class="default-field">
-                  <label
-                    class="default-label"
-                    :for="`price-${index}`"
-                  >
+                  <label class="default-label" :for="`price-${index}`">
                     {{ $t('product.discount') }}
                   </label>
                   <input
@@ -101,13 +88,10 @@
                     v-model="form.iregular[index].discRate"
                     class="default-input"
                     type="number"
-                  >
+                  />
                 </div>
                 <div class="default-field col-span-2">
-                  <label
-                    class="default-label"
-                    :for="`quantity-${index}`"
-                  >
+                  <label class="default-label" :for="`quantity-${index}`">
                     {{ $t('product.price') }}
                   </label>
                   <input
@@ -116,10 +100,10 @@
                     disabled
                     type="number"
                     :value="handleInputPrice(form, form.iregular[index])"
-                  >
+                  />
                 </div>
               </div>
-            <!-- <div class="flex flex-col gap-4 ml-4">
+              <!-- <div class="flex flex-col gap-4 ml-4">
               <button
               class="default-button flex-1"
               type="button"
@@ -139,9 +123,7 @@
           </div>
         </template>
         <template #regular="{ form }">
-          <label
-            class="default-label mb-2"
-          >
+          <label class="default-label mb-2">
             {{ $t('product_tier.regular') }}
           </label>
           <div class="flex flex-col bg-gray-50 px-5 py-4 rounded-xl">
@@ -152,18 +134,13 @@
             >
               <div class="grid grid-cols-2 flex-1 gap-4 border rounded-md p-4">
                 <div class="col-span-2">
-                  <label
-                    class="default-label"
-                  >
+                  <label class="default-label">
                     {{ $t('product.tier') }} {{ index + 1 }}
                   </label>
-                  <hr class="w-full border-gray-400">
+                  <hr class="w-full border-gray-400" />
                 </div>
                 <div class="default-field">
-                  <label
-                    class="default-label"
-                    :for="`price-${index}`"
-                  >
+                  <label class="default-label" :for="`price-${index}`">
                     {{ $t('product.moq') }}
                   </label>
                   <input
@@ -171,13 +148,10 @@
                     v-model="form.regular[index].moq"
                     class="default-input"
                     type="text"
-                  >
+                  />
                 </div>
                 <div class="default-field">
-                  <label
-                    class="default-label"
-                    :for="`price-${index}`"
-                  >
+                  <label class="default-label" :for="`price-${index}`">
                     {{ $t('product.discount') }}
                   </label>
                   <input
@@ -185,13 +159,10 @@
                     v-model="form.regular[index].discRate"
                     class="default-input"
                     type="number"
-                  >
+                  />
                 </div>
                 <div class="default-field col-span-2">
-                  <label
-                    class="default-label"
-                    :for="`quantity-${index}`"
-                  >
+                  <label class="default-label" :for="`quantity-${index}`">
                     {{ $t('product.price') }}
                   </label>
                   <input
@@ -200,7 +171,7 @@
                     disabled
                     type="number"
                     :value="handleInputPrice(form, form.regular[index])"
-                  >
+                  />
                 </div>
               </div>
             </div>
@@ -228,11 +199,20 @@ import { get as getProductCategory } from '@/api/product-category'
 import { get as getVariantCategories } from '@/api/variant-category'
 import { productList } from '@/router/routes/product'
 import { required } from '@/utils/validation'
-import { roundingTwoDecimal, convertFromCurrencyToNumber, roundingNearestThousand } from '@/utils/number'
+import {
+  roundingTwoDecimal,
+  convertFromCurrencyToNumber,
+  roundingNearestThousand
+} from '@/utils/number'
 import { FormSetting } from '@/typings/form.type'
-import { Product, ProductCategory, ProductContract } from '@/typings/models/product.type'
+import {
+  Product,
+  ProductCategory,
+  ProductContract
+} from '@/typings/models/product.type'
 import { VariantCategory } from '@/typings/models/variant.type'
 import { Option, OptionObject } from '@/typings/option.type'
+import dayjs from 'dayjs'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -240,13 +220,23 @@ const router = useRouter()
 const store = useStore()
 
 const productCategories: Ref<ProductCategory[]> = ref([])
-const productCategoryOptions: Ref<Option[]> = computed(() => productCategories.value.map(productCategory => ({ label: productCategory.name, value: productCategory.id })))
+const productCategoryOptions: Ref<Option[]> = computed(() =>
+  productCategories.value.map((productCategory) => ({
+    label: productCategory.name,
+    value: productCategory.id
+  }))
+)
 
 const options: Ref<OptionObject[]> = ref([])
 
 const { notify } = useNotify('product')
 
-const modelValue: Ref<Array<{ value: { id: string, name: string, disabled: boolean }[], options: OptionObject[] }>> = ref([{ value: [], options: [] }])
+const modelValue: Ref<
+  Array<{
+    value: { id: string; name: string; disabled: boolean }[]
+    options: OptionObject[]
+  }>
+> = ref([{ value: [], options: [] }])
 
 const initialData: Ref<Product> = ref(new Product())
 const loading: Ref<boolean> = ref(false)
@@ -256,7 +246,7 @@ if (typeof route.params.id === 'string') {
   id = route.params.id
 }
 
-const handleDeleteVariant = (e: { id: string, index: number }) => {
+const handleDeleteVariant = (e: { id: string; index: number }) => {
   if (!e.id) return
 
   const { id } = e
@@ -265,16 +255,20 @@ const handleDeleteVariant = (e: { id: string, index: number }) => {
   const tempOptions = [...modelValue.value[e.index].options]
 
   const findIndex = tempOptions.findIndex((e2: OptionObject) => {
-    return e2.variant.some((element: { id: string, name: string, disabled: boolean }) => {
-      return id === element.id
-    })
+    return e2.variant.some(
+      (element: { id: string; name: string; disabled: boolean }) => {
+        return id === element.id
+      }
+    )
   })
 
   if (findIndex < 0) return
 
   tempOptions[findIndex].disabled = false
 
-  const findindexVariant = tempValue.findIndex((e4: { id: string, name: string, disabled: boolean }) => e4.id === e.id)
+  const findindexVariant = tempValue.findIndex(
+    (e4: { id: string; name: string; disabled: boolean }) => e4.id === e.id
+  )
   if (findindexVariant < 0) return
 
   tempValue.splice(findindexVariant, 1)
@@ -282,57 +276,60 @@ const handleDeleteVariant = (e: { id: string, index: number }) => {
   modelValue.value[e.index].value = tempValue
 }
 
-const handleOptions = (e: { indexCategory: number, indexVariant: number, index: number }) => {
+const handleOptions = (e: {
+  indexCategory: number
+  indexVariant: number
+  index: number
+}) => {
   const tempOptions = [...modelValue.value[e.index].options]
 
-  const filteredOptions = [...tempOptions.map((e2: OptionObject, index2: number) => {
-    if (+e.indexCategory === index2) {
-      return {
-        id: e2.id,
-        name: e2.name,
-        disabled: true,
-        variant: [
-          ...e2.variant
-        ]
+  const filteredOptions = [
+    ...tempOptions.map((e2: OptionObject, index2: number) => {
+      if (+e.indexCategory === index2) {
+        return {
+          id: e2.id,
+          name: e2.name,
+          disabled: true,
+          variant: [...e2.variant]
+        }
       }
-    }
-    return e2
-  })]
+      return e2
+    })
+  ]
 
   modelValue.value[e.index].options = [...filteredOptions]
 }
 
 const handleInputPrice = (form: any, current: ProductContract) => {
   let rawResult = 0
-  const isDiscRateEmpty = current.discRate === undefined || current.discRate === 0
+  const isDiscRateEmpty =
+    current.discRate === undefined || current.discRate === 0
 
   if (!form.publishPrice) return rawResult
 
   if (isDiscRateEmpty) return form.publishPrice
 
-  rawResult = +(form.publishPrice * (1 - (+current.discRate / 100))).toFixed(2)
+  rawResult = +(form.publishPrice * (1 - +current.discRate / 100)).toFixed(2)
   return roundingTwoDecimal(rawResult)
 }
 
 const initOptions = async () => {
-  getProductCategory()
-    .then(res => {
-      productCategories.value = res.data.data
-      initForm()
-    })
-  getVariantCategories()
-    .then(res => {
-      if (res.status === 200) {
-        const { data } = res.data
-        data.map((e: VariantCategory) => {
-          e.disabled = false
-          return e
-        })
+  getProductCategory().then((res) => {
+    productCategories.value = res.data.data
+    initForm()
+  })
+  getVariantCategories().then((res) => {
+    if (res.status === 200) {
+      const { data } = res.data
+      data.map((e: VariantCategory) => {
+        e.disabled = false
+        return e
+      })
 
-        options.value = data as OptionObject[]
-        modelValue.value[0].options = [...data] as OptionObject[]
-      }
-    })
+      options.value = data as OptionObject[]
+      modelValue.value[0].options = [...data] as OptionObject[]
+    }
+  })
   initForm()
 }
 
@@ -379,7 +376,7 @@ const initPage = () => {
       }))
       modelValue.value[0].value = variantValue
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err)
       notify('loaded', 'danger', err)
     })
@@ -393,11 +390,16 @@ const onSubmit = (form, onFinish) => {
     return e.value
   })
 
-  const tiers: Array<ProductContract & { id: string, name: string, type: string }> = []
+  const tiers: Array<
+    ProductContract & { id: string; name: string; type: string }
+  > = []
 
   if (form.value?.iregular.length > 0) {
     form.value.iregular.forEach((e, i) => {
-      let rawResult = +(form.value.publishPrice * (1 - (+e.discRate / 100))).toFixed(2)
+      let rawResult = +(
+        form.value.publishPrice *
+        (1 - +e.discRate / 100)
+      ).toFixed(2)
       rawResult = roundingTwoDecimal(rawResult)
 
       tiers.push({
@@ -413,7 +415,10 @@ const onSubmit = (form, onFinish) => {
 
   if (form.value?.regular.length > 0) {
     form.value.regular.forEach((e, i) => {
-      let rawResult = +(form.value.publishPrice * (1 - (+e.discRate / 100))).toFixed(2)
+      let rawResult = +(
+        form.value.publishPrice *
+        (1 - +e.discRate / 100)
+      ).toFixed(2)
       rawResult = roundingTwoDecimal(rawResult)
 
       tiers.push({
@@ -427,9 +432,15 @@ const onSubmit = (form, onFinish) => {
     })
   }
 
+  const format = 'DD MMMM YYYY'
+  const expDate = form.value?.expDate && dayjs(form.value?.expDate).format(format)
+  const entryDate = form.value?.entryDate && dayjs(form.value?.entryDate).format(format)
+
   const payload = {
     ...initialData.value,
     ...form.value,
+    expDate,
+    entryDate,
     variants,
     tiers
   }
@@ -450,7 +461,7 @@ const onSubmit = (form, onFinish) => {
         router.push(productList)
         notify('updated')
       })
-      .catch(err => {
+      .catch((err) => {
         notify('updated', 'danger', err.message)
       })
       .finally(onFinish)
@@ -460,7 +471,7 @@ const onSubmit = (form, onFinish) => {
         router.push(productList)
         notify('inserted')
       })
-      .catch(err => {
+      .catch((err) => {
         notify('inserted', 'danger', err.message)
       })
       .finally(onFinish)
@@ -624,9 +635,13 @@ const initForm = () => {
       formula: (form) => {
         let rawResult = 0
 
-        if (!form.cost || !form.insurance || !form.freight || !form.bmDuty) return rawResult
+        if (!form.cost || !form.insurance || !form.freight || !form.bmDuty)
+          return rawResult
 
-        rawResult = +((form.cost + form.insurance + form.freight + form.bmDuty) * 0.11).toFixed(2)
+        rawResult = +(
+          (form.cost + form.insurance + form.freight + form.bmDuty) *
+          0.11
+        ).toFixed(2)
 
         return roundingTwoDecimal(rawResult)
       },
@@ -641,9 +656,13 @@ const initForm = () => {
       disabled: true,
       formula: (form) => {
         let rawResult = 0
-        if (!form.cost || !form.insurance || !form.freight || !form.bmDuty) return rawResult
+        if (!form.cost || !form.insurance || !form.freight || !form.bmDuty)
+          return rawResult
 
-        rawResult = +((form.cost + form.insurance + form.freight + form.bmDuty) * 0.025).toFixed(2)
+        rawResult = +(
+          (form.cost + form.insurance + form.freight + form.bmDuty) *
+          0.025
+        ).toFixed(2)
         return roundingTwoDecimal(rawResult)
       },
       col: 6,
@@ -660,7 +679,15 @@ const initForm = () => {
 
         if (!form.pph22 || !form.ppn) return rawResult
 
-        rawResult = +((form.cost + form.insurance + form.freight + form.bmDuty + form.ppn + form.pph22) * 0.03).toFixed(2)
+        rawResult = +(
+          (form.cost +
+            form.insurance +
+            form.freight +
+            form.bmDuty +
+            form.ppn +
+            form.pph22) *
+          0.03
+        ).toFixed(2)
         return roundingTwoDecimal(rawResult)
       },
       col: 6,
@@ -686,7 +713,16 @@ const initForm = () => {
 
         if (!form.pph22 || !form.ppn) return rawResult
 
-        rawResult = +(form.cost + form.insurance + form.freight + form.bmDuty + form.ppn + form.pph22 + form.repack + (!isOthersEmpty ? form.others : 0)).toFixed(2)
+        rawResult = +(
+          form.cost +
+          form.insurance +
+          form.freight +
+          form.bmDuty +
+          form.ppn +
+          form.pph22 +
+          form.repack +
+          (!isOthersEmpty ? form.others : 0)
+        ).toFixed(2)
         return roundingTwoDecimal(rawResult)
       },
       col: 6,
@@ -706,7 +742,7 @@ const initForm = () => {
         let rawResult = 0
         if (!form.rateCOGS || !form.subTotal) return rawResult
 
-        rawResult = +(form.subTotal / (1 - (form.rateCOGS / 100))).toFixed(2)
+        rawResult = +(form.subTotal / (1 - form.rateCOGS / 100)).toFixed(2)
         return roundingTwoDecimal(rawResult)
       },
       col: 6
@@ -729,6 +765,26 @@ const initForm = () => {
       isHidden: (form) => form.source !== 'import'
     },
     {
+      key: 'batchNumber',
+      label: t('app.columns.batch_number'),
+      isRequired: false,
+      col: 12
+    },
+    {
+      key: 'entryDate',
+      label: t('app.columns.entry_date'),
+      isRequired: false,
+      type: 'date',
+      col: 6
+    },
+    {
+      key: 'expDate',
+      label: t('app.columns.expired_date'),
+      isRequired: false,
+      type: 'date',
+      col: 6
+    },
+    {
       key: 'publishPrice',
       label: t('app.columns.publish_price'),
       isRequired: false,
@@ -742,7 +798,7 @@ const initForm = () => {
         let rawResult = 0
         if (!form.sellPrice) return rawResult
 
-        rawResult = +(form.sellPrice).toFixed(0)
+        rawResult = +form.sellPrice.toFixed(0)
         const roundedTwoDecimal = roundingTwoDecimal(rawResult)
         return roundingNearestThousand(roundedTwoDecimal)
       },
