@@ -1,0 +1,206 @@
+{
+  "title": "Pancaka - CRM",
+  "global": {
+    "ok": "OK",
+    "done": "Done",
+    "pending": "Pending",
+    "paid": "Paid",
+    "yes": "Yes",
+    "no": "No",
+    "pay": "Pay",
+    "send": "Send",
+    "resend": "Resend",
+    "download": "Download",
+    "logout": "Logout",
+    "pdf": "PDF",
+    "iUnderstand": "I Understand",
+    "scheduler": "Scheduler",
+    "queue": "Queue",
+    "set_default": "Set Default",
+    "online": "Online",
+    "offline": "Offline",
+    "back": "Back",
+    "loading": "Loading...",
+    "smtp": "SMTP",
+    "host": "Host",
+    "port": "Port",
+    "email": "Email",
+    "apilogik": "Apilogik",
+    "url": "URL",
+    "key": "Key",
+    "password": "Password",
+    "remember_me": "Remember Me",
+    "sign_in": "Sign in",
+    "forgot_password": "Forgot Password"
+  },
+  "module": {
+    "user": "User",
+    "users": "Users",
+    "role": "Role",
+    "roles": "Roles",
+    "permission": "Permission",
+    "permissions": "Permissions",
+    "project": "Deal",
+    "projects": "Deals",
+    "quotation": "Quotation",
+    "quotations": "Quotations",
+    "purchase": "Purchase",
+    "purchases": "Purchases"
+  },
+  "project": {
+    "initiate": "Initiate",
+    "qualification": "Qualification",
+    "lead": "Lead",
+    "quotation": "Quotation",
+    "win": "Win",
+    "lose": "Lose"
+  },
+  "error": {
+    "required": "This field is required",
+    "email": "Invalid email format",
+    "phone": "Invalid phone number format"
+  },
+  "tip": {
+    "show_close_project": "Show closed deals.",
+    "sign_in": "Sign in to your account.",
+    "back_to_login": "back to login",
+    "forgot_password": "Forgot your password?"
+  },
+  "app": {
+    "create": "Create",
+    "import": "Import",
+    "export": "Export",
+    "download": "Download",
+    "save": "Save",
+    "select": "Select",
+    "sumbit": "Submit",
+    "search": "Search",
+    "reset": "Reset",
+    "components": {
+      "table": {
+        "showingData": "Showing {count} data",
+        "selectedData": "Selected {count} data",
+        "itemPerPageLabel": "Item per page",
+        "emptyState": {
+          "title": "{name} not found",
+          "description": "Double check the search keywords you entered,\nor try another keyword."
+        },
+        "loading": {
+          "title": "Loading"
+        }
+      },
+      "search": {
+        "searchTypeLabel": "Search type",
+        "confirm": "Enter",
+        "submit": "Submit"
+      },
+      "multitext": {
+        "duplicateErr": "Duplicate item is not allowed"
+      },
+      "forbidden": {
+        "headline": "403 Forbidden Access",
+        "title": "Warning! User have no access.",
+        "description": "Please leave this page as you have no permission to access this page.",
+        "goBack": "Go back home"
+      },
+      "notFound": {
+        "headline": "404 error",
+        "title": "Page not found.",
+        "description": "It looks like the page you’re looking for doesn't exist.",
+        "goBack": "Go back home"
+      },
+      "pagination": {
+        "previous": "Previous",
+        "next": "Next"
+      },
+      "modal": {
+        "title": "Confirmation",
+        "description": "Are you sure? This action may cannot be undone.",
+        "cancel": "Cancel",
+        "confirm": "Confirm"
+      },
+      "notification": {
+        "success": {
+          "defaultTitle": "Success",
+          "defaultMessage": "{name} have been successfully {action}"
+        },
+        "danger": {
+          "defaultTitle": "Error",
+          "defaultMessage": "{name} have failed to be {action}"
+        },
+        "warning": {
+          "defaultTitle": "Warning",
+          "defaultMessage": "{name} have failed to be {action}"
+        },
+        "empty": "There are no notification."
+      }
+    },
+    "columns": {
+      "view": "View",
+      "edit": "Edit",
+      "delete": "Delete",
+      "sync": "Sync",
+      "web": "Go to Site",
+      "log": "Log",
+      "status": "Status",
+      "time": "Time",
+      "created_at": "Time",
+      "id": "ID",
+      "title": "Title",
+      "level": "Level",
+      "code": "Code",
+      "module": "Module",
+      "method": "Method",
+      "description": "Description",
+      "name": "Name",
+      "version": "Version",
+      "user": "User",
+      "location": "Location",
+      "username": "Username",
+      "number": "Number",
+      "email": "Email",
+      "phone": "Phone Number",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "role": "Role",
+      "inspection": "Inspection",
+      "permission": "Permission",
+      "lastLogin": "Last Login",
+      "type": "Type",
+      "date": "Date",
+      "value": "Value",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "date_range": "Date Range",
+      "emailedTo": "Emailed to",
+      "isEmailed": "Emailed ?",
+      "rangeDate": "Range Date",
+      "serialNumber": "Serial Number",
+      "is_online": "Online ?",
+      "logo": "Logo",
+      "document": "Document",
+      "select": "Select",
+      "source": "Source",
+      "noreply": "No Reply",
+      "smtp": "SMTP",
+      "sftp": "SFTP",
+      "host": "Host",
+      "port": "Port",
+      "created_by": "Created By",
+      "error": "Error",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "setting": "Setting",
+      "client": "Client",
+      "clientAddress": "Client Address",
+      "clientContact": "Client Contact",
+      "product": "Product",
+      "productCategory": "Product Category",
+      "variant": "Variant",
+      "variantOption": "Variant Option",
+      "contract": "Contract",
+      "purchase": "Purchase",
+      "assign_to": "Assign To"
+    }
+  }
+}

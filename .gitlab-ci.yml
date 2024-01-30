@@ -1,0 +1,72 @@
+stages:
+  - build
+  - deploy
+
+build:
+  image: node:16.20.0
+  stage: build
+  script:
+    - echo "$BUILD_ENV_DEVELOPMENT" > .env
+    - cat .env
+    - npm install --progress=false
+    - npm run build
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - dist
+  only:
+    - development
+    - staging
+    - production
+
+deploy_development:
+  image: alpine
+  stage: deploy
+  script:
+    - 'which ssh-agent || ( apk update && apk add openssh-client )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY_DEVELOPMENT" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - apk add rsync
+    - rsync -rav --delete dist/ $CI_HOST_STAGING:$DIR_DEVELOPMENT
+    # - ssh $CI_HOST_DEVELOPMENT "cd $DIR_DEVELOPMENT && docker-compose up -d"
+  only:
+    - development
+
+deploy-staging:
+  image: alpine
+  stage: deploy
+  script:
+    - 'which ssh-agent || ( apk update && apk add openssh-client )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY_DEVELOPMENT" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - apk add rsync
+    - rsync -rav minerva $CI_HOST_DEVELOPMENT:$DIR_DEVELOPMENT
+    - ssh -o StrictHostKeyChecking=no $CI_HOST_DEVELOPMENT
+    - sudo cd minerva
+    - sudo docker-compose up
+  only:
+    - staging
+
+deploy-production:
+  image: alpine
+  stage: deploy
+  script:
+    - 'which ssh-agent || ( apk update && apk add openssh-client )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY_DEVELOPMENT" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - apk add rsync
+    - rsync -rav minerva $CI_HOST_DEVELOPMENT:$DIR_DEVELOPMENT
+    - ssh -o StrictHostKeyChecking=no $CI_HOST_DEVELOPMENT
+    - sudo cd minerva
+    - sudo docker-compose up
+  only:
+    - production

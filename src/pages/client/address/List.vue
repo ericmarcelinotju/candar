@@ -1,0 +1,155 @@
+<template>
+  <DefaultPage
+    class="!pt-0"
+    :title="$t('app.columns.client_address')"
+  >
+    <DefaultTable
+      :columns="columns"
+      :has-delete="hasPermission('DELETE')"
+      :has-edit="hasPermission('PUT')"
+      :has-pagination="false"
+      :items="items"
+      :loading="loading"
+      :total="itemsTotal"
+      @delete="handleDelete"
+      @edit="handleEdit"
+    >
+      <template #isDefault="{ item }">
+        <input
+          :checked="item.isDefault"
+          class="default-input pointer-events-none"
+          type="checkbox"
+        >
+      </template>
+    </DefaultTable>
+    <template #action>
+      <button
+        v-if="hasPermission('POST')"
+        class="info-button mr-4"
+        type="button"
+        @click="handleCreate"
+      >
+        <PlusIcon class="w-4 h-4 mr-1" />
+        {{ $t('app.create') }}
+      </button>
+    </template>
+    <template #dialog>
+      <DefaultModal
+        v-model="visibleDeleteConfirmationModal"
+        :loading="loadingDelete"
+        type="danger"
+        @confirm="confirmDelete"
+      />
+    </template>
+  </DefaultPage>
+</template>
+
+<script setup lang="ts">
+import { Ref, computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { PlusIcon } from '@heroicons/vue/solid'
+import DefaultTable from '@/components/default/Table.vue'
+import { del as deleteClient } from '@/api/client-address'
+import { useNotify } from '@/composables/use-notify'
+import { Client, ClientAddress } from '@/typings/models/client.type'
+import { clientAddressCreate, clientAddressEdit } from '@/router/routes/client'
+
+interface Props {
+  client: Client
+  items: ClientAddress[]
+}
+
+const { t } = useI18n()
+const props = defineProps<Props>()
+
+const router = useRouter()
+const store = useStore()
+const { notify } = useNotify('client address')
+
+const loading = ref(false)
+
+const itemsTotal = computed(() => props.items.length)
+
+const handleCreate = () => {
+  router.push({ ...clientAddressCreate, params: { client_id: props.client.id } })
+}
+
+const handleEdit = ({ id }) => {
+  router.push({ ...clientAddressEdit, params: { id, client_id: props.client.id } })
+}
+
+// Delete client
+const loadingDelete = ref(false)
+const visibleDeleteConfirmationModal = ref(false)
+const deleteItem: Ref<ClientAddress> = ref()
+const handleDelete = (data) => {
+  visibleDeleteConfirmationModal.value = true
+  deleteItem.value = data
+}
+const confirmDelete = () => {
+  const { id } = deleteItem.value
+  loadingDelete.value = true
+  deleteClient(id)
+    .then(() => {
+      // TODO :: refresh list
+      // handleSearch(stateParams)
+      notify('deleted')
+    })
+    .catch(() => {
+      notify('deleted', 'danger')
+    })
+    .finally(() => {
+      loadingDelete.value = false
+      visibleDeleteConfirmationModal.value = false
+    })
+}
+
+// Table columns setting
+const columns = [
+  {
+    label: t('app.columns.id'),
+    key: 'id',
+    isHidden: true
+  },
+  {
+    label: t('app.columns.name'),
+    key: 'name',
+    isSortable: true,
+    isSearchable: true
+  },
+  {
+    label: t('app.columns.province'),
+    key: 'province',
+    isSortable: true,
+    isSearchable: true
+  },
+  {
+    label: t('app.columns.city'),
+    key: 'city',
+    isSortable: true,
+    isSearchable: true
+  },
+  {
+    label: t('app.columns.district'),
+    key: 'district',
+    isSortable: true,
+    isSearchable: true
+  },
+  {
+    label: t('app.columns.sub_district'),
+    key: 'subDistrict',
+    isSortable: true,
+    isSearchable: true
+  },
+  {
+    label: t('app.columns.is_default'),
+    key: 'isDefault'
+  }
+]
+
+const hasPermission = (method, module = 'CLIENT') => {
+  return store.getters['auth/hasPermission'](module, method)
+}
+</script>
