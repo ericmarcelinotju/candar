@@ -343,7 +343,12 @@
       "priority": "Priority",
       "estimate": "Estimate",
       "is_import": "Import ?",
-      "is_default": "Default ?"
+      "is_default": "Default ?",
+      "npwp": "NPWP",
+      "product_no": "Product NO",
+      "unit_code": "Unit Code",
+      "contain": "Contain",
+      "unit": "Unit"
     }
   }
 }

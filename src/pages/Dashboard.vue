@@ -189,6 +189,8 @@
         </template>
       </DefaultTable>
     </div>
+
+    <Calendar class="mt-6 !p-0" />
   </div>
 </template>
 
@@ -211,6 +213,7 @@ import { ProjectByStatus, ProjectBySource, ProjectStatusBySource } from '@/typin
 import { User } from '@/typings/models/user.type'
 import { Option } from '@/typings/option.type'
 import UserAvatar from '@/components/UserAvatar.vue'
+import Calendar from './Calendar.vue'
 
 const { t } = useI18n()
 const store = useStore()
