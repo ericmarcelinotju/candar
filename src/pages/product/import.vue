@@ -58,6 +58,16 @@
                   Disclaimer:
                 </li>
                 <li class="disclaimer-label pl-2 my-0.5">
+                  Download template Excel
+                  <a
+                    class="text-sm text-primary font-semibold"
+                    :href="`${config.apiAddress}\\media\\template\\product`"
+                    target="_blank"
+                  >
+                    disini
+                  </a>
+                </li>
+                <li class="disclaimer-label pl-2 my-0.5">
                   Gunakan template Excel yang sudah disediakan
                 </li>
                 <li class="disclaimer-label pl-2 my-0.5">

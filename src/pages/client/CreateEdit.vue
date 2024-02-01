@@ -146,6 +146,10 @@ const initForm = () => {
       options: purchaseTypes
     },
     {
+      key: 'npwp',
+      label: t('app.columns.npwp')
+    },
+    {
       key: 'credit',
       label: t('app.columns.credit'),
       type: 'number'

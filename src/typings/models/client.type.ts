@@ -14,6 +14,7 @@ export class ClientAddress extends BaseModel {
 
 export class ClientContact extends BaseModel {
   name: string
+  title: string
   division: string
   phoneNumber: string
   email: string
@@ -27,6 +28,7 @@ export class Client extends BaseModel {
   phoneNumber: string
   email: string
   website: string
+  npwp: string
   haveContract: boolean
   addresses: ClientAddress[]
   contacts: ClientContact[]
