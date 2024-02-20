@@ -195,6 +195,11 @@ const initForm = () => {
       options: userOptions.value
     }
   ]
+
+  if (route.name === 'deal-create') {
+    formSettings.value[0].isHidden = true
+    formSettings.value[1].label = t('app.columns.dealName')
+  }
 }
 initForm()
 </script>

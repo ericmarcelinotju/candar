@@ -42,10 +42,10 @@
               info="Set Date"
             >
               <button
-                class="rounded-full border border-dashed border-grey p-1"
+                class="rounded-full border border-dashed border-gray-500 p-1"
                 type="button"
               >
-                <CalendarIcon class="w-4 h-4 text-grey" />
+                <CalendarIcon class="w-4 h-4 text-gray-500" />
               </button>
             </InfoButton>
           </div>

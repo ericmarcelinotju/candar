@@ -47,10 +47,10 @@
         <PopoverButton>
           <InfoButton info="Add Attendees">
             <button
-              class="rounded-full border border-dashed border-grey p-1"
+              class="rounded-full border border-dashed border-gray-500 p-1"
               type="button"
             >
-              <UserAddIcon class="w-4 h-4 text-grey" />
+              <UserAddIcon class="w-4 h-4 text-gray-500" />
             </button>
           </InfoButton>
         </PopoverButton>
@@ -101,10 +101,10 @@
         <PopoverButton>
           <InfoButton info="Set Type">
             <button
-              class="rounded-full border border-dashed border-grey p-1"
+              class="rounded-full border border-dashed border-gray-500 p-1"
               type="button"
             >
-              <TagIcon class="w-4 h-4 text-grey" />
+              <TagIcon class="w-4 h-4 text-gray-500" />
             </button>
           </InfoButton>
         </PopoverButton>
@@ -150,10 +150,10 @@
               info="Set Date"
             >
               <button
-                class="rounded-full border border-dashed border-grey p-1"
+                class="rounded-full border border-dashed border-gray-500 p-1"
                 type="button"
               >
-                <CalendarIcon class="w-4 h-4 text-grey" />
+                <CalendarIcon class="w-4 h-4 text-gray-500" />
               </button>
             </InfoButton>
           </div>
@@ -170,7 +170,7 @@
       <InfoButton info="Set Picture">
         <button
           class="rounded-full border border-dashed p-1"
-          :class="taskPayload.picture ? 'border-info-dark text-info-dark' : 'border-grey text-grey'"
+          :class="taskPayload.picture ? 'border-info-dark text-info-dark' : 'border-gray-500 text-gray-500'"
           type="button"
           @click="handlePicture"
         >
@@ -187,7 +187,7 @@
       <InfoButton info="Set Attachment">
         <button
           class="rounded-full border border-dashed p-1"
-          :class="taskPayload.attachment ? 'border-info-dark text-info-dark' : 'border-grey text-grey'"
+          :class="taskPayload.attachment ? 'border-info-dark text-info-dark' : 'border-gray-500 text-gray-500'"
           type="button"
           @click="handleAttachment"
         >

@@ -245,6 +245,7 @@
       "module": "Module",
       "method": "Method",
       "description": "Description",
+      "dealName": "Deal Name",
       "name": "Name",
       "version": "Version",
       "user": "User",

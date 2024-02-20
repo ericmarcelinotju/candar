@@ -397,6 +397,11 @@ let stateParams = reactive({})
 const items: Ref<Project[]> = ref([])
 const itemsTotal = ref(0)
 const handleSearch = (params) => {
+  if (route.name === 'deal') {
+    delete params.limit
+    delete params.page
+  }
+
   stateParams = { ...params }
   loading.value = true
   getProjects(params)

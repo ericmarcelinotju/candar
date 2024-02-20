@@ -54,10 +54,10 @@
               <PopoverButton>
                 <InfoButton info="Set Type">
                   <button
-                    class="rounded-full border border-dashed border-grey p-1"
+                    class="rounded-full border border-dashed border-gray-500 p-1"
                     type="button"
                   >
-                    <TagIcon class="w-4 h-4 text-grey" />
+                    <TagIcon class="w-4 h-4 text-gray-500" />
                   </button>
                 </InfoButton>
               </PopoverButton>
@@ -115,10 +115,10 @@
                 <PopoverButton>
                   <InfoButton info="Add Attendees">
                     <button
-                      class="rounded-full border border-dashed border-grey p-1"
+                      class="rounded-full border border-dashed border-gray-500 p-1"
                       type="button"
                     >
-                      <UserAddIcon class="w-4 h-4 text-grey" />
+                      <UserAddIcon class="w-4 h-4 text-gray-500" />
                     </button>
                   </InfoButton>
                 </PopoverButton>

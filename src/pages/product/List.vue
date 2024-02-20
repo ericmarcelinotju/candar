@@ -10,7 +10,11 @@
       @delete="handleDelete"
       @edit="handleEdit"
       @search="handleSearch"
-    />
+    >
+      <template #name="{ item }">
+        <span class="uppercase">{{ item.name }}</span>
+      </template>
+    </DefaultTable>
     <template #action>
       <button
         v-if="hasPermission('POST')"
