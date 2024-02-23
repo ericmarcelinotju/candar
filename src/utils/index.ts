@@ -9,13 +9,20 @@ const jsonToFormData = (json: object): FormData => {
       for (const i in json[key]) {
         if (typeof json[key][i] === 'object') {
           formData.append(key + '[]', JSON.stringify(json[key][i]))
+        } else if (Object.prototype.toString.call(json[key][i]) === '[object Date]') {
+          formData.append(key + '[]', json[key][i].toISOString())
         } else {
           formData.append(key + '[]', json[key][i])
         }
       }
       continue
     }
-    formData.append(key, json[key])
+
+    if (Object.prototype.toString.call(json[key]) === '[object Date]') {
+      formData.append(key, json[key].toISOString())
+    } else {
+      formData.append(key, json[key])
+    }
   }
   return formData
 }
