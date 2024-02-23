@@ -262,8 +262,6 @@ const initForm = () => {
     {
       key: 'code',
       label: t('app.columns.code'),
-      isRequired: true,
-      rules: [required],
       isHidden: true
     },
     {

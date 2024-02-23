@@ -197,7 +197,11 @@ const initForm = () => {
   ]
 
   if (route.name === 'deal-create') {
+    // Deleting and Hide Field Code
     formSettings.value[0].isHidden = true
+    delete formSettings.value[0].isRequired
+    delete formSettings.value[0].rules
+
     formSettings.value[1].label = t('app.columns.dealName')
   }
 }
