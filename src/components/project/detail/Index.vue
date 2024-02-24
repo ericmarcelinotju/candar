@@ -108,6 +108,7 @@
                   :clearable="false"
                   :enable-time-picker="false"
                 >
+                  {{ project.expiredAt }}
                   <template #trigger>
                     <div class="hover:bg-gray-200 p-1 transition duration-300 rounded-md -translate-x-1">
                       <InfoButton
@@ -288,6 +289,8 @@ import { watchDebounced } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 import { PlusIcon, DotsVerticalIcon } from '@heroicons/vue/solid'
 import { Popover, PopoverButton, PopoverPanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+import Datepicker from '@vuepic/vue-datepicker'
+import InfoButton from '@/components/helper/InfoButton.vue'
 
 import { Project, ProjectClose, getProjectStatusColor } from '@/typings/models/project.type'
 import { update as updateProject, detail as getProject, updateStatus as updateProjectStatus } from '@/api/project'
