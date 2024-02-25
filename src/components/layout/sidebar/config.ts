@@ -9,7 +9,8 @@ import {
   DocumentReportIcon,
   CalendarIcon,
   ClipboardListIcon,
-  CogIcon
+  CogIcon,
+  CreditCardIcon
 } from '@heroicons/vue/outline'
 
 export const navigations: Navigation[] = [
@@ -94,6 +95,12 @@ export const navigations: Navigation[] = [
     module: 'PURCHASE',
     href: '/purchase',
     icon: ShoppingCartIcon
+  },
+  {
+    name: 'Company Bank',
+    module: 'COMPANY_BANK',
+    href: '/company-bank',
+    icon: CreditCardIcon
   },
   {
     name: 'User Access',

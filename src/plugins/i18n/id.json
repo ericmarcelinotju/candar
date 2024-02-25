@@ -201,7 +201,18 @@
       "variantOption": "Variant Option",
       "contract": "Contract",
       "purchase": "Purchase",
-      "assign_to": "Assign To"
+      "assign_to": "Assign To",
+      "company_bank": "Company Bank",
+      "account": {
+        "bank": "Bank",
+        "name": "Rekening Atas Nama",
+        "number": "Nomor Rekening Bank",
+        "address": "Alamat Nomor Rekening"
+      },
+      "bank": {
+        "swift_code": "Kode Bank",
+        "address": "Alamat Cabang Bank"
+      }
     }
   }
 }

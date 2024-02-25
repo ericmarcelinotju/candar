@@ -37,6 +37,7 @@ import {
 import { quotationCreate, quotationEdit, quotationList } from './quotation'
 import { contractCreate, contractEdit, contractList } from './contract'
 import { purchaseCreate, purchaseEdit, purchaseList } from './purchase'
+import { companyBankCreate, companyBankEdit, companyBankList } from './company-bank'
 
 export const dashboardRoute: RouteRecordRaw = {
   path: '/dashboard',
@@ -168,6 +169,12 @@ export const purchaseRoutes: Record<string, RouteRecordRaw> = {
   list: purchaseList,
   create: purchaseCreate,
   edit: purchaseEdit
+}
+
+export const companyBankRoutes: Record<string, RouteRecordRaw> = {
+  list: companyBankList,
+  create: companyBankCreate,
+  edit: companyBankEdit
 }
 
 export const projectRoutes: Record<string, RouteRecordRaw> = {
