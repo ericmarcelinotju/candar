@@ -349,7 +349,19 @@
       "product_no": "Product NO",
       "unit_code": "Unit Code",
       "contain": "Contain",
-      "unit": "Unit"
+      "unit": "Unit",
+      "company_bank": "Company Bank",
+      "account": {
+        "bank": "Bank",
+        "name": "Account Name",
+        "number": "Account Number",
+        "address": "Account Address",
+        "active": "Account Active"
+      },
+      "bank": {
+        "swift_code": "Bank Swift Code",
+        "address": "Bank Address"
+      }
     }
   }
 }

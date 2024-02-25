@@ -22,7 +22,8 @@ import {
   quotationRoutes,
   calendarRoute,
   contractRoutes,
-  purchaseRoutes
+  purchaseRoutes,
+  companyBankRoutes
 } from './routes'
 
 import DefaultContainer from '@/components/layout/Container.vue'
@@ -63,7 +64,9 @@ const router = createRouter({
         ...Object.values(productCategoryRoutes),
 
         ...Object.values(variantRoutes),
-        ...Object.values(variantCategoryRoutes)
+        ...Object.values(variantCategoryRoutes),
+
+        ...Object.values(companyBankRoutes)
       ],
       beforeEnter: guardAuth
     },

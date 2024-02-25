@@ -28,16 +28,8 @@
     input-class-name="default-input"
     range
   />
-  <ImageInput
-    v-else-if="type === 'image'"
-    v-bind="$props"
-    v-model="inputVal"
-  />
-  <FileInput
-    v-else-if="type === 'file'"
-    v-bind="$props"
-    v-model="inputVal"
-  />
+  <ImageInput v-else-if="type === 'image'" v-bind="$props" v-model="inputVal" />
+  <FileInput v-else-if="type === 'file'" v-bind="$props" v-model="inputVal" />
   <textarea
     v-else-if="type === 'textarea'"
     v-bind="$props"
@@ -62,7 +54,7 @@
     class="default-input"
     :disabled="disabled"
     :type="type"
-  >
+  />
 </template>
 
 <script setup lang="ts">
@@ -79,8 +71,8 @@ interface Props {
   type?: string
   options?: Option[] | OptionObject[]
   className?: string
-  modelValue?: string | string[] | number | Date
-  objectModelValue?: { id: string, name: string, disabled: boolean }[]
+  modelValue?: string | string[] | number | Date | boolean
+  objectModelValue?: { id: string; name: string; disabled: boolean }[]
   disabled?: boolean
   index?: number | null
   formula?: (() => number | string | null) | null
@@ -90,16 +82,23 @@ const props = withDefaults(defineProps<Props>(), {
   type: 'text',
   className: '',
   modelValue: '',
-  objectModelValue: () => { return [{ id: '', name: '', disabled: false }] },
+  objectModelValue: () => {
+    return [{ id: '', name: '', disabled: false }]
+  },
   options: () => [],
   index: null,
   formula: null
 })
 
-const emit = defineEmits(['update:modelValue', 'update:objectModelValue', 'update-options', 'delete-variant'])
+const emit = defineEmits([
+  'update:modelValue',
+  'update:objectModelValue',
+  'update-options',
+  'delete-variant'
+])
 
 const inputVal = computed({
-  get () {
+  get() {
     if (props.formula) {
       const result = props.formula()
       emit('update:modelValue', result)
@@ -107,16 +106,16 @@ const inputVal = computed({
     }
     return props.modelValue
   },
-  set (val) {
+  set(val) {
     emit('update:modelValue', val)
   }
 })
 
 const objectInputVal = computed({
-  get () {
+  get() {
     return props.objectModelValue
   },
-  set (val) {
+  set(val) {
     emit('update:objectModelValue', val)
   }
 })
