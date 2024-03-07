@@ -139,7 +139,7 @@ export const navigations: Navigation[] = [
 export const secondaryNavigations: Navigation[] = [
   {
     name: 'Settings',
-    module: 'SETTING',
+    module: 'PERMISSION',
     href: '/setting',
     icon: CogIcon
   }

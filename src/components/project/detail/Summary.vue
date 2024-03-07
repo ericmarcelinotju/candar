@@ -15,16 +15,15 @@
           :placeholder="$t('project.tip.note')"
         />
       </div>
-      <div class="-ml-3 flex items-center ">
+      <div class="-ml-3 mt-1 flex items-center ">
         <div class="mx-3">
           {{ $t('currency.rp') }}
         </div>
-        <input
+        <CurrencyInput
           v-model="project.estimate"
           class="hover-input text-sm"
           :placeholder="$t('project.tip.estimate')"
-          type="number"
-        >
+        />
       </div>
       <!-- <div class="mt-6">
         <p class="text-md">
@@ -79,11 +78,11 @@
 import { Ref, computed, ref, watch } from 'vue'
 import { watchDebounced } from '@vueuse/core'
 import dayjs from 'dayjs'
-
 import { Project } from '@/typings/models/project.type'
 import { update as updateProject, detail as getProject } from '@/api/project'
 
 import { useNotify } from '@/composables/use-notify'
+import CurrencyInput from '@/components/form/CurrencyInput.vue'
 
 interface Props {
   data: Project

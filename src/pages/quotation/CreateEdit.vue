@@ -127,6 +127,7 @@ import { Ref, computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
+import dayjs from 'dayjs'
 import { PlusIcon } from '@heroicons/vue/solid'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
@@ -284,7 +285,11 @@ const initForm = () => {
       label: t('app.columns.date_to'),
       type: 'date',
       isRequired: true,
+      disabled: true,
       rules: [required],
+      formula: (form) => {
+        return form.dateFrom ? dayjs(form.dateFrom).add(30, 'day').toDate().toISOString() : ''
+      },
       col: 6
     },
     {

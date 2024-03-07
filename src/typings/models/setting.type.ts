@@ -1,13 +1,14 @@
-import { BaseModel } from './model.type'
-
-export class Setting extends BaseModel {
+export class Setting {
   key: string
   value: string
 }
 
 export class AppSetting {
-  smtpHost: string
-  smtpPort: string
-  smtpEmail: string
-  smtpPassword: string
+  companyName: string
+  companyAddress: string
+  quotationHeaderLogo1: string
+  quotationHeaderLogo2: string
+  quotationSignatureLogo: string
+  quotationFooterLogo1: string
+  quotationFooterLogo2: string
 }
