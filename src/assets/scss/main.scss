@@ -106,6 +106,7 @@ hr {
 
 .default-input {
   @apply focus:ring-info-dark focus:border-info-dark block shadow-sm text-sm leading-5 border-gray-300 rounded-md;
+  @apply disabled:bg-gray-200 disabled:text-grey-dark disabled:border-grey disabled:shadow-none;
 
   &[type="checkbox"] {
     @apply mr-2;
@@ -113,17 +114,11 @@ hr {
   &:not([type="checkbox"]) {
     @apply w-full;
   }
-  &[disabled] {
-    @apply bg-grey-soft disabled:bg-gray-50 disabled:text-grey disabled:border-grey-soft disabled:shadow-none;
-  }
 }
 
 .hover-input {
   @apply w-full hover:ring-info-dark hover:border-info-dark focus:ring-info-dark focus:border-info-dark block leading-5 rounded-md border-transparent;
-
-  &[disabled] {
-    @apply bg-grey-soft disabled:bg-gray-50 disabled:text-grey disabled:border-grey-soft disabled:shadow-none;
-  }
+  @apply disabled:bg-gray-200 disabled:text-grey-dark disabled:border-grey disabled:shadow-none;
 }
 
 fieldset[disabled] {
