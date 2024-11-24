@@ -1,5 +1,7 @@
+import RouterView from '@/components/RouterView.vue'
+
 export const clientList = {
-  path: '/client',
+  path: '',
   name: 'client',
   component: () => import(/* webpackChunkName: 'p-client-list' */ '@/pages/client/List.vue'),
   meta: {
@@ -11,29 +13,29 @@ export const clientList = {
 const ClientCreateEdit = () => import(/* webpackChunkName: 'p-client-create-edit' */ '@/pages/client/CreateEdit.vue')
 
 export const clientCreate = {
-  path: '/client/create',
+  path: 'create',
   name: 'client-create',
   component: ClientCreateEdit,
   meta: {
     auth: true,
-    title: 'Client Create'
+    title: 'Create Client'
   }
 }
 
 export const clientEdit = {
-  path: '/client/edit/:id',
+  path: 'edit/:id',
   name: 'client-edit',
   component: ClientCreateEdit,
   meta: {
     auth: true,
-    title: 'Client Edit'
+    title: 'Edit Client'
   }
 }
 
 const ClientAddressCreateEdit = () => import(/* webpackChunkName: 'p-client-address-create-edit' */ '@/pages/client/address/CreateEdit.vue')
 
 export const clientAddressCreate = {
-  path: '/client/address/create',
+  path: 'address/create',
   name: 'client-address-create',
   component: ClientAddressCreateEdit,
   meta: {
@@ -43,7 +45,7 @@ export const clientAddressCreate = {
 }
 
 export const clientAddressEdit = {
-  path: '/client/address/edit/:id',
+  path: 'address/edit/:id',
   name: 'client-address-edit',
   component: ClientAddressCreateEdit,
   meta: {
@@ -55,7 +57,7 @@ export const clientAddressEdit = {
 const ClientContactCreateEdit = () => import(/* webpackChunkName: 'p-client-contact-create-edit' */ '@/pages/client/contact/CreateEdit.vue')
 
 export const clientContactCreate = {
-  path: '/client/contact/create',
+  path: 'contact/create',
   name: 'client-contact-create',
   component: ClientContactCreateEdit,
   meta: {
@@ -65,7 +67,7 @@ export const clientContactCreate = {
 }
 
 export const clientContactEdit = {
-  path: '/client/contact/edit/:id',
+  path: 'contact/edit/:id',
   name: 'client-contact-edit',
   component: ClientContactCreateEdit,
   meta: {
@@ -77,11 +79,32 @@ export const clientContactEdit = {
 const ClientImport = () => import(/* webpackChunkName: 'p-client-import' */ '@/pages/client/import.vue')
 
 export const clientImport = {
-  path: '/client/import',
+  path: 'import',
   name: 'client-import',
   component: ClientImport,
   meta: {
     auth: true,
-    title: 'Client Import'
+    title: 'Import'
+  }
+}
+
+export const clientRoutes = {
+  path: 'client',
+  redirect: 'client',
+  component: RouterView,
+  children: [
+    clientList,
+    clientCreate,
+    clientEdit,
+    clientImport,
+
+    clientAddressCreate,
+    clientAddressEdit,
+
+    clientContactCreate,
+    clientContactEdit
+  ],
+  meta: {
+    title: 'Client'
   }
 }

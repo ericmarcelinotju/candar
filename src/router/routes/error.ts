@@ -9,9 +9,14 @@ export const forbiddenRoute: RouteRecordRaw = {
 }
 
 export const notFoundRoute: RouteRecordRaw = {
-  path: '/404',
+  path: '/:pathMatch(.*)*',
   name: 'not-found',
   component: () =>
     import(/* webpackChunkName: 'c-not-found */ '@/pages/error/NotFound.vue'),
   meta: { title: 'Not Found' }
 }
+
+export const errorRoutes: RouteRecordRaw[] = [
+  forbiddenRoute,
+  notFoundRoute
+]

@@ -36,3 +36,10 @@ export const resetPassword: RouteRecordRaw = {
   },
   beforeEnter: guardGuest
 }
+
+export const authRoutes: RouteRecordRaw[] = [
+  login,
+  logout,
+  forgotPassword,
+  resetPassword
+]

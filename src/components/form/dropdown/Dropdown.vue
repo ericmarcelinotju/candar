@@ -15,19 +15,28 @@
       :class="
         className
           ? className
-          : 'px-3 py-2 text-left border border-gray-300 default-input'
+          : 'px-3 py-3 text-left border border-gray-300 default-input'
       "
     >
-      <span v-if="selectedOption" class="block truncate">
+      <span
+        v-if="selectedOption"
+        class="block truncate"
+      >
         {{ returnObject ? selectedOption[itemKey] : selectedOption.label }}
       </span>
-      <span v-else class="block truncate text-gray-400">
+      <span
+        v-else
+        class="block truncate text-gray-400"
+      >
         {{ placeholder }}
       </span>
       <span
         class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"
       >
-        <SelectorIcon aria-hidden="true" class="w-5 h-5 text-gray-500" />
+        <SelectorIcon
+          aria-hidden="true"
+          class="w-5 h-5 text-gray-500"
+        />
       </span>
     </ListboxButton>
 
@@ -65,7 +74,10 @@
               v-if="selected"
               class="absolute inset-y-0 left-0 flex items-center pl-3 text-green-600"
             >
-              <CheckIcon aria-hidden="true" class="w-5 h-5 text-green-600" />
+              <CheckIcon
+                aria-hidden="true"
+                class="w-5 h-5 text-green-600"
+              />
             </span>
           </li>
         </ListboxOption>
@@ -121,10 +133,10 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits(['update:modelValue', 'input'])
 
 const value = computed({
-  get() {
+  get () {
     return props.modelValue
   },
-  set(value) {
+  set (value) {
     emit('update:modelValue', value)
     emit('input', value)
   }
@@ -134,8 +146,8 @@ const selectedOption = computed(() => {
   if (props.returnObject === true) {
     return props.optionsObject
       ? props.optionsObject.find(
-          (option) => option[props.itemKey] === value.value[props.itemKey]
-        )
+        (option) => option[props.itemKey] === value.value[props.itemKey]
+      )
       : null
   }
 

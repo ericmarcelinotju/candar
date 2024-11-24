@@ -96,35 +96,35 @@
 
     <!-- Static sidebar for desktop -->
     <div
-      class="hidden lg:flex flex-col w-72 fixed inset-y-0 shadow-lg transition-all ease-out text-white"
+      class="hidden lg:flex flex-col w-72 fixed inset-y-0 transition-all ease-out text-neutral-100"
       :class="{ 'w-24': isCollapse }"
     >
       <!-- Sidebar component, swap this element with another sidebar if you like -->
-      <div class="flex flex-col flex-grow bg-black shadow-lg overflow-y-auto">
+      <div class="flex flex-col flex-grow bg-neutral-30">
         <div
           class="flex items-center justify-between flex-shrink-0 px-4 max-h-20"
         >
           <router-link
-            class="flex-1 text-center my-4 overflow-hidden"
+            class="h-12 flex-1 text-center my-4 overflow-hidden"
             to="/"
           >
             <img
               v-if="isCollapse"
               alt="Logo"
-              class="h-10 w-auto"
+              class="h-full w-auto"
               src="@/assets/logo_square.png"
             >
             <img
               v-else
               alt="Logo"
-              class="h-12 w-auto mx-auto"
+              class="h-full w-auto pl-2"
               src="@/assets/logo.png"
             >
           </router-link>
 
           <button>
             <ArrowNarrowLeftIcon
-              class="h-6 w-6"
+              class="h-5 w-5"
               :class="{ 'rotate-180': isCollapse }"
               @click="onCollapse"
             />
@@ -160,7 +160,7 @@
 </template>
 
 <script setup lang="ts">
-import { XIcon, ArrowNarrowLeftIcon } from '@heroicons/vue/solid'
+import { XIcon, ArrowNarrowLeftIcon } from '@heroicons/vue/outline'
 import {
   Dialog,
   DialogOverlay,

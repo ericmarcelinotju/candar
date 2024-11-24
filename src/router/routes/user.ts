@@ -1,5 +1,7 @@
+import RouterView from '@/components/RouterView.vue'
+
 export const userList = {
-  path: '/user',
+  path: '',
   name: 'user',
   component: () => import(/* webpackChunkName: 'p-user-list' */ '@/pages/user/List.vue'),
   meta: {
@@ -11,33 +13,48 @@ export const userList = {
 const UserCreateEdit = () => import(/* webpackChunkName: 'p-user-create-edit' */ '@/pages/user/CreateEdit.vue')
 
 export const userCreate = {
-  path: '/user/create',
+  path: 'create',
   name: 'user-create',
   component: UserCreateEdit,
   meta: {
     auth: true,
-    title: 'User Create'
+    title: 'Create User'
   }
 }
 
 export const userEdit = {
-  path: '/user/edit/:id',
+  path: 'edit/:id',
   name: 'user-edit',
   component: UserCreateEdit,
   meta: {
     auth: true,
-    title: 'User Edit'
+    title: 'Edit User'
   }
 }
 
 const UserImport = () => import(/* webpackChunkName: 'p-user-import' */ '@/pages/user/import.vue')
 
 export const userImport = {
-  path: '/user/import',
+  path: 'import',
   name: 'user-import',
   component: UserImport,
   meta: {
     auth: true,
-    title: 'User Import'
+    title: 'Import User'
+  }
+}
+
+export const userRoutes = {
+  path: 'user',
+  redirect: 'user',
+  component: RouterView,
+  children: [
+    userList,
+    userCreate,
+    userEdit,
+    userImport
+  ],
+  meta: {
+    title: 'User'
   }
 }

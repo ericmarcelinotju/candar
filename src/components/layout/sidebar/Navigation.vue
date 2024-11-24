@@ -4,7 +4,7 @@
       <router-link
         v-if="!item.children"
         :key="item.name"
-        active-class="bg-secondary text-white"
+        active-class="is-active"
         class="group nav-button mb-2"
         :class="{
           '!hidden': item.module && !hasPermission(item.module),
@@ -16,7 +16,7 @@
           :is="item.icon"
           active-class="text-white"
           aria-hidden="true"
-          class="h-6 w-6 text-base group hover:bg-secondary-dark"
+          class="h-6 w-6 text-base group hover:bg-white"
         />
         <span
           v-if="!isCollapse || !item.icon"
@@ -35,7 +35,7 @@
         :default-open="hasActiveChild(item.children)"
       >
         <DisclosureButton
-          active-class="bg-secondary text-white"
+          active-class="bg-white text-primary font-medium"
           class="nav-button"
         >
           <component
@@ -66,7 +66,7 @@
           <router-link
             v-for="subItem in item.children"
             :key="subItem.name"
-            active-class="bg-secondary text-white"
+            active-class="bg-white text-primary font-medium"
             class="group nav-button"
             :class="{
               '!hidden': subItem.module && !hasPermission(subItem.module),
@@ -126,6 +126,10 @@ const hasAnyPermission = (children) => {
 
 <style lang="scss" scoped>
 .nav-button {
-  @apply flex items-center w-full px-2 py-2 text-left text-base leading-6 hover:text-white hover:bg-secondary-dark rounded-md overflow-hidden whitespace-nowrap;
+  @apply flex items-center w-full px-2 py-2 text-left text-base leading-6 rounded-md overflow-hidden whitespace-nowrap;
+
+  &:hover, &.is-active {
+    @apply shadow-md text-primary bg-white font-medium;
+  }
 }
 </style>

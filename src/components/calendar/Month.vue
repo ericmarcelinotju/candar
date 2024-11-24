@@ -121,7 +121,7 @@
                   :class="[
                     day.isToday() ? '!text-white bg-primary' : 'text-grey-dark',
                     selectedDate.isSame(day, 'day') &&
-                      'border border-2 border-primary-soft'
+                      'border border-2 border-primary-light'
                   ]"
                 >
                   {{ day.format('DD') }}

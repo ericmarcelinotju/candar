@@ -1,7 +1,7 @@
 import axios from 'axios'
 import router from '@/router'
 import stores from '@/stores'
-import { errorRoutes } from '@/router/routes'
+import { forbiddenRoute } from '@/router/routes/error'
 
 const axiosInstance = axios.create({
   baseURL: process.env.VITE_APP_API_ADDRESS,
@@ -19,7 +19,7 @@ axiosInstance.interceptors.response.use(
       if (error.response.status === 401) {
         stores.commit('auth/setLogout')
       } else if (error.response.status === 403) {
-        router.replace({ name: errorRoutes.forbidden.name })
+        router.replace({ name: forbiddenRoute.name })
       }
     }
 

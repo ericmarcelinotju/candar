@@ -1,5 +1,7 @@
+import RouterView from '@/components/RouterView.vue'
+
 export const roleList = {
-  path: '/role',
+  path: '',
   name: 'role',
   component: () => import(/* webpackChunkName: 'p-role-list' */ '@/pages/role/List.vue'),
   meta: {
@@ -11,21 +13,35 @@ export const roleList = {
 const RoleCreateEdit = () => import(/* webpackChunkName: 'p-role-create-edit' */ '@/pages/role/CreateEdit.vue')
 
 export const roleCreate = {
-  path: '/role/create',
+  path: 'create',
   name: 'role-create',
   component: RoleCreateEdit,
   meta: {
     auth: true,
-    title: 'Role Create'
+    title: 'Create Role'
   }
 }
 
 export const roleEdit = {
-  path: '/role/edit/:id',
+  path: 'edit/:id',
   name: 'role-edit',
   component: RoleCreateEdit,
   meta: {
     auth: true,
-    title: 'Role Edit'
+    title: 'Edit Role'
+  }
+}
+
+export const roleRoutes = {
+  path: 'role',
+  redirect: 'role',
+  component: RouterView,
+  children: [
+    roleList,
+    roleCreate,
+    roleEdit
+  ],
+  meta: {
+    title: 'Role'
   }
 }

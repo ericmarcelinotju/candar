@@ -21,6 +21,7 @@
 }
 
 html {
+  @apply text-gray-800;
   overflow: hidden;
 }
 
@@ -206,11 +207,7 @@ fieldset[disabled] {
 }
  
 .default-button {
-  @apply inline-flex items-center justify-center py-2 px-4 shadow-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-offwhite border border-gray-300 hover:bg-gray-300 focus:ring-gray-300;
-
-  &[disabled] {
-    @apply inline-flex items-center justify-center py-2 px-4 shadow-sm rounded-md bg-grey-soft disabled:bg-gray-50 disabled:text-grey disabled:border-grey-soft disabled:shadow-none;
-  }
+  @apply inline-flex items-center justify-center py-2 px-8 shadow-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 bg-offwhite border border-gray-300 hover:bg-gray-300 focus:ring-gray-300 disabled:bg-gray-50 disabled:text-grey disabled:border-grey-soft disabled:shadow-none;
 }
 
 .disabled-button {
@@ -219,7 +216,7 @@ fieldset[disabled] {
 
 .secondary-button {
   @extend .default-button;
-  @apply text-white bg-secondary hover:bg-secondary-dark focus:ring-secondary-soft;
+  @apply text-white bg-secondary hover:bg-secondary-dark focus:ring-secondary-light;
 }
 
 .success-button {
@@ -229,7 +226,7 @@ fieldset[disabled] {
 
 .info-button {
   @extend .default-button;
-  @apply text-white bg-primary hover:bg-primary-dark focus:ring-primary-soft;
+  @apply text-white bg-primary hover:bg-primary-dark focus:ring-primary-light;
 }
 
 .warning-button {

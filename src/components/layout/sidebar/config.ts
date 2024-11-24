@@ -1,11 +1,12 @@
 import { Navigation } from '@/typings/navigation.type'
 import {
   HomeIcon,
+  ViewGridIcon,
   UserIcon,
   PresentationChartLineIcon,
   ShoppingBagIcon,
   ShoppingCartIcon,
-  UsersIcon,
+  UserGroupIcon,
   DocumentReportIcon,
   CalendarIcon,
   ClipboardListIcon,
@@ -17,7 +18,7 @@ export const navigations: Navigation[] = [
   {
     name: 'Dashboard',
     href: '/dashboard',
-    icon: HomeIcon
+    icon: ViewGridIcon
   },
   {
     name: 'Calendar',
@@ -70,19 +71,8 @@ export const navigations: Navigation[] = [
   {
     name: 'Client',
     module: 'CLIENT',
-    icon: UsersIcon,
-    children: [
-      {
-        name: 'Client',
-        module: 'CLIENT',
-        href: '/client'
-      },
-      {
-        name: 'Client Import',
-        module: 'CLIENT',
-        href: '/client/import'
-      }
-    ]
+    href: '/client',
+    icon: UserGroupIcon
   },
   {
     name: 'Contract',

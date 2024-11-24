@@ -8,7 +8,7 @@
       />
       <div class="flex justify-between mt-6">
         <button
-          class="info-button mr-4"
+          class="info-button"
           type="button"
           @click="onTriggerMeter"
         >

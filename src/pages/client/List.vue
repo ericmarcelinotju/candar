@@ -12,9 +12,10 @@
       @search="handleSearch"
     />
     <template #action>
+      <FileMenu class="mr-6" @import="handleImport"/>
       <button
         v-if="hasPermission('POST')"
-        class="info-button mr-4"
+        class="info-button"
         type="button"
         @click="handleCreate"
       >
@@ -51,6 +52,7 @@ import { get as getClients, del as deleteClient } from '@/api/client'
 import { useNotify } from '@/composables/use-notify'
 import { Client } from '@/typings/models/client.type'
 import { clientCreate, clientEdit } from '@/router/routes/client'
+import FileMenu from '@/components/FileMenu.vue'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -152,6 +154,10 @@ const columns = [
     isSearchable: true
   }
 ]
+
+const handleImport = () => {
+  router.push({ name: 'client-import' })
+}
 
 const hasPermission = (method, module = 'CLIENT') => {
   return store.getters['auth/hasPermission'](module, method)

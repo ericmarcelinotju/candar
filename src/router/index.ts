@@ -4,17 +4,10 @@ import {
   dashboardRoute,
   maintenanceRoute,
   settingRoute,
-  authRoutes,
-  userRoutes,
-  roleRoutes,
   permissionRoutes,
   logRoutes,
   divisionRoutes,
-  clientRoutes,
   projectRoutes,
-  errorRoutes,
-  clientAddressRoutes,
-  clientContactRoutes,
   variantRoutes,
   variantCategoryRoutes,
   productRoutes,
@@ -28,6 +21,11 @@ import {
 
 import DefaultContainer from '@/components/layout/Container.vue'
 import { guardAuth } from './guard'
+import { clientRoutes } from './routes/client'
+import { errorRoutes } from './routes/error'
+import { userRoutes } from './routes/user'
+import { roleRoutes } from './routes/role'
+import { authRoutes } from './routes/auth'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -45,13 +43,11 @@ const router = createRouter({
 
         ...Object.values(logRoutes),
 
-        ...Object.values(userRoutes),
-        ...Object.values(roleRoutes),
+        userRoutes,
         ...Object.values(permissionRoutes),
 
-        ...Object.values(clientRoutes),
-        ...Object.values(clientAddressRoutes),
-        ...Object.values(clientContactRoutes),
+        clientRoutes,
+        roleRoutes,
         ...Object.values(divisionRoutes),
         ...Object.values(purchaseRoutes),
 
@@ -68,10 +64,14 @@ const router = createRouter({
 
         ...Object.values(companyBankRoutes)
       ],
-      beforeEnter: guardAuth
+      beforeEnter: guardAuth,
+      meta: {
+        auth: true,
+        title: 'Home'
+      }
     },
     ...authRoutes,
-    ...Object.values(errorRoutes)
+    ...errorRoutes
   ]
 })
 

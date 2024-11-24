@@ -12,7 +12,7 @@
         v-if="saveLoading"
         class="absolute bottom-0 right-3 h-6 w-6"
       />
-      <div class="-mx-6 -mt-8 px-6 py-4 bg-grey-soft font-semibold rounded-t-md">
+      <div class="-mx-6 -mt-8 px-6 py-4 font-semibold rounded-t-md">
         {{ project.client?.name }} > {{ project.code }}
       </div>
       <div class="mt-4 gap-3">

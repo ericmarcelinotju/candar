@@ -17,7 +17,7 @@
     <template #action>
       <button
         v-if="hasPermission('POST')"
-        class="info-button mr-4"
+        class="info-button"
         type="button"
         @click="handleCreate"
       >

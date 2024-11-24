@@ -17,7 +17,7 @@
       @collapse="toogleCollapseSidebar"
     />
     <div
-      class="lg:pl-72 h-screen bg-grey-soft flex flex-col flex-1 pb-20 transition-all ease-out"
+      class="lg:pl-72 h-screen flex flex-col flex-1 pb-20 transition-all ease-out"
       :class="{ 'lg:pl-24': isSidebarCollapse }"
     >
       <main class="flex-1 overflow-y-scroll">

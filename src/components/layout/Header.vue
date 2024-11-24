@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-shrink-0 flex h-20 bg-secondary text-white shadow-lg border-none">
+  <div class="flex-shrink-0 flex h-20 bg-neutral-30 text-neutral-100 shadow-lg border-none">
     <button
       class="px-6 focus:outline-none focus:ring-1 focus:ring-inset focus:ring-white lg:hidden hover:bg-secondary-dark focus:bg-secondary-dark hover:text-grey"
       type="button"
@@ -46,9 +46,7 @@
               class="overflow-y-auto max-h-[50vh] origin-top-right absolute right-0 mt-4 w-64 z-10 rounded-md shadow-lg bg-white text-grey-dark focus:outline-none"
             >
               <MenuItem v-if="notifications.length <= 0">
-                <span
-                  class="block px-6 py-3 text-sm cursor-pointer"
-                >
+                <span class="block px-6 py-3 text-sm cursor-pointer">
                   {{ $t('app.components.notification.empty') }}
                 </span>
               </MenuItem>
@@ -68,9 +66,7 @@
                   <div class="font-bold">
                     {{ notification.title }}
                   </div>
-                  <div
-                    class="text-sm whitespace-nowrap text-ellipsis overflow-hidden"
-                  >
+                  <div class="text-sm whitespace-nowrap text-ellipsis overflow-hidden">
                     {{ notification.message }}
                   </div>
                 </a>

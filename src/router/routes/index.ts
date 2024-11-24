@@ -1,22 +1,8 @@
 import { RouteRecordRaw } from 'vue-router'
-import { forgotPassword, login, logout, resetPassword } from './auth'
-import { userCreate, userEdit, userList, userImport } from './user'
-import { roleCreate, roleEdit, roleList } from './role'
 import { permissionCreate, permissionEdit, permissionList } from './permission'
-import {
-  clientAddressCreate,
-  clientAddressEdit,
-  clientContactCreate,
-  clientContactEdit,
-  clientCreate,
-  clientEdit,
-  clientList,
-  clientImport
-} from './client'
 import { divisionCreate, divisionEdit, divisionList } from './division'
 import { projectCreate, projectEdit, projectList } from './project'
 import { logList } from './log'
-import { forbiddenRoute, notFoundRoute } from './error'
 import {
   variantCategoryCreate,
   variantCategoryEdit,
@@ -83,26 +69,6 @@ export const maintenanceRoute: RouteRecordRaw = {
   }
 }
 
-export const authRoutes: RouteRecordRaw[] = [
-  login,
-  logout,
-  forgotPassword,
-  resetPassword
-]
-
-export const userRoutes: Record<string, RouteRecordRaw> = {
-  list: userList,
-  create: userCreate,
-  edit: userEdit,
-  import: userImport
-}
-
-export const roleRoutes: Record<string, RouteRecordRaw> = {
-  list: roleList,
-  create: roleCreate,
-  edit: roleEdit
-}
-
 export const permissionRoutes: Record<string, RouteRecordRaw> = {
   list: permissionList,
   create: permissionCreate,
@@ -117,13 +83,6 @@ export const divisionRoutes: Record<string, RouteRecordRaw> = {
   list: divisionList,
   create: divisionCreate,
   edit: divisionEdit
-}
-
-export const clientRoutes: Record<string, RouteRecordRaw> = {
-  list: clientList,
-  create: clientCreate,
-  edit: clientEdit,
-  import: clientImport
 }
 
 export const variantRoutes: Record<string, RouteRecordRaw> = {
@@ -155,16 +114,6 @@ export const variantCategoryRoutes: Record<string, RouteRecordRaw> = {
   edit: variantCategoryEdit
 }
 
-export const clientAddressRoutes: Record<string, RouteRecordRaw> = {
-  create: clientAddressCreate,
-  edit: clientAddressEdit
-}
-
-export const clientContactRoutes: Record<string, RouteRecordRaw> = {
-  create: clientContactCreate,
-  edit: clientContactEdit
-}
-
 export const purchaseRoutes: Record<string, RouteRecordRaw> = {
   list: purchaseList,
   create: purchaseCreate,
@@ -187,9 +136,4 @@ export const quotationRoutes: Record<string, RouteRecordRaw> = {
   list: quotationList,
   create: quotationCreate,
   edit: quotationEdit
-}
-
-export const errorRoutes: Record<string, RouteRecordRaw> = {
-  forbidden: forbiddenRoute,
-  notFound: notFoundRoute
 }
