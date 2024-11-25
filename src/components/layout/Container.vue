@@ -60,7 +60,7 @@ import DefaultHeader from './Header.vue'
 // import DefaultFooter from './Footer.vue'
 import DefaultSidebar from './sidebar/Sidebar.vue'
 
-import { projectList } from '@/router/routes/project'
+import { dealList } from '@/router/routes/deal'
 import { Notification } from '@/typings/models/notification.type'
 
 const store = useStore()
@@ -71,7 +71,7 @@ const isSidebarOpen = ref(false)
 const handleConfirm = () => {
   const isProjectTask = currNotification.value.type?.toLowerCase() === 'task'
 
-  router.push({ name: projectList.name, params: { [isProjectTask ? 'project_task_id' : 'project_id']: currNotification.value.link } })
+  router.push({ name: dealList.name, params: { [isProjectTask ? 'project_task_id' : 'project_id']: currNotification.value.link } })
 }
 
 const handleOpenSidebar = () => {

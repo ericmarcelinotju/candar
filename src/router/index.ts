@@ -4,28 +4,27 @@ import {
   dashboardRoute,
   maintenanceRoute,
   settingRoute,
-  permissionRoutes,
-  logRoutes,
-  divisionRoutes,
-  projectRoutes,
-  variantRoutes,
-  variantCategoryRoutes,
-  productRoutes,
-  productCategoryRoutes,
-  quotationRoutes,
-  calendarRoute,
-  contractRoutes,
-  purchaseRoutes,
-  companyBankRoutes
+  calendarRoute
 } from './routes'
-
 import DefaultContainer from '@/components/layout/Container.vue'
 import { guardAuth } from './guard'
-import { clientRoutes } from './routes/client'
-import { errorRoutes } from './routes/error'
-import { userRoutes } from './routes/user'
-import { roleRoutes } from './routes/role'
+
 import { authRoutes } from './routes/auth'
+import { errorRoutes } from './routes/error'
+import { logRoutes as logRoute } from './routes/log'
+
+import { roleRoutes as roleRoute } from './routes/role'
+import { permissionRoutes as permissionRoute } from './routes/permission'
+
+import { userRoutes as userRoute } from './routes/user'
+import { clientRoutes as clientRoute } from './routes/client'
+import { divisionRoute } from './routes/division'
+import { productRoute } from './routes/product'
+import { purchaseRoute } from './routes/purchase'
+import { contractRoute } from './routes/contract'
+import { dealRoute } from './routes/deal'
+import { quotationRoute } from './routes/quotation'
+import { companyBankRoute } from './routes/company-bank'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -41,28 +40,25 @@ const router = createRouter({
         maintenanceRoute,
         settingRoute,
 
-        ...Object.values(logRoutes),
+        logRoute,
 
-        userRoutes,
-        ...Object.values(permissionRoutes),
+        userRoute,
+        permissionRoute,
 
-        clientRoutes,
-        roleRoutes,
-        ...Object.values(divisionRoutes),
-        ...Object.values(purchaseRoutes),
+        clientRoute,
+        roleRoute,
+        divisionRoute,
 
-        ...Object.values(contractRoutes),
+        productRoute,
 
-        ...Object.values(projectRoutes),
-        ...Object.values(quotationRoutes),
+        purchaseRoute,
+        contractRoute,
 
-        ...Object.values(productRoutes),
-        ...Object.values(productCategoryRoutes),
+        dealRoute,
 
-        ...Object.values(variantRoutes),
-        ...Object.values(variantCategoryRoutes),
+        quotationRoute,
 
-        ...Object.values(companyBankRoutes)
+        companyBankRoute
       ],
       beforeEnter: guardAuth,
       meta: {

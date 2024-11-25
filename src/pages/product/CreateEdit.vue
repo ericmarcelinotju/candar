@@ -14,7 +14,10 @@
         @submit="onSubmit"
       >
         <template #source="{ formSetting, form }">
-          <label class="default-label" :for="formSetting.key">
+          <label
+            class="default-label"
+            :for="formSetting.key"
+          >
             {{ formSetting.label }}
           </label>
           <input
@@ -25,7 +28,7 @@
             :name="formSetting.key"
             true-value="import"
             type="checkbox"
-          />
+          >
         </template>
         <template #variant>
           <label class="default-label">
@@ -66,10 +69,13 @@
                   <label class="default-label">
                     {{ $t('product.tier') }} {{ index + 1 }}
                   </label>
-                  <hr class="w-full border-gray-400" />
+                  <hr class="w-full border-gray-400">
                 </div>
                 <div class="default-field">
-                  <label class="default-label" :for="`price-${index}`">
+                  <label
+                    class="default-label"
+                    :for="`price-${index}`"
+                  >
                     {{ $t('product.moq') }}
                   </label>
                   <input
@@ -77,10 +83,13 @@
                     v-model="form.iregular[index].moq"
                     class="default-input"
                     type="number"
-                  />
+                  >
                 </div>
                 <div class="default-field">
-                  <label class="default-label" :for="`price-${index}`">
+                  <label
+                    class="default-label"
+                    :for="`price-${index}`"
+                  >
                     {{ $t('product.discount') }}
                   </label>
                   <input
@@ -88,10 +97,13 @@
                     v-model="form.iregular[index].discRate"
                     class="default-input"
                     type="number"
-                  />
+                  >
                 </div>
                 <div class="default-field col-span-2">
-                  <label class="default-label" :for="`quantity-${index}`">
+                  <label
+                    class="default-label"
+                    :for="`quantity-${index}`"
+                  >
                     {{ $t('product.price') }}
                   </label>
                   <input
@@ -100,7 +112,7 @@
                     disabled
                     type="number"
                     :value="handleInputPrice(form, form.iregular[index])"
-                  />
+                  >
                 </div>
               </div>
               <!-- <div class="flex flex-col gap-4 ml-4">
@@ -137,10 +149,13 @@
                   <label class="default-label">
                     {{ $t('product.tier') }} {{ index + 1 }}
                   </label>
-                  <hr class="w-full border-gray-400" />
+                  <hr class="w-full border-gray-400">
                 </div>
                 <div class="default-field">
-                  <label class="default-label" :for="`price-${index}`">
+                  <label
+                    class="default-label"
+                    :for="`price-${index}`"
+                  >
                     {{ $t('product.moq') }}
                   </label>
                   <input
@@ -148,10 +163,13 @@
                     v-model="form.regular[index].moq"
                     class="default-input"
                     type="text"
-                  />
+                  >
                 </div>
                 <div class="default-field">
-                  <label class="default-label" :for="`price-${index}`">
+                  <label
+                    class="default-label"
+                    :for="`price-${index}`"
+                  >
                     {{ $t('product.discount') }}
                   </label>
                   <input
@@ -159,10 +177,13 @@
                     v-model="form.regular[index].discRate"
                     class="default-input"
                     type="number"
-                  />
+                  >
                 </div>
                 <div class="default-field col-span-2">
-                  <label class="default-label" :for="`quantity-${index}`">
+                  <label
+                    class="default-label"
+                    :for="`quantity-${index}`"
+                  >
                     {{ $t('product.price') }}
                   </label>
                   <input
@@ -171,7 +192,7 @@
                     disabled
                     type="number"
                     :value="handleInputPrice(form, form.regular[index])"
-                  />
+                  >
                 </div>
               </div>
             </div>
@@ -185,7 +206,6 @@
 <script setup lang="ts">
 import { Ref, computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
@@ -197,7 +217,7 @@ import {
 } from '@/api/product'
 import { get as getProductCategory } from '@/api/product-category'
 import { get as getVariantCategories } from '@/api/variant-category'
-import { productList } from '@/router/routes/product'
+import { productList } from '@/router/routes/product/product'
 import { required } from '@/utils/validation'
 import {
   roundingTwoDecimal,
@@ -217,7 +237,6 @@ import dayjs from 'dayjs'
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
-const store = useStore()
 
 const productCategories: Ref<ProductCategory[]> = ref([])
 const productCategoryOptions: Ref<Option[]> = computed(() =>
@@ -635,8 +654,7 @@ const initForm = () => {
       formula: (form) => {
         let rawResult = 0
 
-        if (!form.cost || !form.insurance || !form.freight || !form.bmDuty)
-          return rawResult
+        if (!form.cost || !form.insurance || !form.freight || !form.bmDuty) { return rawResult }
 
         rawResult = +(
           (form.cost + form.insurance + form.freight + form.bmDuty) *
@@ -656,8 +674,7 @@ const initForm = () => {
       disabled: true,
       formula: (form) => {
         let rawResult = 0
-        if (!form.cost || !form.insurance || !form.freight || !form.bmDuty)
-          return rawResult
+        if (!form.cost || !form.insurance || !form.freight || !form.bmDuty) { return rawResult }
 
         rawResult = +(
           (form.cost + form.insurance + form.freight + form.bmDuty) *

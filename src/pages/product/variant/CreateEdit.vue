@@ -20,7 +20,6 @@
 <script setup lang="ts">
 import { Ref, computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
@@ -35,13 +34,12 @@ import {
 import { required } from '@/utils/validation'
 import { FormSetting } from '@/typings/form.type'
 import { Variant, VariantCategory } from '@/typings/models/variant.type'
-import { variantList } from '@/router/routes/variant'
+import { variantList } from '@/router/routes/product/variant/variant'
 import { Option } from '@/typings/option.type'
 
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
-const store = useStore()
 
 const variantCategories: Ref<VariantCategory[]> = ref([])
 const variantCategoryOptions: Ref<Option[]> = computed(() => variantCategories.value.map(variantCategory => ({ label: variantCategory.name, value: variantCategory.id })))

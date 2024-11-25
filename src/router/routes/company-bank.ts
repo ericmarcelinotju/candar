@@ -1,7 +1,9 @@
+import RouterView from '@/components/RouterView.vue'
+
 const CompanyBankList = () => import('@/pages/company-bank/List.vue')
 
 export const companyBankList = {
-  path: '/company-bank',
+  path: '',
   name: 'company-bank',
   component: CompanyBankList,
   meta: {
@@ -13,21 +15,35 @@ export const companyBankList = {
 const CompanyBankCreate = () => import('@/pages/company-bank/CreateEdit.vue')
 
 export const companyBankCreate = {
-  path: '/company-bank/create',
+  path: 'create',
   name: 'company-bank-create',
   component: CompanyBankCreate,
   meta: {
     auth: true,
-    title: 'Company Bank Create'
+    title: 'Create Company Bank'
   }
 }
 
 export const companyBankEdit = {
-  path: '/company-bank/edit/:id',
+  path: 'edit/:id',
   name: 'company-bank-edit',
   component: CompanyBankCreate,
   meta: {
     auth: true,
-    title: 'Company Bank Edit'
+    title: 'Edit Company Bank'
+  }
+}
+
+export const companyBankRoute = {
+  path: 'company-bank',
+  redirect: 'company-bank',
+  component: RouterView,
+  children: [
+    companyBankList,
+    companyBankCreate,
+    companyBankEdit
+  ],
+  meta: {
+    title: 'Company Bank'
   }
 }

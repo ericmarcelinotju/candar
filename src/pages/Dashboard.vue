@@ -142,7 +142,7 @@
       </div>
     </div>
     <div class="grid grid-cols-12 gap-6 mt-6">
-      <div class="p-6 col-span-8 rounded-md overflow-hidden bg-white shadow">
+      <div class="p-6 col-span-8 overflow-hidden border border-neutral-50 rounded-lg">
         <h1 class="text-xl font-bold mb-6">
           {{ $t('project.status_by_source') }}
         </h1>
@@ -153,7 +153,7 @@
           :labels="statusBySourceBarChart.labels"
         />
       </div>
-      <div class="p-6 col-span-4 rounded-md overflow-hidden bg-white shadow">
+      <div class="p-6 col-span-4 overflow-hidden border border-neutral-50 rounded-lg">
         <h1 class="text-xl font-bold mb-6">
           {{ $t('project.status') }}
         </h1>
@@ -165,7 +165,7 @@
       </div>
     </div>
 
-    <div class="mt-6 p-6 rounded-md overflow-hidden bg-white shadow">
+    <div class="mt-6 p-6 border border-neutral-50 rounded-lg">
       <h1 class="text-xl font-bold mb-2">
         {{ $t('project.me') }}
       </h1>
@@ -190,7 +190,9 @@
       </DefaultTable>
     </div>
 
-    <Calendar class="mt-6 !p-0" />
+    <div class="mt-6 !p-0 col-span-9 p-6 overflow-hidden border border-neutral-50 rounded-lg">
+      <Calendar />
+    </div>
   </div>
 </template>
 
@@ -204,7 +206,7 @@ import PieChart from '@/components/chart/pieChart'
 import DefaultTable from '@/components/default/Table.vue'
 import Dropdown from '@/components/form/dropdown/Dropdown.vue'
 import { useNotify } from '@/composables/use-notify'
-import { projectList } from '@/router/routes/project'
+import { dealList } from '@/router/routes/deal'
 import { get as getDashboard } from '@/api/dashboard'
 import { get as getUser } from '@/api/user'
 import { snakeToTitle } from '@/utils/string'
@@ -213,7 +215,7 @@ import { ProjectByStatus, ProjectBySource, ProjectStatusBySource } from '@/typin
 import { User } from '@/typings/models/user.type'
 import { Option } from '@/typings/option.type'
 import UserAvatar from '@/components/UserAvatar.vue'
-import Calendar from './Calendar.vue'
+import Calendar from '@/components/calendar/Calendar.vue'
 
 const { t } = useI18n()
 const store = useStore()
@@ -291,7 +293,7 @@ const hasPermission = (module) => {
 }
 
 const handleEdit = (e: Project) => {
-  router.push({ name: projectList.name, params: { project_id: e.id } })
+  router.push({ name: dealList.name, params: { project_id: e.id } })
 }
 
 const users: Ref<User[]> = ref([])
@@ -466,7 +468,7 @@ const initTime = () => {
 
 <style lang="scss" scoped>
 .stat-card {
-  @apply md:flex-1 w-full rounded-md overflow-hidden bg-white shadow;
+  @apply md:flex-1 w-full rounded-md overflow-hidden border border-neutral-50 rounded-lg;
   .stat-label {
     @apply left-3 bottom-3 w-full py-2 px-3 shadow-xl bg-primary text-lg text-white font-bold;
   }

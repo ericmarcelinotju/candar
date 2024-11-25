@@ -1,5 +1,7 @@
+import RouterView from '@/components/RouterView.vue'
+
 export const purchaseList = {
-  path: '/purchase',
+  path: '',
   name: 'purchase',
   component: () =>
     import(
@@ -17,21 +19,35 @@ const PurchaseCreateEdit = () =>
   )
 
 export const purchaseCreate = {
-  path: '/purchase/create',
+  path: 'create',
   name: 'purchase-create',
   component: PurchaseCreateEdit,
   meta: {
     auth: true,
-    title: 'Create Purchase'
+    title: 'Purchase Create'
   }
 }
 
 export const purchaseEdit = {
-  path: '/purchase/edit/:id',
+  path: 'edit/:id',
   name: 'purchase-edit',
   component: PurchaseCreateEdit,
   meta: {
     auth: true,
-    title: 'Edit Purchase'
+    title: 'Purchase Edit'
+  }
+}
+
+export const purchaseRoute = {
+  path: 'purchase',
+  redirect: 'purchase',
+  component: RouterView,
+  children: [
+    purchaseList,
+    purchaseCreate,
+    purchaseEdit
+  ],
+  meta: {
+    title: 'Purchase'
   }
 }

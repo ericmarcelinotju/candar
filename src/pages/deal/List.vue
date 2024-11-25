@@ -350,7 +350,7 @@ import {
 import { detail as getProjectTask } from '@/api/project-task'
 import { useNotify } from '@/composables/use-notify'
 import { Project } from '@/typings/models/project.type'
-import { projectCreate } from '@/router/routes/project'
+import { dealCreate } from '@/router/routes/deal'
 import Draggable from 'vuedraggable'
 
 import Switch from '@/components/form/Switch.vue'
@@ -416,7 +416,7 @@ const handleSearch = (params) => {
 handleSearch({})
 
 const handleCreate = () => {
-  router.push(projectCreate)
+  router.push(dealCreate)
 }
 
 const isClosedProjectsShown: Ref<boolean> = ref(false)

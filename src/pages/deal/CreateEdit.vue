@@ -38,7 +38,6 @@
 <script setup lang="ts">
 import { Ref, computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useStore } from 'vuex'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
 import {
@@ -52,7 +51,7 @@ import { required } from '@/utils/validation'
 import { FormSetting } from '@/typings/form.type'
 import { Client } from '@/typings/models/client.type'
 import { Project } from '@/typings/models/project.type'
-import { projectList } from '@/router/routes/project'
+import { dealList } from '@/router/routes/deal'
 import { Option } from '@/typings/option.type'
 import { User } from '@/typings/models/user.type'
 import { projectSources, projectStatuses } from './options'
@@ -63,9 +62,6 @@ const { t } = useI18n()
 
 const route = useRoute()
 const router = useRouter()
-const store = useStore()
-
-const currUser = store.getters['auth/user']
 
 const { notify } = useNotify('deal')
 
@@ -117,7 +113,7 @@ const onSubmit = (form, onFinish) => {
   if (id) {
     return updateProject(id, payload)
       .then(() => {
-        router.push(projectList)
+        router.push(dealList)
         notify('updated')
       })
       .catch(() => {
@@ -127,7 +123,7 @@ const onSubmit = (form, onFinish) => {
   } else {
     return insertProject(payload)
       .then(() => {
-        router.push(projectList)
+        router.push(dealList)
         notify('inserted')
       })
       .catch(() => {

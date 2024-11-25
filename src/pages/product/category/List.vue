@@ -48,7 +48,7 @@ import { PlusIcon } from '@heroicons/vue/solid'
 import DefaultTable from '@/components/default/Table.vue'
 import { get as getProductCategories, del as deleteProductCategory } from '@/api/product-category'
 import { useNotify } from '@/composables/use-notify'
-import { productCategoryCreate, productCategoryEdit } from '@/router/routes/product'
+import { categoryCreate, categoryEdit } from '@/router/routes/product/category'
 import { useStore } from 'vuex'
 import { ProductCategory } from '@/typings/models/product.type'
 
@@ -77,11 +77,11 @@ const handleSearch = (params) => {
 }
 
 const handleCreate = () => {
-  router.push(productCategoryCreate)
+  router.push(categoryCreate)
 }
 
 const handleEdit = ({ id }) => {
-  router.push({ ...productCategoryEdit, params: { id } })
+  router.push({ ...categoryEdit, params: { id } })
 }
 
 // Delete client

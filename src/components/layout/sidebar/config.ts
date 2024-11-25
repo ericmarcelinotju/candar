@@ -1,6 +1,5 @@
 import { Navigation } from '@/typings/navigation.type'
 import {
-  HomeIcon,
   ViewGridIcon,
   UserIcon,
   PresentationChartLineIcon,
@@ -17,12 +16,12 @@ import {
 export const navigations: Navigation[] = [
   {
     name: 'Dashboard',
-    href: '/dashboard',
+    route: 'dashboard',
     icon: ViewGridIcon
   },
   {
     name: 'Calendar',
-    href: '/calendar',
+    route: 'calendar',
     icon: CalendarIcon
   },
   {
@@ -32,64 +31,59 @@ export const navigations: Navigation[] = [
       {
         name: 'Variant Category',
         module: 'VARIANT_CATEGORY',
-        href: '/variant-category'
+        route: 'variant-category'
       },
       {
         name: 'Variant',
         module: 'VARIANT',
-        href: '/variant'
+        route: 'variant'
       },
       {
         name: 'Product Category',
         module: 'PRODUCT_CATEGORY',
-        href: '/product-category'
+        route: 'product-category'
       },
       {
         name: 'Product',
         module: 'PRODUCT',
-        href: '/product'
-      },
-      {
-        name: 'Product Import',
-        module: 'PRODUCT',
-        href: '/product/import'
+        route: 'product'
       }
     ]
   },
   {
     name: 'Deal',
     module: 'PROJECT',
-    href: '/deal',
+    route: 'deal',
     icon: PresentationChartLineIcon
   },
   {
     name: 'Quotation',
     module: 'QUOTATION',
-    href: '/quotation',
+    route: 'quotation',
     icon: DocumentReportIcon
   },
   {
     name: 'Client',
     module: 'CLIENT',
-    href: '/client',
+    route: 'client',
     icon: UserGroupIcon
   },
   {
     name: 'Contract',
     module: 'CONTRACT',
-    href: '/contract',
+    route: 'contract',
     icon: ClipboardListIcon
   },
   {
     name: 'Purchase',
     module: 'PURCHASE',
-    href: '/purchase',
+    route: 'purchase',
     icon: ShoppingCartIcon
   },
   {
     name: 'Company Bank',
     module: 'COMPANY_BANK',
-    href: '/company-bank',
+    route: 'company-bank',
     icon: CreditCardIcon
   },
   {
@@ -100,27 +94,27 @@ export const navigations: Navigation[] = [
       {
         name: 'User',
         module: 'USER',
-        href: '/user'
+        route: 'user'
       },
       {
         name: 'User Import',
         module: 'USER',
-        href: '/user/import'
+        route: 'user-import'
       },
       {
         name: 'Division',
         module: 'DIVISION',
-        href: '/division'
+        route: 'division'
       },
       {
         name: 'Role',
         module: 'ROLE',
-        href: '/role'
+        route: 'role'
       },
       {
         name: 'Permission',
         module: 'PERMISSION',
-        href: '/permission'
+        route: 'permission'
       }
     ]
   }
@@ -130,7 +124,7 @@ export const secondaryNavigations: Navigation[] = [
   {
     name: 'Settings',
     module: 'PERMISSION',
-    href: '/setting',
+    route: 'setting',
     icon: CogIcon
   }
   // {
@@ -139,13 +133,13 @@ export const secondaryNavigations: Navigation[] = [
   //   children: [{
   //     name: 'System Log',
   //     module: 'LOG',
-  //     href: '/log',
+  //     route: '/log',
   //     icon: BellIcon
   //   },
   //   {
   //     name: 'Statistic',
   //     module: 'STATISTIC',
-  //     href: '/statistic',
+  //     route: '/statistic',
   //     icon: CodeIcon
   //   }]
   // }

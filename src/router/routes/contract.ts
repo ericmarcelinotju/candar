@@ -1,5 +1,7 @@
+import RouterView from '@/components/RouterView.vue'
+
 export const contractList = {
-  path: '/contract',
+  path: '',
   name: 'contract',
   component: () => import(/* webpackChunkName: 'p-contract-list' */ '@/pages/contract/List.vue'),
   meta: {
@@ -11,21 +13,35 @@ export const contractList = {
 const ContractCreateEdit = () => import(/* webpackChunkName: 'p-contract-create-edit' */ '@/pages/contract/CreateEdit.vue')
 
 export const contractCreate = {
-  path: '/contract/create',
+  path: 'create',
   name: 'contract-create',
   component: ContractCreateEdit,
   meta: {
     auth: true,
-    title: 'Contract Create'
+    title: 'Create Contract'
   }
 }
 
 export const contractEdit = {
-  path: '/contract/edit/:id',
+  path: 'edit/:id',
   name: 'contract-edit',
   component: ContractCreateEdit,
   meta: {
     auth: true,
-    title: 'Contract Edit'
+    title: 'Edit Contract'
+  }
+}
+
+export const contractRoute = {
+  path: 'contract',
+  redirect: 'contract',
+  component: RouterView,
+  children: [
+    contractList,
+    contractCreate,
+    contractEdit
+  ],
+  meta: {
+    title: 'Contract'
   }
 }

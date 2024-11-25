@@ -4,19 +4,20 @@
       <router-link
         v-if="!item.children"
         :key="item.name"
-        active-class="is-active"
         class="group nav-button mb-2"
         :class="{
           '!hidden': item.module && !hasPermission(item.module),
-          'justify-center': isCollapse && item.icon,
+          'justify-center': isCollapse,
         }"
-        :to="item.href || ''"
+        exact-active-class="is-active"
+        :to="{ name: item.route || '' }"
       >
         <component
           :is="item.icon"
-          active-class="text-white"
+          v-if="item.icon"
           aria-hidden="true"
           class="h-6 w-6 text-base group hover:bg-white"
+          exact-active-class="text-white"
         />
         <span
           v-if="!isCollapse || !item.icon"
@@ -35,15 +36,22 @@
         :default-open="hasActiveChild(item.children)"
       >
         <DisclosureButton
-          active-class="bg-white text-primary font-medium"
           class="nav-button"
+          exact-active-class="bg-white text-primary font-medium"
         >
           <component
             :is="item.icon"
+            v-if="item.icon"
             aria-hidden="true"
             class="flex-shrink-0 h-6 w-6"
             :class="{ 'mr-4': !isCollapse }"
           />
+          <div
+            v-else
+            class="h-6 w-6 group flex justify-center items-center"
+          >
+            <div class="h-[0.4rem] w-[0.4rem] rounded-full bg-black hover:bg-white" />
+          </div>
           <span
             v-if="!isCollapse || !item.icon"
             class="flex-1"
@@ -66,22 +74,31 @@
           <router-link
             v-for="subItem in item.children"
             :key="subItem.name"
-            active-class="bg-white text-primary font-medium"
             class="group nav-button"
             :class="{
               '!hidden': subItem.module && !hasPermission(subItem.module),
-              '!pl-12': !isCollapse,
-              'justify-center': isCollapse && subItem.icon,
             }"
-            :to="subItem.href"
+            exact-active-class="bg-white text-primary font-medium"
+            :to="{ name: subItem.route }"
           >
             <component
               :is="subItem.icon"
+              v-if="subItem.icon"
               aria-hidden="true"
               class="flex-shrink-0 h-6 w-6"
               :class="{ 'mr-4': !isCollapse }"
             />
-            <span v-if="!isCollapse || !subItem.icon">
+            <div
+              v-else-if="!isCollapse"
+              class="h-6 w-6 group flex justify-center items-center"
+            >
+              <div class="h-[0.4rem] w-[0.4rem] rounded-full bg-black hover:bg-white" />
+            </div>
+            <span
+              v-if="!isCollapse || !subItem.icon"
+              class="text-ellipsis overflow-hidden"
+              :class="{ 'ml-4': !isCollapse }"
+            >
               {{ subItem.name }}
             </span>
           </router-link>

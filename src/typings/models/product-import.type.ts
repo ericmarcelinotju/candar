@@ -6,6 +6,7 @@ export class Tier {
   moq: number;
   discRate: number;
   price: number;
+  secureId: string;
 }
 
 export class Variant {

@@ -286,7 +286,7 @@ import { FormSetting } from '@/typings/form.type'
 import { ProductCategory, ProductContract } from '@/typings/models/product.type'
 import { OptionObject } from '@/typings/option.type'
 import { VariantCategory } from '@/typings/models/variant.type'
-import { productCategoryList } from '@/router/routes/product'
+import { categoryList } from '@/router/routes/product/category'
 import { roundingTwoDecimal, roundingNearestThousand } from '@/utils/number'
 import { required } from '@/utils/validation'
 
@@ -432,7 +432,7 @@ const onSubmit = (form, onFinish) => {
   if (id) {
     return updateProductCategory(id, payload)
       .then(() => {
-        router.push(productCategoryList)
+        router.push(categoryList)
         notify('updated')
       })
       .catch(() => {
@@ -442,7 +442,7 @@ const onSubmit = (form, onFinish) => {
   } else {
     return insertProductCategory(payload)
       .then(() => {
-        router.push(productCategoryList)
+        router.push(categoryList)
         notify('inserted')
       })
       .catch(() => {

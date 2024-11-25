@@ -270,7 +270,7 @@ import { useNotify } from '@/composables/use-notify'
 import FileInput from '@/components/form/File.vue'
 import InfoButton from '@/components/helper/InfoButton.vue'
 import Dropdown from '@/components/form/dropdown/Dropdown.vue'
-import { projectList } from '@/router/routes/project'
+import { dealList } from '@/router/routes/deal'
 import { jsonToFormData } from '@/utils'
 import { snakeToTitle } from '@/utils/string'
 
@@ -401,6 +401,6 @@ const onFileChange = (e, cb) => {
 }
 
 const onProjectClick = () => {
-  router.push({ ...projectList, params: { project_id: projectTask.value.project.id } })
+  router.push({ ...dealList, params: { project_id: projectTask.value.project.id } })
 }
 </script>

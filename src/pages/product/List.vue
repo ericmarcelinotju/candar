@@ -16,6 +16,10 @@
       </template>
     </DefaultTable>
     <template #action>
+      <FileMenu
+        class="mr-6"
+        @import="handleImport"
+      />
       <button
         v-if="hasPermission('POST')"
         class="info-button"
@@ -51,10 +55,11 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { PlusIcon } from '@heroicons/vue/solid'
 import { get as getProducts, del as deleteProduct } from '@/api/product'
+import FileMenu from '@/components/FileMenu.vue'
 import DefaultTable from '@/components/default/Table.vue'
 import { useNotify } from '@/composables/use-notify'
 import { Product } from '@/typings/models/product.type'
-import { productCreate, productEdit } from '@/router/routes/product'
+import { productCreate, productEdit } from '@/router/routes/product/product'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -186,6 +191,10 @@ const columns = [
     isSearchable: false
   }
 ]
+
+const handleImport = () => {
+  router.push({ name: 'product-import' })
+}
 
 const hasPermission = (method, module = 'PRODUCT') => {
   return store.getters['auth/hasPermission'](module, method)

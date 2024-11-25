@@ -20,7 +20,6 @@
 <script setup lang="ts">
 import { Ref, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { useNotify } from '@/composables/use-notify'
 import DefaultCreateEdit from '@/components/default/CreateEdit.vue'
@@ -33,7 +32,7 @@ import {
 import { required } from '@/utils/validation'
 import { FormSetting } from '@/typings/form.type'
 import { Variant } from '@/typings/models/variant.type'
-import { variantCategoryList } from '@/router/routes/variant'
+import { categoryList } from '@/router/routes/product/variant/category'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -75,7 +74,7 @@ const onSubmit = (form, onFinish) => {
   if (id) {
     return updateVariantCategory(id, payload)
       .then(() => {
-        router.push(variantCategoryList)
+        router.push(categoryList)
         notify('updated')
       })
       .catch(() => {
@@ -85,7 +84,7 @@ const onSubmit = (form, onFinish) => {
   } else {
     return insertVariantCategory(payload)
       .then(() => {
-        router.push(variantCategoryList)
+        router.push(categoryList)
         notify('inserted')
       })
       .catch(() => {

@@ -12,7 +12,10 @@
       @search="handleSearch"
     />
     <template #action>
-      <FileMenu class="mr-6" @import="handleImport"/>
+      <FileMenu
+        class="mr-6"
+        @import="handleImport"
+      />
       <button
         v-if="hasPermission('POST')"
         class="info-button"
